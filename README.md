@@ -37,3 +37,4 @@ Veja a lista de todos colaboradores do projeto [Colaboradores](https://github.co
 
 ## Licença
 Este projeto é licenciado pela licensa do MIT - veja em [LICENSE.md](LICENSE.md) para mais detalhes;
+.
