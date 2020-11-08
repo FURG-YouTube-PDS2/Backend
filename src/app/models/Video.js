@@ -4,21 +4,20 @@ class Video extends Model {
     // Parâmetro de entrada é a conexão do model
     static init(sequelize) {
       // Iniciando classe pai de user (Model)
-      super.init(
+        super.init(
         {
-          // definição das colunas (sem PK, FK e Create/Update)
-          first_name: Sequelize.STRING,
-          title: Sequelize.STRING,
-          description: Sequelize.STRING,
-          password: Sequelize.VIRTUAL,
-          timestamp: Sequelize.DATE,
+            // definição das colunas (sem PK, FK e Create/Update)
+            title: Sequelize.STRING,
+            file: Sequelize.STRING,
+            description: Sequelize.STRING,
+            timestamp: Sequelize.DATE,
         },
         {
-          sequelize,
+            sequelize,
         }
       );
     }
 
-  }
+}
   
-  export default Video;
+export default Video;
