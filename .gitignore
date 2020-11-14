@@ -50,7 +50,6 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -88,8 +87,6 @@ typings/
 .nuxt
 
 # rollup.js default build output
-dist/
-
 # Uncomment the public line if your project uses Gatsby
 # https://nextjs.org/blog/next-9-1#public-directory-support
 # https://create-react-app.dev/docs/using-the-public-folder/#docsNav
@@ -116,3 +113,4 @@ tmp/
 temp/
 
 # End of https://www.gitignore.io/api/node,code
+node_modules
