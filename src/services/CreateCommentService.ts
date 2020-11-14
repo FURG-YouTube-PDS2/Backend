@@ -11,7 +11,7 @@ interface Request {
 class CreateCommentService {
     public async execute({ date, user}: Request): Promise<Comment> {
         // Recebe todos os metodos de repositorio
-        const customRepository = getCustomRepository()
+        //const customRepository = getCustomRepository()
 
         const commentDate = startOfHour(date);
 
