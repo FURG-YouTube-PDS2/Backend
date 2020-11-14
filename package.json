@@ -7,9 +7,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/server.js",
+    "dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "debug": "nodemon --inspect src/server.js"
   },
   "dependencies": {
+    "@types/express": "^4.17.9",
     "bcryptjs": "^2.4.3",
     "date-fns": "^2.0.0-beta.5",
     "eslint-config-prettier": "^6.10.0",
@@ -21,12 +23,16 @@
     "multer": "^1.4.2",
     "nodemailer": "^6.4.3",
     "nodemailer-express-handlebars": "^3.1.0",
-    "pg": "^7.18.2",
+    "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "prettier": "^1.19.1",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.21.3",
+    "ts-node-dev": "^1.0.0",
+    "tsc": "^1.20150623.0",
     "typeorm": "^0.2.29",
+    "typescript": "^4.0.5",
+    "uuid": "^8.3.1",
     "yup": "^0.28.1"
   },
   "devDependencies": {
