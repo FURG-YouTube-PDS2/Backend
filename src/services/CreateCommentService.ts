@@ -18,7 +18,7 @@ class CreateCommentService {
         const findCommentInSameDate = await commentRepository.findByDate(
             commentDate,
         )
-        
+
         if ( findCommentInSameDate ) {
             throw Error ('Comentario já publicado')
         }
@@ -34,3 +34,5 @@ class CreateCommentService {
         return comment;
     }
 }
+
+export default CreateCommentService;

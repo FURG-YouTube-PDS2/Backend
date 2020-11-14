@@ -4,5 +4,14 @@
   "port":5432,
   "username":"postgres",
   "password":"docker",
-  "database":"youtoba-banco"
+  "database":"youtoba-banco",
+  "entities": [
+    "./src/models/*.ts"
+  ],
+  "migrations": [
+    "./src/database/migrations/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+}
 }

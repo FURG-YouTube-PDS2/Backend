@@ -34,7 +34,7 @@ class Playlist {
     // timestamp: Date;
 
     @CreateDateColumn()
-    timestamp: Date;
+    created_at: Date;
 }
 
 export default Playlist;

@@ -1,7 +1,10 @@
-import { EntityRepository, Repository} from 'typeorm';
+/* NO MOMENTO NÃO É NECESSÁRIO
 
+
+import { EntityRepository, Repository} from 'typeorm';
 import Comment from '../models/Comment'
 
+@EntityRepository(Comment)
 class commentRepository extends Repository<Comment> {
     // Função assincrona, precisa retornar uma promise
     // No caso, pode retornar o comentário, ou nulo (caso nao encontre)
@@ -11,7 +14,9 @@ class commentRepository extends Repository<Comment> {
         const findComment = await this.findOne({
             where: { date },
         })
-    }     
+
+        return findComment || null;
+    }
 
     //
 }
@@ -19,4 +24,4 @@ class commentRepository extends Repository<Comment> {
 // const response = await findByDate(date)
 // findByDate(date).then(response => )
 
-export default commentRepository;
+export default commentRepository;*/
