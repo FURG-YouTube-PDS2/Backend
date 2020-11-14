@@ -1,3 +1,6 @@
+/* NO MOMENTO NÃO É NECESSÁRIO
+
+
 import { EntityRepository, Repository} from 'typeorm';
 import Comment from '../models/Comment'
 
@@ -21,4 +24,4 @@ class commentRepository extends Repository<Comment> {
 // const response = await findByDate(date)
 // findByDate(date).then(response => )
 
-export default commentRepository;
+export default commentRepository;*/

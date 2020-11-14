@@ -12,14 +12,14 @@ class User {
     @Column()
     last_name: string;
 
-    @Column()
+    @Column({ unique: true })
     email: string;
 
     @Column()
     password: string;
 
     @CreateDateColumn()
-    created_at: Date;    
+    created_at: Date;
 }
 
 export default User;
