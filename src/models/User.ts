@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 
-@Entity('User')
+@Entity('users')
 class User {
     // Podia ser "increment"
     @PrimaryGeneratedColumn('uuid')
