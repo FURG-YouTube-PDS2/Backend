@@ -1,6 +1,6 @@
-import { EntitRepository, Repository} from 'typeorm';
+import { EntityRepository, Repository} from 'typeorm';
 
-import Comment from '../app/models/Comment'
+import Comment from '../models/Comment'
 
 class commentRepository extends Repository<Comment> {
     // Função assincrona, precisa retornar uma promise

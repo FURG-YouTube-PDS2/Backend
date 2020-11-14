@@ -1,0 +1,25 @@
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import User from './User';
+
+
+@Entity('Video')
+class Video {
+    // Podia ser "increment"
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
+    @Column()
+    title: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    file: string;
+
+    @CreateDateColumn()
+    created_at: Date;
+}
+
+
+export default Video;
