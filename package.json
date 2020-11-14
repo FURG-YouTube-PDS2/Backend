@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/server.js",
+    "dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "debug": "nodemon --inspect src/server.js"
   },
   "dependencies": {
@@ -27,9 +28,11 @@
     "prettier": "^1.19.1",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.21.3",
+    "ts-node-dev": "^1.0.0",
     "tsc": "^1.20150623.0",
     "typeorm": "^0.2.29",
     "typescript": "^4.0.5",
+    "uuid": "^8.3.1",
     "yup": "^0.28.1"
   },
   "devDependencies": {

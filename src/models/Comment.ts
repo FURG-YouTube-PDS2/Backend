@@ -2,7 +2,6 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDa
 import User from './User';
 import Video from './Video';
 
-
 @Entity('appointments')
 class Comment {
     // Podia ser "increment"
