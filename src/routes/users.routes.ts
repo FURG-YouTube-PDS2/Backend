@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { parseISO } from 'date-fns';
-import { getCustomRepository } from 'typeorm';
+
+import User from '../models/User';
+import { getRepository } from 'typeorm';
 import CreateUserService from '../services/CreateUserService';
 
 const usersRouter = Router();
@@ -8,11 +9,9 @@ const usersRouter = Router();
 // Rota: Receber request ->? chamar outro(s) arquivos -> devolver response.
 
 usersRouter.get('/', async(request, response) => {
-    //const appointmentsRepository = getCustomRepository(AppointmentsRepository);
-
-    //const appointments = await appointmentsRepository.find();
-
-    return response.json({ message: 'meu cu' });
+    const userRepo = getRepository(User);
+    const users = await userRepo.find();
+    response.json(users);
 });
 
 usersRouter.post('/', async(request, response) => {

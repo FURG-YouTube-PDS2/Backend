@@ -1,6 +1,5 @@
 import User from '../models/User';
 import { getRepository } from 'typeorm';
-import { parseISO } from 'date-fns';
 
 interface Request {
     first_name: string;
@@ -15,8 +14,6 @@ class CreateUserService {
         // Recebe todos os metodos de repositorio
         //const customRepository = getCustomRepository()
         const userRepository = getRepository(User);
-
-        const newCreated_at = parseISO(created_at);
 
         const userData = userRepository.create({
           first_name,
