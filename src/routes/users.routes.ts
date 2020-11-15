@@ -28,7 +28,7 @@ usersRouter.post('/', async(request, response) => {
           created_at
         });
 
-        return response.json({ message: "post"});
+        return response.json(userData);
     } catch (err) {
         return response.status(400).json({ error: err.message });
     }
