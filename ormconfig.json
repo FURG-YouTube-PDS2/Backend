@@ -3,8 +3,8 @@
   "host":"localhost",
   "port":5432,
   "username":"postgres",
-  "password":"docker",
-  "database":"youtoba-banco",
+  "password":"1042",
+  "database":"youtube-postgres",
   "entities": [
     "./src/models/*.ts"
   ],
