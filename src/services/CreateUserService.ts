@@ -1,5 +1,6 @@
 import User from '../models/User';
 import { getRepository } from 'typeorm';
+import { hash } from 'bcryptjs';
 
 interface Request {
     first_name: string;
@@ -15,11 +16,14 @@ class CreateUserService {
         //const customRepository = getCustomRepository()
         const userRepository = getRepository(User);
 
+        // Criação da senha criptografada
+        const hashedPassword = await hash(password, 8);
+
         const userData = userRepository.create({
           first_name,
           last_name,
           email,
-          password,
+          password: hashedPassword,
           created_at
         });
 
