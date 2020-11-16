@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import User from './User';
-import Video from './Video'; 
+import Video from './Video';
 
 
-@Entity('UserVideo')
+@Entity('user_videos')
 class UserVideo {
     // Podia ser "increment"
     @PrimaryGeneratedColumn('uuid')

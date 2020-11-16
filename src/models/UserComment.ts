@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import User from './User';
-import Comment from './Comment'; 
+import Comment from './Comment';
 
 
-@Entity('UserComment')
+@Entity('user_comments')
 class UserComment {
     // Podia ser "increment"
     @PrimaryGeneratedColumn('uuid')

@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDa
 import User from './User';
 import Video from './Video';
 
-@Entity('appointments')
+@Entity('comments')
 class Comment {
     // Podia ser "increment"
     @PrimaryGeneratedColumn('uuid')
@@ -23,7 +23,7 @@ class Comment {
     // Cria coluna para a chave estrangeira
     @Column()
     video_id: string;
-    
+
     // Cria coluna para a chave estrangeira
     @Column()
     reply_id: string;
