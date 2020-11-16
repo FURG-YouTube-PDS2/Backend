@@ -3,7 +3,7 @@ import User from './User';
 import Playlist from './Playlist';
 import Video from './Video';
 
-@Entity('PlaylistVideo')
+@Entity('playlist_videos')
 class PlaylistVideo {
     // Podia ser "increment"
     @PrimaryGeneratedColumn('uuid')
@@ -25,7 +25,7 @@ class PlaylistVideo {
     playlist_id: string;
 
     @CreateDateColumn()
-    timestamp: Date;    
+    timestamp: Date;
 }
 
 export default PlaylistVideo;

@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDa
 import User from './User';
 
 
-@Entity('Subscription')
+@Entity('subscriptions')
 class Subscription {
     // Podia ser "increment"
     @PrimaryGeneratedColumn('uuid')
@@ -18,7 +18,7 @@ class Subscription {
     // Cria coluna para a chave estrangeira
     @Column()
     user_id2: string;
-    
+
     // Relação com usuario 1
     @ManyToOne(() => User)
     @JoinColumn({ name: 'user_id' })
