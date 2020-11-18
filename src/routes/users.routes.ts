@@ -13,11 +13,22 @@ const usersRouter = Router();
 
 // Rota: Receber request ->? chamar outro(s) arquivos -> devolver response.
 
+
+
 // Rota para desenvolvimento
 usersRouter.post('/', ensureAuthenticated, async(request, response) => {
     const userRepo = getRepository(User);
     const users = await userRepo.find();
-    response.json(users);
+    return response.json(users);
+});
+
+
+//ver perfil
+usersRouter.post('/profile', async(request, response) =>{
+    const { id } = request.body;
+    const userRepo = getRepository(User);
+    const userProfile = await userRepo.findOne({ id });
+    return response.json(userProfile);
 });
 
 // Rota cadastro
