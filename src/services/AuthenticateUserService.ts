@@ -1,6 +1,5 @@
 import { getRepository } from 'typeorm';
-import { compare } from 'bcryptjs';
-import { sign, verify } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 import authConfig from '../config/auth'
 import User from '../models/User';
@@ -19,7 +18,7 @@ class AuthenticateUserService {
    public async execute({ email, password }: Request): Promise<Response> {
        const usersRepository = getRepository(User);
 
-       const user = await usersRepository.findOne({ where: {email} });
+       const user = await usersRepository.findOne({ where: {email, password} });
 
        if (!user){
            throw new Error('Combinação de email e senha incorreta.');
@@ -28,11 +27,11 @@ class AuthenticateUserService {
        // user.password - Senha criptografada
        // password - Senha não-criptografada
 
-       const passwordMatched = await compare(password, user.password);
+       /*const passwordMatched = await compare(password, user.password);
 
        if (!passwordMatched){
         throw new Error('Combinação de email e senha incorreta.');
-       }
+       }*/
 
        // A partir daqui o usuário está autenticado
 
