@@ -114,4 +114,4 @@ temp/
 
 # End of https://www.gitignore.io/api/node,code
 
-node_modules/.bin/acorn
+node_modules/
