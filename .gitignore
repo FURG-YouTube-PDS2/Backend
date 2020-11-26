@@ -10,6 +10,7 @@
 !.vscode/extensions.json
 
 ### Node ###
+.node_modules/
 # Logs
 logs
 *.log
@@ -114,4 +115,3 @@ temp/
 
 # End of https://www.gitignore.io/api/node,code
 
-node_modules/
