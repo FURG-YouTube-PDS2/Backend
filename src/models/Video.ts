@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDa
 import User from './User';
 
 
-@Entity('Video')
+@Entity('videos')
 class Video {
     // Podia ser "increment"
     @PrimaryGeneratedColumn('uuid')
