@@ -1,5 +1,6 @@
-import User from '../models/User';
 import { getRepository } from 'typeorm';
+
+import User from '../models/User';
 
 import checkJwt from '../middlewares/checkJwt'
 
