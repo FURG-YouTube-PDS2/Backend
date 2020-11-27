@@ -2,24 +2,27 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDa
 
 @Entity('users')
 class User {
-    // Podia ser "increment"
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+	// Podia ser "increment"
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-    @Column()
-    first_name: string;
+	@Column()
+	first_name: string;
 
-    @Column()
-    last_name: string;
+	@Column()
+	last_name: string;
 
-    @Column({ unique: true })
-    email: string;
+	@Column({ unique: true })
+	email: string;
 
-    @Column()
-    password: string;
+	@Column()
+	password: string;
 
-    @CreateDateColumn()
-    created_at: Date;
+	@CreateDateColumn()
+	created_at: Date;
+
+	@CreateDateColumn()
+	updated_at: Date;
 }
 
 export default User;

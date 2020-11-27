@@ -5,27 +5,27 @@ import Video from './Video';
 
 @Entity('playlist_videos')
 class PlaylistVideo {
-    // Podia ser "increment"
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+	// Podia ser "increment"
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-    @Column()
-    position: number;
+	@Column()
+	position: number;
 
-    // Cria coluna FK para User
-    @Column()
-    user_id: string;
+	// Cria coluna FK para User
+	@Column()
+	user_id: string;
 
-    // Cria coluna FK para Video
-    @Column()
-    video_id: string;
+	// Cria coluna FK para Video
+	@Column()
+	video_id: string;
 
-    // Cria coluna FK para Playlist
-    @Column()
-    playlist_id: string;
+	// Cria coluna FK para Playlist
+	@Column()
+	playlist_id: string;
 
-    @CreateDateColumn()
-    timestamp: Date;
+	@CreateDateColumn()
+	timestamp: Date;
 }
 
 export default PlaylistVideo;
