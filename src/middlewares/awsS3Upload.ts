@@ -1,20 +1,20 @@
 import multer from "multer";
-import path from "path";
 import aws from "aws-sdk";
 import multerS3 from "multer-s3";
 
-
-const MAX_SIZE_TWO_MEGABYTES = 2 * 1024 * 1024;
+// 2 megabytes
+const maxFileSize = 2 * 1024 * 1024;
 
 const S3 = new aws.S3({
-	accessKeyId: "AKIAWGKRN3ZJ5MR5TFN6",
-	secretAccessKey: "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"
+
 });
 
 const aws_bucket = "youtube-videos-furg";
 
 
-
+// Configurações do S3
+// Envio occore dentro do "key"
+// com Options podemos alterar qualquer configuração, essas são as default
 const s3 = (options: any) => multer({
 	storage: multerS3({
 		s3: S3,
@@ -25,6 +25,9 @@ const s3 = (options: any) => multer({
 		},
 		...options,
 	}),
+	limits: {
+		fileSize: maxFileSize,
+	}
 });
 
 export default s3;

@@ -1,25 +1,20 @@
 import { Router } from 'express';
 
-import * as aws from 'aws-sdk';
-import multerS3 from 'multer-s3';
-
-import multer from 'multer';
-import s3 from '../config/aws-config';
+import s3Upload from '../middlewares/awsS3Upload';
 
 import sendVideoService from '../services/SendVideoService';
 
 const videosRouter = Router();
 
-//key: (req, file, cb) => cb(null, 'nome')
-
-videosRouter.post('/sendFile', s3({}).single('file'), async (req, res) => {
+//O vídeo é enviado no middleware dentro da requisição
+videosRouter.post('/sendFile', s3Upload({}).single('file'), async (req, res) => {
 
 	try {
 		const { title, description } = req.body;
-		const { file, files } = req;
-		console.log(file);
-
+		const { file } = req;
 		const file_name = file.originalname;
+
+		// file.location para salvar no banco
 
 		const sendVideo = new sendVideoService();
 
