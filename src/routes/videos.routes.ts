@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { Router } from 'express';
 
 import s3Upload from '../middlewares/awsS3Upload';
@@ -11,19 +12,21 @@ videosRouter.post('/sendFile', s3Upload({}).single('file'), async (req, res) => 
 
 	try {
 		const { title, description } = req.body;
+		// O middleware do S3 usa Multer que retorna objeto com infos do vídeo
 		const { file } = req;
-		const file_name = file.originalname;
 
-		// file.location para salvar no banco
+		const file_location = (file as any).location;
+
 
 		const sendVideo = new sendVideoService();
 
-		//const sent = await sendVideo.execute({ file, file_name, title, description });
+		const sent = await sendVideo.execute({ file_location, title, description });
 
-		return res.status(200).json({ status: 1 });
+		if (sent) {
+			return res.status(200).json({ status: 1 });
+		}
 	} catch (err) {
-		console.log(err)
-		throw new Error();
+		res.status(400).json({ status: 0, errorName: err, errorMessage: err.message });
 	}
 
 });

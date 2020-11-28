@@ -1,4 +1,4 @@
-import { response } from 'express';
+import e, { response } from 'express';
 
 import multer from 'multer';
 import { getRepository } from 'typeorm';
@@ -16,17 +16,8 @@ interface Request {
 
 
 class SendVideoService {
-	public async execute({ file_location, description, title }: Request): Promise<void> {
+	public async execute({ file_location, description, title }: Request): Promise<number> {
 		try {
-
-			// try {
-			// 	await upload(req, {}, (err: any) => {
-			// 		console.log('error', err);
-			// 	});
-			// } catch (err) {
-			// 	console.log(err);
-			// }
-
 
 			const videoRepository = getRepository(Video);
 			const created_at = new Date();
@@ -39,11 +30,12 @@ class SendVideoService {
 					title,
 					created_at
 				})
+				return 1;
 			} else {
-				throw new Error("errou");
+				throw new Error("Erro ao resgatar repositório de vídeo.");
 			}
-		} catch {
-			throw new Error("carai");
+		} catch (err) {
+			throw new Error(err);
 		}
 
 	}
