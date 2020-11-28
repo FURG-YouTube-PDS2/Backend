@@ -11,6 +11,7 @@ import EditUserService from '../services/EditUserService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'
 
 import User from '../models/User';
+import { create } from 'domain';
 
 
 const usersRouter = Router();
@@ -40,14 +41,16 @@ usersRouter.post('/signup', async (request, response) => {
 
 		const createUser = new CreateUserService();
 
-		const userData = await createUser.execute({
+		const created = await createUser.execute({
 			first_name,
 			last_name,
 			email,
 			password,
 		});
 
-		return response.status(200).json({ status: 1 });
+		if (created) {
+			return response.status(200).json({ status: 1 });
+		}
 	} catch (err) {
 		return response.status(400).json({ status: 0, errorName: err.name, errorMessage: err.message });
 	}
