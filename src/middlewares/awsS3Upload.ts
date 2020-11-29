@@ -1,17 +1,17 @@
 import multer from "multer";
 import aws from "aws-sdk";
 import multerS3 from "multer-s3";
-import aws_key from '../config/aws';
+import awsConfig from '../config/aws';
 
 // 2 megabytes
 const maxFileSize = 2 * 1024 * 1024;
 
 const S3 = new aws.S3({
-	accessKeyId: aws_key.accessKeyId,
-	secretAccessKey: aws_key.secretAccessKey,
+	accessKeyId: awsConfig.accessKeyId,
+	secretAccessKey: awsConfig.secretAccessKey,
 });
 
-const aws_bucket = "youtube-videos-furg";
+const aws_bucket = awsConfig.bucketName;
 
 
 // Configurações do S3

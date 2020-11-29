@@ -15,7 +15,7 @@ class CreateUserService {
 		const userRepository = getRepository(User);
 
 		const created_at = new Date();
-		const updated_at = new Date();
+		//const updated_at = new Date();
 
 		const userData = userRepository.create({
 			first_name,
@@ -23,7 +23,6 @@ class CreateUserService {
 			email,
 			password,
 			created_at,
-			updated_at
 		});
 
 		// efetivamente salva o usuario no banco de dados
