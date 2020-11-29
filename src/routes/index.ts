@@ -5,6 +5,8 @@ import videosRouter from './videos.routes';
 
 const routes = Router();
 
+
+routes.get('/ping', (req, res) => { res.send("pong") });
 routes.use('/users', usersRouter);
 routes.use('/signin', sessionsRouter);
 routes.use('/videos', videosRouter);

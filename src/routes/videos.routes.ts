@@ -42,14 +42,21 @@ videosRouter.post('/send', s3Upload({}).single('file'), async (req, res) => {
 videosRouter.get('/watch', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
-		const video_id: string = req.query.v, video_time = req.query.t;
-		if (req.headers.authorization && video_id && video_time) {
+		const video_id = req.query.v, video_time = req.query.t;
+
+		if (typeof (video_id) !== 'string') {
+			throw new Error("id do vídeo deve ser uma string.")
+		}
+
+		if (req.headers.authorization && video_id) {
 			const [, token] = req.headers.authorization.split(" ");
 
 
 			const watchVideo = new WatchVideoService();
 
 			const videoData = await watchVideo.execute({ token, video_id });
+
+			res.status(200).json(videoData)
 		} else {
 			throw new Error("Token não recebido.")
 		}
