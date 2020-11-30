@@ -4,33 +4,31 @@ import User from './User';
 
 @Entity('subscriptions')
 class Subscription {
-    // Podia ser "increment"
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+	// Podia ser "increment"
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-    @Column()
-    video_id: string;
 
-    // Cria coluna para a chave estrangeira
-    @Column()
-    user_id1: string;
+	// Cria coluna para a chave estrangeira
+	@Column()
+	user_id1: string;
 
-    // Cria coluna para a chave estrangeira
-    @Column()
-    user_id2: string;
+	// Cria coluna para a chave estrangeira
+	@Column()
+	user_id2: string;
 
-    // Relação com usuario 1
-    @ManyToOne(() => User)
-    @JoinColumn({ name: 'user_id' })
-    viewer: User;
+	// Relação com usuario 1
+	@ManyToOne(() => User)
+	@JoinColumn({ name: 'user_id1' })
+	viewer: User;
 
-    // Relação com usuario 2
-    @ManyToOne(() => User)
-    @JoinColumn({ name: 'user_id' })
-    channel: User;
+	// Relação com usuario 2
+	@ManyToOne(() => User)
+	@JoinColumn({ name: 'user_id2' })
+	channel: User;
 
-    @CreateDateColumn()
-    created_at: Date;
+	@CreateDateColumn()
+	created_at: Date;
 
 }
 

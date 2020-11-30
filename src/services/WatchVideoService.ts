@@ -8,7 +8,6 @@ import Comment from '../models/Comment';
 import Subscription from '../models/Subscription';
 
 import checkJwt from '../middlewares/checkJwt'
-import { verify } from 'crypto';
 
 interface Request {
 	video_id: string;
@@ -40,6 +39,7 @@ class WatchVideoService {
 				const is_owner = false, liked = 0;
 
 				if (videoUser) {
+					// Adicionar +1 em watch
 					const { is_owner, liked } = videoUser;
 				} else {
 					const watches = 1;
@@ -57,13 +57,16 @@ class WatchVideoService {
 						created_at
 					})
 				}
+				// A partir daqui temos is_owner e liked
+
 
 				// Get watches, query return [ { sum: valor } ]
 				const watchesQuery = await userVideoRepository
 					.createQueryBuilder("user_videos")
 					.select("SUM(user_videos.watches)", "sum")
-					.getRawMany()
-				const watches = watchesQuery[0].sum;
+					.getRawOne()
+				const watches = watchesQuery.sum;
+
 
 				// Count Likes
 				const likes = await userVideoRepository
@@ -80,35 +83,38 @@ class WatchVideoService {
 					.getCount();
 
 
+				/// REVISAR GET USER
 				// Get Video owner username
 				const userVideoOwner = await userVideoRepository.findOne({ where: { video_id, is_owner: true } });
-				const videoOwner = await userRepository.findOne(userVideoOwner!.user_id);
+				const user_owner_id = userVideoOwner!.user_id
+				const videoOwner = await userRepository.findOne(user_owner_id);
 				const username = videoOwner!.first_name.concat(" ", videoOwner!.last_name);
 
 				// Count Comments
-				const comment_count = await commentRepository
-					.createQueryBuilder("comment")
-					.select("comment.id")
-					.where("comment.video_id = video_id")
-					.getCount();
+				const comment_count = await commentRepository.count({ where: { video_id: video_id } });
+
+				// Comment count with query builder
+				// const comment_count = await commentRepository
+				// 	.createQueryBuilder("comment")
+				// 	.select("comment.id")
+				// 	.where("comment.video_id = video_id")
+				// 	.getCount();
+
 
 				// Count Subscriptions
-				const subscriptions = await subscriptionRepository
-					.createQueryBuilder("subscription")
-					.select("subscription.id")
-					.where("subscription.user_id2 = userVideoOwner.user_id")
-					.getCount();
+				const subscriptions = await subscriptionRepository.count({ where: { user_target: user_owner_id } });
 
+				console.log(user_id);
+
+				// Verify if user is subscribed in channel
 				const verifySubscribed = await subscriptionRepository
 					.findOne({
-						where: { user_id1: user_id, user_id2: userVideoOwner!.user_id }
-					})
-
+						where: { user_subscriber: user_id, user_target: user_owner_id }
+					});
 				const is_subscribed = verifySubscribed ? true : false;
 
 				// AINDA FALTA AVATAR
 				const pageData = {
-					video_id,
 					description: video.description,
 					file: video.file,
 					title: video.title,
@@ -121,6 +127,7 @@ class WatchVideoService {
 					is_owner,
 					avatar: null
 				}
+
 
 				return pageData;
 
