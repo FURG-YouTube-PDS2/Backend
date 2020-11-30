@@ -2,35 +2,36 @@ import User from '../models/User';
 import { getRepository } from 'typeorm';
 
 interface Request {
-    first_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-    created_at: Date;
+	first_name: string;
+	last_name: string;
+	email: string;
+	password: string;
 }
 
 class CreateUserService {
-    public async execute({ first_name, last_name, email, password, created_at }: Request): Promise<User> {
-        // Recebe todos os metodos de repositorio
-        //const customRepository = getCustomRepository()
-        const userRepository = getRepository(User);
-
-        // Criação da senha criptografada
+	public async execute({ first_name, last_name, email, password }: Request): Promise<number> {
+		// Recebe todos os metodos de repositorio
+		//const customRepository = getCustomRepository()
+		const userRepository = getRepository(User);
 
 
-        const userData = userRepository.create({
-          first_name,
-          last_name,
-          email,
-          password,
-          created_at
-        });
+		const created_at = new Date();
+		const updated_at = new Date();
 
-        // efetivamente salva o usuario no banco de dados
-        await userRepository.save(userData);
+		const userData = userRepository.create({
+			first_name,
+			last_name,
+			email,
+			password,
+			created_at,
+			updated_at
+		});
 
-        return userData;
-    }
+		// efetivamente salva o usuario no banco de dados
+		await userRepository.save(userData);
+
+		return 1;
+	}
 }
 
 export default CreateUserService;

@@ -10,9 +10,9 @@ import authConfig from '../config/auth'
  * sub: Id do usuário
  */
 interface TokenPayload {
-    iat: number;
-    exp: number;
-    sub: string;
+	iat: number;
+	exp: number;
+	sub: string;
 }
 
 
@@ -23,29 +23,29 @@ interface TokenPayload {
  * Uma rota: xxxRouter.get('/', ensureAuthenticated, (req,res))
  */
 export default function ensureAuthenticated(
-    request: Request,
-    response: Response,
-    next: NextFunction
+	request: Request,
+	response: Response,
+	next: NextFunction
 ): void {
-    // Validação do token JWT
+	// Validação do token JWT
 
-    const authHeader = request.headers.authorization;
+	const authHeader = request.headers.authorization;
 
-    if(!authHeader) {
-        throw new Error('JWT não foi passado');
-    }
+	if (!authHeader) {
+		throw new Error('JWT não foi passado');
+	}
 
-    const [, token] = authHeader.split(' ')
+	const [, token] = authHeader.split(' ')
 
-    const { secret } = authConfig.jwt;
-    
-    try {
-        const decodedToken = verify(token, secret);
+	const { secret } = authConfig.jwt;
 
-        // Permite que o usuario continue a aplicação
-        return next();
+	try {
+		const decodedToken = verify(token, secret);
 
-    } catch (err) {
-        throw new Error('JWT token invalido.')
-    }
+		// Permite que o usuario continue a aplicação
+		return next();
+
+	} catch (err) {
+		throw new Error('JWT token invalido.')
+	}
 }
