@@ -37,7 +37,7 @@ usersRouter.post('/profile', async (request, response) => {
 // Rota cadastro
 usersRouter.post('/signup', async (request, response) => {
 	try {
-		const { first_name, last_name, email, password } = request.body;
+		const { first_name, last_name, email, password, avatar } = request.body;
 
 		const createUser = new CreateUserService();
 
@@ -46,6 +46,7 @@ usersRouter.post('/signup', async (request, response) => {
 			last_name,
 			email,
 			password,
+			avatar
 		});
 
 		if (created) {
