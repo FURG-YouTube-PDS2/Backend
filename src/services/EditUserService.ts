@@ -7,14 +7,14 @@ import checkJwt from '../middlewares/checkJwt'
 // Pode ter ou não os dados, mas o token é obrigatório
 interface Request {
 	token: string;
-	first_name?: string;
-	last_name?: string;
+	username?: string;
 	email?: string;
 	password?: string;
+	birthdate?: string;
 }
 
 class EditUserService {
-	public async execute({ token, first_name, last_name, email, password }: Request): Promise<number> {
+	public async execute({ token, username, email, password, birthdate }: Request): Promise<number> {
 
 		const userRepository = getRepository(User);
 
@@ -29,10 +29,10 @@ class EditUserService {
 		if (user_id) {
 			await userRepository.save({
 				id: user_id,
-				first_name,
-				last_name,
+				username,
 				password,
 				email,
+				birthdate,
 				updated_at,
 			});
 		} else {
