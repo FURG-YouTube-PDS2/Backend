@@ -10,7 +10,7 @@ interface Request {
 	username?: string;
 	email?: string;
 	password?: string;
-	birthdate?: string;
+	birthdate?: Date;
 }
 
 class EditUserService {

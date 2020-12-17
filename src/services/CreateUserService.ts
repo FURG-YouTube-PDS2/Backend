@@ -6,7 +6,7 @@ interface Request {
 	email: string;
 	password: string;
 	avatar: string;
-	birthdate: string;
+	birthdate: Date;
 }
 
 class CreateUserService {

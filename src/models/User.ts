@@ -19,7 +19,7 @@ class User {
 	avatar: string;
 
 	@Column()
-	birthdate: string;
+	birthdate: Date;
 
 	@CreateDateColumn()
 	created_at: Date;
