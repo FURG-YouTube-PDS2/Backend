@@ -11,6 +11,8 @@ import EditUserService from '../services/EditUserService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'
 
 import User from '../models/User';
+import s3Upload from '../middlewares/awsS3Upload';
+
 import { create } from 'domain';
 
 
@@ -35,9 +37,13 @@ usersRouter.post('/profile', async (request, response) => {
 });
 
 // Rota cadastro
-usersRouter.post('/signup', async (request, response) => {
+usersRouter.post('/signup', s3Upload({}).single('file'), async (request, response) => {
 	try {
-		const { username, email, password, birthdate, avatar } = request.body;
+		const { username, email, password, birthdate } = request.body;
+
+		const { file } = request;
+		const avatar = (file as any).location;
+
 
 		const createUser = new CreateUserService();
 
