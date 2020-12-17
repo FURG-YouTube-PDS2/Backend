@@ -14,6 +14,8 @@ import User from '../models/User';
 import s3Upload from '../middlewares/awsS3Upload';
 
 import { create } from 'domain';
+import { parse } from 'path';
+import checkJwt from '../middlewares/checkJwt';
 
 
 const usersRouter = Router();
@@ -30,20 +32,27 @@ usersRouter.post('/', ensureAuthenticated, async (request, response) => {
 
 //ver perfil
 usersRouter.post('/profile', async (request, response) => {
-	const { id } = request.body;
+	const { token } = request.body;
+	const id = checkJwt(token).sub;
 	const userRepo = getRepository(User);
 	const userProfile = await userRepo.findOne({ id });
 	return response.json(userProfile);
 });
 
+
 // Rota cadastro
-usersRouter.post('/signup', s3Upload({}).single('file'), async (request, response) => {
+usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, response) => {
 	try {
-		const { username, email, password, birthdate, gender, phone } = request.body;
+		const { old_img, username, email, password, birthdate, gender, phone } = request.body;
 
 		const { file } = request;
-		const avatar = (file as any).location;
+		var avatar;
 
+		if (file == null){
+			avatar = old_img; 
+		} else {
+			avatar = (file as any).location;
+		}
 
 		const createUser = new CreateUserService();
 
@@ -66,12 +75,21 @@ usersRouter.post('/signup', s3Upload({}).single('file'), async (request, respons
 });
 
 // Rota editar usuário
-usersRouter.put('/profile/edit', async (request, response) => {
+usersRouter.put('/profile/edit', s3Upload({}).single('avatar'), async (request, response) => {
 	try {
-		const { token, username, email, password, birthdate } = request.body;
+		const { old_img, token, username, email, password, birthdate, gender, phone } = request.body;
+
+		var avatar;
+		const { file } = request;
+
+		if (file == null){
+			avatar = old_img; 
+		} else {
+			avatar = (file as any).location;
+		}
 
 		const editUser = new EditUserService();
-		const isEdited = await editUser.execute({ token, username, email, birthdate, password });
+		const isEdited = await editUser.execute({ token, avatar, username, email, birthdate, password, gender, phone });
 
 		return response.status(200).json({ status: 1 });
 	} catch (err) {

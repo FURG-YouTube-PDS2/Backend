@@ -53,6 +53,6 @@
     "nodemon": "^2.0.2",
     "prettier": "^2.2.0",
     "sucrase": "^3.12.1",
-    "ts-node-dev": "^1.0.0"
+    "ts-node-dev": "^1.1.1"
   }
 }
