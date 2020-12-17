@@ -37,15 +37,15 @@ usersRouter.post('/profile', async (request, response) => {
 // Rota cadastro
 usersRouter.post('/signup', async (request, response) => {
 	try {
-		const { first_name, last_name, email, password, avatar } = request.body;
+		const { username, email, password, birthdate, avatar } = request.body;
 
 		const createUser = new CreateUserService();
 
 		const created = await createUser.execute({
-			first_name,
-			last_name,
+			username,
 			email,
 			password,
+			birthdate,
 			avatar
 		});
 
@@ -60,10 +60,10 @@ usersRouter.post('/signup', async (request, response) => {
 // Rota editar usuário
 usersRouter.put('/profile/edit', async (request, response) => {
 	try {
-		const { token, first_name, last_name, email, password } = request.body;
+		const { token, username, email, password, birthdate } = request.body;
 
 		const editUser = new EditUserService();
-		const isEdited = await editUser.execute({ token, first_name, last_name, email, password });
+		const isEdited = await editUser.execute({ token, username, email, birthdate, password });
 
 		return response.status(200).json({ status: 1 });
 	} catch (err) {

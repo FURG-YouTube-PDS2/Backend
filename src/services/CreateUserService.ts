@@ -2,15 +2,15 @@ import User from '../models/User';
 import { getRepository } from 'typeorm';
 
 interface Request {
-	first_name: string;
-	last_name: string;
+	username: string;
 	email: string;
 	password: string;
 	avatar: string;
+	birthdate: string;
 }
 
 class CreateUserService {
-	public async execute({ first_name, last_name, email, password, avatar }: Request): Promise<number> {
+	public async execute({ username, email, password, avatar, birthdate }: Request): Promise<number> {
 		// Recebe todos os metodos de repositorio
 		//const customRepository = getCustomRepository()
 		const userRepository = getRepository(User);
@@ -20,13 +20,13 @@ class CreateUserService {
 		const updated_at = new Date();
 
 		const userData = userRepository.create({
-			first_name,
-			last_name,
+			username,
 			email,
 			password,
 			created_at,
 			updated_at,
-			avatar
+			avatar,
+			birthdate
 		});
 
 		// efetivamente salva o usuario no banco de dados

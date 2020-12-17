@@ -7,10 +7,7 @@ class User {
 	id: string;
 
 	@Column()
-	first_name: string;
-
-	@Column()
-	last_name: string;
+	username: string;
 
 	@Column({ unique: true })
 	email: string;
@@ -20,6 +17,9 @@ class User {
 
 	@Column()
 	avatar: string;
+
+	@Column()
+	birthdate: string;
 
 	@CreateDateColumn()
 	created_at: Date;
