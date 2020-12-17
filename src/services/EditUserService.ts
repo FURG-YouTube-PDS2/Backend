@@ -11,10 +11,13 @@ interface Request {
 	email?: string;
 	password?: string;
 	birthdate?: Date;
+	gender?: string;
+	phone?: string;
+	avatar?: string;
 }
 
 class EditUserService {
-	public async execute({ token, username, email, password, birthdate }: Request): Promise<number> {
+	public async execute({ token, username, email, password, birthdate, phone, gender, avatar }: Request): Promise<number> {
 
 		const userRepository = getRepository(User);
 
@@ -34,6 +37,9 @@ class EditUserService {
 				email,
 				birthdate,
 				updated_at,
+				gender,
+				phone,
+				avatar
 			});
 		} else {
 			throw new Error('Usuário não encontrado.');

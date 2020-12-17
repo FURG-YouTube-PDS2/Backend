@@ -10,19 +10,18 @@ const videosRouter = Router();
 // O vídeo é enviado no middleware dentro da requisição
 // Dentro do objeto passado, de passar parametros (aws;ts)
 videosRouter.post('/send', s3Upload({}).single('file'), async (req, res) => {
-
 	try {
 		const { title, description } = req.body;
 		if (req.headers.authorization) {
-			const [, token] = req.headers.authorization.split(" ");
+			const token = req.headers.authorization;
 
 			// O middleware do S3 usa Multer que retorna objeto com infos do vídeo
 			const { file } = req;
 
 			const file_location = (file as any).location;
 
-
 			const sendVideo = new SendVideoService();
+
 
 			const sent = await sendVideo.execute({ token, file_location, title, description });
 
