@@ -1,6 +1,8 @@
 import User from '../models/User';
 import { getRepository } from 'typeorm';
 
+import s3Upload from '../middlewares/awsS3Upload';
+
 interface Request {
 	username: string;
 	email: string;
