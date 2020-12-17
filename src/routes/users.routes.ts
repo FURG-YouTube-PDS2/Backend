@@ -39,7 +39,7 @@ usersRouter.post('/profile', async (request, response) => {
 // Rota cadastro
 usersRouter.post('/signup', s3Upload({}).single('file'), async (request, response) => {
 	try {
-		const { username, email, password, birthdate } = request.body;
+		const { username, email, password, birthdate, gender, phone } = request.body;
 
 		const { file } = request;
 		const avatar = (file as any).location;
@@ -52,7 +52,9 @@ usersRouter.post('/signup', s3Upload({}).single('file'), async (request, respons
 			email,
 			password,
 			birthdate,
-			avatar
+			avatar,
+			gender,
+			phone,
 		});
 
 		if (created) {

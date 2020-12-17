@@ -19,6 +19,12 @@ class User {
 	avatar: string;
 
 	@Column()
+	phone: string;
+
+	@Column()
+	gender: string;
+
+	@Column()
 	birthdate: Date;
 
 	@CreateDateColumn()

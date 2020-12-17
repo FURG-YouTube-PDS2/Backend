@@ -9,10 +9,12 @@ interface Request {
 	password: string;
 	avatar: string;
 	birthdate: Date;
+	gender: string;
+	phone: string;
 }
 
 class CreateUserService {
-	public async execute({ username, email, password, avatar, birthdate }: Request): Promise<number> {
+	public async execute({ username, email, password, avatar, birthdate, gender, phone }: Request): Promise<number> {
 		// Recebe todos os metodos de repositorio
 		//const customRepository = getCustomRepository()
 		const userRepository = getRepository(User);
@@ -28,7 +30,9 @@ class CreateUserService {
 			created_at,
 			updated_at,
 			avatar,
-			birthdate
+			birthdate,
+			gender,
+			phone
 		});
 
 		// efetivamente salva o usuario no banco de dados
