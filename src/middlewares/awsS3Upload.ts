@@ -2,10 +2,10 @@ import multer from "multer";
 import aws from "aws-sdk";
 import multerS3 from "multer-s3";
 import awsConfig from '../config/aws';
+import uuid from "uuid";
 
-// 2 megabytes
-const maxFileSize = 2 * 1024 * 1024;
-
+// 20 megabytes
+const maxFileSize = 20 * 1024 * 1024;
 const S3 = new aws.S3({
 	accessKeyId: awsConfig.accessKeyId,
 	secretAccessKey: awsConfig.secretAccessKey,
@@ -22,8 +22,16 @@ const s3 = (options: any) => multer({
 		s3: S3,
 		bucket: aws_bucket,
 		acl: 'public-read',
-		key: function (request: Request, file, cb) {
-			cb(null, file.originalname)
+		key: function (req: Request, file, cb) {
+			const extension = file.mimetype.split('/')[1]; // gets the extension
+			let folder = "";
+			if(extension == 'mp4'){
+				folder = "videos";
+			} else {
+				folder = "images";
+			};
+			const fileName = `${folder}/${file.originalname}.${extension}`;
+			cb(null, fileName)
 		},
 		...options,
 	}),

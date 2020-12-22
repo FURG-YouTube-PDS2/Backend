@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import s3Upload from '../middlewares/awsS3Upload';
-
 import SendVideoService from '../services/SendVideoService';
 import WatchVideoService from '../services/WatchVideoService';
 

@@ -14,7 +14,7 @@ interface Request {
 }
 
 class CreateUserService {
-	public async execute({ username, email, password, avatar, birthdate, gender, phone }: Request): Promise<number> {
+	public async execute({ username, email, password, avatar, birthdate, gender, phone }: Request): Promise<string> {
 		// Recebe todos os metodos de repositorio
 		//const customRepository = getCustomRepository()
 		const userRepository = getRepository(User);
@@ -32,13 +32,16 @@ class CreateUserService {
 			avatar,
 			birthdate,
 			gender,
-			phone
+			phone,
+			// verified: false
 		});
 
 		// efetivamente salva o usuario no banco de dados
 		await userRepository.save(userData);
 
-		return 1;
+		const user = await userRepository.findOne({ where: { email } });
+
+		return user!.id;
 	}
 }
 

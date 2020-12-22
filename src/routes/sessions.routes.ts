@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import AuthenticateUserService from '../services/AuthenticateUserService';
+import Mail from '../middlewares/sendMail';
 
 const sessionsRouter = Router();
 
@@ -16,6 +17,12 @@ sessionsRouter.post('/', async(request, response) => {
             email,
             password,
         });
+
+        if (token == '') {
+            const id = user!.id;
+            let result = Mail.sendMail(email, id, 0);
+            return response.json({ status:0, error: "Email não verificado" });    
+        }
 
         return response.json({ status:1, token });
     } catch (err) {
