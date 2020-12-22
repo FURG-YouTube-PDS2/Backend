@@ -24,6 +24,10 @@ class AuthenticateUserService {
 			throw new Error('Combinação de email e senha incorreta.');
 		}
 
+		if (!user.verified) {
+			const token = '';
+			return { user, token };
+		}
 		// user.password - Senha criptografada
 		// password - Senha não-criptografada
 
@@ -48,9 +52,7 @@ class AuthenticateUserService {
 			user,
 			token,
 		};
-
 	}
-
 }
 
 export default AuthenticateUserService;

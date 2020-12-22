@@ -16,6 +16,7 @@ import s3Upload from '../middlewares/awsS3Upload';
 import { create } from 'domain';
 import { parse } from 'path';
 import checkJwt from '../middlewares/checkJwt';
+import Mail from '../middlewares/sendMail';
 
 
 const usersRouter = Router();
@@ -47,6 +48,8 @@ usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, respo
 
 		const { file } = request;
 		var avatar;
+		
+		console.log(file);
 
 		if (file == null){
 			avatar = old_img; 
@@ -56,7 +59,7 @@ usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, respo
 
 		const createUser = new CreateUserService();
 
-		const created = await createUser.execute({
+		const id = await createUser.execute({
 			username,
 			email,
 			password,
@@ -65,8 +68,8 @@ usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, respo
 			gender,
 			phone,
 		});
-
-		if (created) {
+		if (id != "") {
+			let result = Mail.sendMail(email, id, 0);
 			return response.status(200).json({ status: 1 });
 		}
 	} catch (err) {

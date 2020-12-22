@@ -88,7 +88,8 @@ class WatchVideoService {
 				const userVideoOwner = await userVideoRepository.findOne({ where: { video_id, is_owner: true } });
 				const user_owner_id = userVideoOwner!.user_id
 				const videoOwner = await userRepository.findOne(user_owner_id);
-				const username = videoOwner!.first_name.concat(" ", videoOwner!.last_name);
+				const username = videoOwner!.username;
+				const avatar = videoOwner!.avatar;
 
 				// Count Comments
 				const comment_count = await commentRepository.count({ where: { video_id: video_id } });
@@ -125,7 +126,7 @@ class WatchVideoService {
 					subscriptions,
 					comment_count,
 					is_owner,
-					avatar: null
+					avatar
 				}
 
 
