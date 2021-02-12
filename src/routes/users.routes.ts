@@ -69,6 +69,7 @@ usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, respo
 			phone,
 		});
 		if (id != "") {
+			
 			let result = Mail.sendMail(email, id, 0);
 			return response.status(200).json({ status: 1 });
 		}

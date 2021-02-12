@@ -69,19 +69,19 @@ videosRouter.get('/watch', async (req, res) => {
 videosRouter.post('/subs', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
-		const owner_id = req.query.owner_id;
+		const target_id = req.query.owner_id;
 
-		if (typeof (owner_id) !== 'string') {
-			throw new Error("id do vídeo deve ser uma string.")
+		if (typeof (target_id) !== 'string') {
+			throw new Error("id do usuario deve ser uma string.")
 		}
 
-		if (req.headers.authorization) {
+		if (req.headers.authorization && target_id) {
 			const [, token] = req.headers.authorization.split(" ");//tenho q entender isso aki e o if
 
 
 			const Subs = new SubscriptionService();
 
-			const statusSubs = await Subs.execute({ token, owner_id });
+			const statusSubs = await Subs.execute({ token, target_id });
 
 			res.status(200).json(statusSubs);
 		} else {

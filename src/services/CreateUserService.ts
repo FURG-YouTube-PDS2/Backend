@@ -33,7 +33,7 @@ class CreateUserService {
 			birthdate,
 			gender,
 			phone,
-			// verified: false
+			verified: false
 		});
 
 		// efetivamente salva o usuario no banco de dados

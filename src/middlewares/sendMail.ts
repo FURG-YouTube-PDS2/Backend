@@ -5,9 +5,9 @@ class Mail {
 	constructor(public to?: string) {}
 
 	sendMail(mail: string, id: string, cond: number) {
-		
+		console.log("entrou");
 		let mailOptions = {
-			from: 'nintube.rg@gmail.com',
+			from: 'Nintube <nintube.rg@gmail.com',
 			to: mail,
 			subject: 'Verificação de Email NinTube',
 			html: getButton(cond, id),

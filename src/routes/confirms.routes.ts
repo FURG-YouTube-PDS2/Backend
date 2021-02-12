@@ -21,15 +21,15 @@ emailRouter.post('/confirm_email', async (request, response) => {
 
 		const user = await userRepository.findOne({ where: { id } });
 		if (!user) {
-			throw new Error('Email invalido.');
+			throw new Error('Usuario Não Existe.');
 		}
 		const status = 1;
 		const verification = true;
 
-		// await userRepository.save({
-		// 	id,
-		// 	verified: verification,
-		// });
+		await userRepository.save({
+			id,
+			verified: verification,
+		});
 
 		return response.status(200).json({ status: 1 });
 	} catch (err) {
@@ -41,6 +41,7 @@ emailRouter.post('/confirm_email', async (request, response) => {
 
 emailRouter.post('/send', async (request, response) => {
 	const { email, id, cond } = request.body;
+	
 	let result = Mail.sendMail(email, id, cond);
 
 	return response.status(200).json({ status: 1 });

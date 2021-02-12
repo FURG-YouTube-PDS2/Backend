@@ -10,12 +10,12 @@ import checkJwt from '../middlewares/checkJwt'
 
 interface Request {
     token: string;
-	owner_id: string;
+	target_id: string;
 }
 
 
 class SubscriptionService {
-	public async execute({ token, owner_id }: Request): Promise<object> {
+	public async execute({ token, target_id }: Request): Promise<object> {
 		try {
 
 			const subscriptionRepository = getRepository(Subscription);
@@ -24,7 +24,7 @@ class SubscriptionService {
             const created_at = new Date();
             const verifySubscribed = await subscriptionRepository
 					.findOne({
-						where: { user_subscriber: user_id, user_target: owner_id }
+						where: { user_subscriber: user_id, user_target: target_id }
                     });
             const is_subscribed = verifySubscribed ? true : false;
 
@@ -35,14 +35,13 @@ class SubscriptionService {
 
 				if (!is_subscribed) {
                     const subs = await subscriptionRepository.save({
-                        user_id1 : owner_id,
+                        user_id1 : target_id,
                         user_id2 : user_id,
                         created_at 
                     })
                 }else {
-                    subscriptionRepository
-					.delete({
-						where: { user_subscriber: user_id, user_target: owner_id }
+					const subs = await subscriptionRepository.delete({
+						where: { user_subscriber: user_id, user_target: target_id }
                     });
                 }
 
