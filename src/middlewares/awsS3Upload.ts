@@ -21,11 +21,11 @@ const s3 = (options: any) => multer({
 	storage: multerS3({
 		s3: S3,
 		bucket: aws_bucket,
-		acl: 'public-read',
+		//acl: 'public-read',
 		key: function (req: Request, file, cb) {
 			const extension = file.mimetype.split('/')[1]; // gets the extension
 			let folder = "";
-			if(extension == 'mp4'){
+			if(extension in ['mp4', 'mkv']){
 				folder = "videos";
 			} else {
 				folder = "images";
