@@ -11,6 +11,7 @@ import { create } from 'domain';
 import { parse } from 'path';
 import Mail from '../middlewares/sendMail';
 import { id } from 'date-fns/locale';
+import checkJwt from '../middlewares/checkJwt';
 
 const emailRouter = Router();
 
@@ -21,15 +22,43 @@ emailRouter.post('/confirm_email', async (request, response) => {
 
 		const user = await userRepository.findOne({ where: { id } });
 		if (!user) {
-			throw new Error('Email invalido.');
+			throw new Error('Usuario Não Existe.');
 		}
 		const status = 1;
 		const verification = true;
 
-		// await userRepository.save({
-		// 	id,
-		// 	verified: verification,
-		// });
+		await userRepository.save({
+			id,
+			verified: verification,
+		});
+
+		return response.status(200).json({ status: 1 });
+	} catch (err) {
+		return response
+			.status(400)
+			.json({ status: 0, errorName: err.name, errorMessage: err.message });
+	}
+});
+
+emailRouter.post('/edit_pass', async (request, response) => {
+	try {
+		const { id, password } = request.body;
+		console.log(id);
+		const nwId = id.id;
+		console.log(password);
+		const userRepository = getRepository(User);
+
+		const user = await userRepository.findOne({ where: { id } });
+		console.log(user);
+		if (!user) {
+			throw new Error('Usuario Não Existe.');
+		}
+		const status = 1;
+
+		await userRepository.save({
+			id,
+			password,
+		});
 
 		return response.status(200).json({ status: 1 });
 	} catch (err) {
@@ -40,7 +69,16 @@ emailRouter.post('/confirm_email', async (request, response) => {
 });
 
 emailRouter.post('/send', async (request, response) => {
-	const { email, id, cond } = request.body;
+	const { email, token, cond } = request.body;
+	var id = '';
+	if (token === '') {
+		const userRepo = getRepository(User);
+		const user = await userRepo.findOne({ email });
+		id = user?.id;
+	} else {
+		id = checkJwt(token).sub;
+	}
+	console.log(id);
 	let result = Mail.sendMail(email, id, cond);
 
 	return response.status(200).json({ status: 1 });

@@ -60,27 +60,27 @@ class WatchVideoService {
 				// A partir daqui temos is_owner e liked
 
 
-				// Get watches, query return [ { sum: valor } ]
-				const watchesQuery = await userVideoRepository
-					.createQueryBuilder("user_videos")
-					.select("SUM(user_videos.watches)", "sum")
-					.getRawOne()
-				const watches = watchesQuery.sum;
+				// // // Get watches, query return [ { sum: valor } ]
+				// const watchesQuery = await userVideoRepository
+				// 	.createQueryBuilder("user_videos")
+				// 	.select("SUM(user_videos.watches)", "sum")
+				// 	.getRawOne()
+				// const watches = watchesQuery.sum;
 
 
-				// Count Likes
-				const likes = await userVideoRepository
-					.createQueryBuilder("user_videos")
-					.select("user_videos.liked")
-					.where("user_videos.liked = 1")
-					.getCount();
+				// // Count Likes
+				// const likes = await userVideoRepository
+				// 	.createQueryBuilder("user_videos")
+				// 	.select("user_videos.liked")
+				// 	.where("user_videos.liked = 1")
+				// 	.getCount();
 
-				// Count Dislikes
-				const dislikes = await userVideoRepository
-					.createQueryBuilder("user_videos")
-					.select("user_videos.liked")
-					.where("user_videos.liked = -1")
-					.getCount();
+				// // Count Dislikes
+				// const dislikes = await userVideoRepository
+				// 	.createQueryBuilder("user_videos")
+				// 	.select("user_videos.liked")
+				// 	.where("user_videos.liked = -1")
+				// 	.getCount();
 
 
 				/// REVISAR GET USER
@@ -119,9 +119,6 @@ class WatchVideoService {
 					description: video.description,
 					file: video.file,
 					title: video.title,
-					watches,
-					likes,
-					dislikes,
 					is_subscribed,
 					subscriptions,
 					comment_count,

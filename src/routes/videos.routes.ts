@@ -3,6 +3,7 @@ import { Router } from 'express';
 import s3Upload from '../middlewares/awsS3Upload';
 import SendVideoService from '../services/SendVideoService';
 import WatchVideoService from '../services/WatchVideoService';
+import SubscriptionService from '../services/SubscriptionService';
 
 const videosRouter = Router();
 
@@ -55,6 +56,34 @@ videosRouter.get('/watch', async (req, res) => {
 			const videoData = await watchVideo.execute({ token, video_id });
 
 			res.status(200).json(videoData)
+		} else {
+			throw new Error("Token não recebido.")
+		}
+
+	} catch (err) {
+		console.log(err);
+
+	}
+});
+
+videosRouter.post('/subs', async (req, res) => {
+	// watch?v=DQMWPDM1P2M&t=20s
+	try {
+		const target_id = req.query.owner_id;
+
+		if (typeof (target_id) !== 'string') {
+			throw new Error("id do usuario deve ser uma string.")
+		}
+
+		if (req.headers.authorization && target_id) {
+			const [, token] = req.headers.authorization.split(" ");//tenho q entender isso aki e o if
+
+
+			const Subs = new SubscriptionService();
+
+			const statusSubs = await Subs.execute({ token, target_id });
+
+			res.status(200).json(statusSubs);
 		} else {
 			throw new Error("Token não recebido.")
 		}
