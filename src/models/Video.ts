@@ -17,6 +17,9 @@ class Video {
     @Column()
     file: string;
 
+    @Column()
+    private: boolean;
+
     @CreateDateColumn()
     created_at: Date;
 }

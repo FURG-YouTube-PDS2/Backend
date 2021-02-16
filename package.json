@@ -35,6 +35,7 @@
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "reflect-metadata": "^0.1.13",
+    "s3-proxy": "^1.2.1",
     "tsc": "^1.20150623.0",
     "typeorm": "^0.2.29",
     "typescript": "^4.0.5",
