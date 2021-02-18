@@ -78,7 +78,7 @@ emailRouter.post('/send', async (request, response) => {
 	} else {
 		id = checkJwt(token).sub;
 	}
-	console.log(id);
+	// console.log(id);
 	let result = Mail.sendMail(email, id, cond);
 
 	return response.status(200).json({ status: 1 });
