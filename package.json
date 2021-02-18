@@ -11,6 +11,7 @@
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "debug": "nodemon --inspect src/server.js",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
+    "run_migrations": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix"
   },
   "dependencies": {

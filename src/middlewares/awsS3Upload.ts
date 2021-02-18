@@ -4,8 +4,8 @@ import multerS3 from "multer-s3";
 import awsConfig from '../config/aws';
 import uuid from "uuid";
 
-// 20 megabytes
-const maxFileSize = 20 * 1024 * 1024;
+// 50 megabytes
+const maxFileSize = 50 * 1024 * 1024;
 const S3 = new aws.S3({
 	accessKeyId: awsConfig.accessKeyId,
 	secretAccessKey: awsConfig.secretAccessKey,
