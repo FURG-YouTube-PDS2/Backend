@@ -24,6 +24,9 @@ class Video {
 	file: string;
 
 	@Column()
+	thumb: string;
+
+	@Column()
 	private: boolean;
 
 	@CreateDateColumn()
