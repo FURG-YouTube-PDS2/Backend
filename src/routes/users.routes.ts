@@ -8,7 +8,8 @@ import { getRepository } from 'typeorm';
 
 import CreateUserService from '../services/CreateUserService';
 import EditUserService from '../services/EditUserService';
-import ensureAuthenticated from '../middlewares/ensureAuthenticated'
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import SubscriptionService from '../services/SubscriptionService';
 
 import User from '../models/User';
 import s3Upload from '../middlewares/awsS3Upload';
@@ -17,7 +18,6 @@ import { create } from 'domain';
 import { parse } from 'path';
 import checkJwt from '../middlewares/checkJwt';
 import Mail from '../middlewares/sendMail';
-
 
 const usersRouter = Router();
 
@@ -30,7 +30,6 @@ usersRouter.post('/', ensureAuthenticated, async (request, response) => {
 	return response.json(users);
 });
 
-
 //ver perfil
 usersRouter.post('/profile', async (request, response) => {
 	const { token } = request.body;
@@ -40,7 +39,6 @@ usersRouter.post('/profile', async (request, response) => {
 	return response.json(userProfile);
 });
 
-
 // Rota cadastro
 usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, response) => {
 	try {
@@ -48,11 +46,11 @@ usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, respo
 
 		const { file } = request;
 		var avatar;
-		
+
 		console.log(file);
 
-		if (file == null){
-			avatar = old_img; 
+		if (file == null) {
+			avatar = old_img;
 		} else {
 			avatar = (file as any).location;
 		}
@@ -68,38 +66,81 @@ usersRouter.post('/signup', s3Upload({}).single('avatar'), async (request, respo
 			gender,
 			phone,
 		});
-		if (id != "") {
-			
+		if (id != '') {
 			let result = Mail.sendMail(email, id, 0);
 			return response.status(200).json({ status: 1 });
 		}
 	} catch (err) {
-		return response.status(400).json({ status: 0, errorName: err.name, errorMessage: err.message });
+		return response
+			.status(400)
+			.json({ status: 0, errorName: err.name, errorMessage: err.message });
 	}
 });
 
 // Rota editar usuário
 usersRouter.put('/profile/edit', s3Upload({}).single('avatar'), async (request, response) => {
 	try {
-		const { old_img, token, username, email, password, birthdate, gender, phone } = request.body;
+		const {
+			old_img,
+			token,
+			username,
+			email,
+			password,
+			birthdate,
+			gender,
+			phone,
+		} = request.body;
 
 		var avatar;
 		const { file } = request;
 
-		if (file == null){
-			avatar = old_img; 
+		if (file == null) {
+			avatar = old_img;
 		} else {
 			avatar = (file as any).location;
 		}
 
 		const editUser = new EditUserService();
-		const isEdited = await editUser.execute({ token, avatar, username, email, birthdate, password, gender, phone });
+		const isEdited = await editUser.execute({
+			token,
+			avatar,
+			username,
+			email,
+			birthdate,
+			password,
+			gender,
+			phone,
+		});
 
 		return response.status(200).json({ status: 1 });
 	} catch (err) {
-		return response.status(400).json({ status: 0, errorName: err.name, errorMessage: err.message });
+		return response
+			.status(400)
+			.json({ status: 0, errorName: err.name, errorMessage: err.message });
 	}
 });
 
+usersRouter.put('/subs', async (req, res) => {
+	// watch?v=DQMWPDM1P2M&t=20s
+	try {
+		var { token, target_id } = req.body;
+		if (typeof target_id !== 'string') {
+			throw new Error('id do usuario deve ser uma string.');
+		}
+		if (token && target_id) {
+			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
+
+			const Subs = new SubscriptionService();
+
+			const statusSubs = await Subs.execute({ token, target_id });
+
+			res.status(200).json(statusSubs);
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (err) {
+		console.log(err);
+	}
+});
 
 export default usersRouter;
