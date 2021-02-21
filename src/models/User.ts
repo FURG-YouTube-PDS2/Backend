@@ -27,8 +27,8 @@ class User {
 	@Column()
 	birthdate: Date;
 
-	// @Column()
-	// verified: boolean;
+	@Column()
+	verified: boolean;
 
 	@CreateDateColumn()
 	created_at: Date;

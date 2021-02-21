@@ -147,7 +147,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-#IPORTANTÍSISMO!
+#IMPORTANTÍSISMO!
 /src/config
 
 ormconfig.json
