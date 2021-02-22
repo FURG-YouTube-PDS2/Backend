@@ -21,7 +21,7 @@ mediaProxy.get('/*', async (req, res) => {
 		//get path after /media
 		var file = req.params[0];
 		var type = file.split('/')[0];
-		console.log(file);
+		// console.log(file);
 
 		if (type == 'image') {
 			const userRepository = getRepository(User);

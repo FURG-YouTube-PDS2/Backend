@@ -7,7 +7,7 @@ export class AddVideoThumb1613745449653 implements MigrationInterface {
 			new TableColumn({
 				name: 'thumb',
 				type: 'varchar',
-				isNullable: true,
+				isNullable: false,
 			}),
 		);
 	}

@@ -8,11 +8,10 @@ const S3 = new aws.S3({
 
 const aws_bucket = awsConfig.bucketName;
 
-const uploadWithId = (file, type, id, extension) => {
-	console.log('entrou');
+const uploadWithId = (file, type, id, title, extension) => {
 	const params = {
 		Bucket: aws_bucket,
-		Key: `${type}/${id}.${extension}`, // File name you want to save as in S3
+		Key: `${type}/${id}_${title}.${extension}`, // File name you want to save as in S3
 		Body: file,
 	};
 	console.log(params);

@@ -4,45 +4,36 @@ import { getRepository } from 'typeorm';
 import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
 import User from '../models/User';
-import subscription from '../models/Subscription';
+import Comment from '../models/Comment';
 
 import checkJwt from '../middlewares/checkJwt';
 
 interface Request {
 	token: string;
+	text: string;
 	video_id: string;
 	reply_id: string;
 }
 
 class CommentCreateService {
-	public async execute({ token, video_id, reply_id }: Request): Promise<object> {
+	public async execute({ token, text, video_id, reply_id }: Request): Promise<object> {
 		try {
-			const subscriptionRepository = getRepository(subscription);
+			const commentRepository = getRepository(Comment);
 			const user_id = checkJwt(token).sub;
 
 			const created_at = new Date();
-			const verifySubscribed = await subscriptionRepository.findOne({
-				where: { user_subscriber: user_id, user_target: target_id },
-			});
-			const is_subscribed = verifySubscribed ? true : false;
-			console.log('subs ' + is_subscribed);
+			const edited = false;
 			// Aqui temos video_id, title, file e description
-			if (subscriptionRepository) {
-				// const subscriptions = await subscriptionRepository.count({ where: { user_target: owner_id } });
-				if (!is_subscribed) {
-					const subs = await subscriptionRepository.save({
-						user_subscriber: user_id,
-						user_target: target_id,
-						created_at,
-					});
-				} else {
-					// console.log(verifySubscribed?.id);
-					await subscriptionRepository.delete({
-						id: verifySubscribed?.id,
-					});
-				}
+			if (commentRepository) {
+				const subs = await commentRepository.save({
+					text,
+					created_at,
+					edited,
+					video_id,
+					reply_id,
+					user_id,
+				});
 
-				// AINDA FALTA AVATAR
 				const Data = {
 					status: 1,
 				};
@@ -57,4 +48,4 @@ class CommentCreateService {
 	}
 }
 
-export default SubscriptionService;
+export default CommentCreateService;

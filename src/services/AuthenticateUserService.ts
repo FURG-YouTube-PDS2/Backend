@@ -19,7 +19,7 @@ class AuthenticateUserService {
 		const usersRepository = getRepository(User);
 
 		const user = await usersRepository.findOne({ where: { email, password } });
-
+		// console.log(user);
 		if (!user) {
 			throw new Error('Combinação de email e senha incorreta.');
 		}
