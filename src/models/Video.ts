@@ -27,7 +27,7 @@ class Video {
 	thumb: string;
 
 	@Column()
-	private: boolean;
+	privacy: boolean;
 
 	@CreateDateColumn()
 	created_at: Date;

@@ -25,26 +25,26 @@ videosRouter.post('/send', async (req, res) => {
 
 			// O middleware do S3 usa Multer que retorna objeto com infos do vídeo
 			console.log(req.body);
+			console.log(req.files)
 			// const { file } = req;
 			const id = checkJwt(token).sub;
-
-			const file_location = `video/${id}_${title}.mp4`; //pegar extensao pelo arquivo
 			// uploadWithId(file, 'video', id, title, 'mp4');
 
-			const thumb_location = `video/${id}_${title}.png`;
 			// uploadWithId(thumb, 'image', id, title, 'png');
-
+			var sent = null;
 			const sendVideo = new SendVideoService();
-
-			const sent = await sendVideo.execute({
-				token,
-				file_location,
-				title,
-				description,
-				privacy,
-				thumb: thumb_location,
-			});
-
+			try{
+					sent = await sendVideo.execute({
+					token,
+					file,
+					title,
+					description,
+					privacy,
+					thumb,
+				});
+			}catch(e){
+				console.log(e)
+			}
 			if (sent) {
 				return res.status(200).json({ status: 1 });
 			}

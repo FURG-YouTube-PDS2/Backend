@@ -1,4 +1,5 @@
 import { getRepository } from 'typeorm';
+import uploadWithId from '../middlewares/awsUpload';
 
 import checkJwt from '../middlewares/checkJwt';
 
@@ -7,7 +8,7 @@ import Video from '../models/Video';
 
 interface Request {
 	token: string;
-	file_location: string;
+	file: string;
 	title: string;
 	description?: string;
 	privacy: boolean;
@@ -17,7 +18,7 @@ interface Request {
 class SendVideoService {
 	public async execute({
 		token,
-		file_location,
+		file,
 		description,
 		title,
 		privacy,
@@ -35,13 +36,18 @@ class SendVideoService {
 			// Add entrada no banco de dados
 			if (videoRepository) {
 				const video = await videoRepository.save({
-					file: file_location,
+					file,
 					description,
 					title,
 					created_at,
 					privacy,
 					thumb,
 				});
+
+
+			//(file, type, id, title, extension)
+			//uploadWithId(,'video', user_id, title, 'mp4')
+
 
 				// LEMBRAR: E SE ISSO DER ERRO? JÁ VAI TER SALVO NO BANCO ANTERIOR E O VIDEO ESTARA NO SERVIDOR
 				// await userVideoRepository.save({
