@@ -10,7 +10,6 @@ const sessionsRouter = Router();
 sessionsRouter.post('/', async (request, response) => {
 	try {
 		const { email, password } = request.body;
-
 		const authenticateUser = new AuthenticateUserService();
 
 		const { user, token } = await authenticateUser.execute({
@@ -23,8 +22,7 @@ sessionsRouter.post('/', async (request, response) => {
 		//     let result = Mail.sendMail(email, id, 0);
 		//     return response.json({ status:0, error: "Email não verificado" });
 		// }
-		console.log(token);
-		return response.json({ status: 1, token });
+		return response.json({ status: 1, token, avatar: user!.avatar });
 	} catch (err) {
 		return response
 			.status(400)

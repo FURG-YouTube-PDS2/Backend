@@ -55,10 +55,7 @@ usersRouter.post('/signup', async (request, response) => {
 			phone,
 		} = request.body;
 
-		// const { file } = request;
-		console.log(request.body);
 		var file;
-		console.log(avatar);
 		if (!avatar) {
 			file = old_img;
 		} else {
@@ -77,13 +74,6 @@ usersRouter.post('/signup', async (request, response) => {
 			phone,
 		});
 		if (id != '') {
-			// const userRepository = getRepository(User);
-			// await userRepository.save({
-			// 	id,
-			// 	avatar: `image/${id}.png`,
-			// });
-			// console.log(file);
-			// uploadWithId(file, 'image', id, 'png');
 			let result = Mail.sendMail(email, id, 0);
 			return response.status(200).json({ status: 1 });
 		}
