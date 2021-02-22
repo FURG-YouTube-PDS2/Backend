@@ -7,7 +7,7 @@ export class AddVideoPrivate1613587571598 implements MigrationInterface {
 			new TableColumn({
 				name: 'private',
 				type: 'boolean',
-				isNullable: true,
+				isNullable: false,
 			}),
 		);
 	}

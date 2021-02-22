@@ -7,7 +7,7 @@ export class AddUserVerified1608233225731 implements MigrationInterface {
 		await queryRunner.addColumn('users', new TableColumn({
 			name: "verified",
 			type: 'boolean',
-			isNullable: true
+			isNullable: false
 		}));
 	}
 
