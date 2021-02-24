@@ -6,6 +6,10 @@ import s3Upload from '../middlewares/awsS3Upload';
 import SendVideoService from '../services/SendVideoService';
 import WatchVideoService from '../services/WatchVideoService';
 import CommentCreateService from '../services/CommentService';
+import GetCommentService from '../services/GetCommentService';
+import ActionVideoService from '../services/ActionVideoService';
+import SubscribedService from '../services//SubscribedService';
+import GetPlayerService from '../services/GetPlayerService';
 
 import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
@@ -25,7 +29,7 @@ videosRouter.post('/send', async (req, res) => {
 
 			// O middleware do S3 usa Multer que retorna objeto com infos do vídeo
 			console.log(req.body);
-			console.log(req.files)
+			console.log(req.files);
 			// const { file } = req;
 			const id = checkJwt(token).sub;
 			// uploadWithId(file, 'video', id, title, 'mp4');
@@ -33,8 +37,8 @@ videosRouter.post('/send', async (req, res) => {
 			// uploadWithId(thumb, 'image', id, title, 'png');
 			var sent = null;
 			const sendVideo = new SendVideoService();
-			try{
-					sent = await sendVideo.execute({
+			try {
+				sent = await sendVideo.execute({
 					token,
 					file,
 					title,
@@ -42,8 +46,8 @@ videosRouter.post('/send', async (req, res) => {
 					privacy,
 					thumb,
 				});
-			}catch(e){
-				console.log(e)
+			} catch (e) {
+				console.log(e);
 			}
 			if (sent) {
 				return res.status(200).json({ status: 1 });
@@ -56,18 +60,41 @@ videosRouter.post('/send', async (req, res) => {
 	}
 });
 
-videosRouter.get('/watch', async (req, res) => {
+// videosRouter.get('/watch', async (req, res) => {
+// 	// watch?v=DQMWPDM1P2M&t=20s
+// 	try {
+// 		const video_id = req.query.v,
+// 			video_time = req.query.t;
+
+// 		if (typeof video_id !== 'string') {
+// 			throw new Error('id do vídeo deve ser uma string.');
+// 		}
+
+// 		if (req.headers.authorization && video_id) {
+// 			const [, token] = req.headers.authorization.split(' ');
+
+// 			const watchVideo = new WatchVideoService();
+
+// 			const videoData = await watchVideo.execute({ token, video_id });
+
+// 			res.status(200).json(videoData);
+// 		} else {
+// 			throw new Error('Token não recebido.');
+// 		}
+// 	} catch (err) {
+// 		console.log(err);
+// 	}
+// });
+
+videosRouter.post('/watch', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
-		const video_id = req.query.v,
-			video_time = req.query.t;
-
+		var { video_id, token } = req.body;
 		if (typeof video_id !== 'string') {
-			throw new Error('id do vídeo deve ser uma string.');
+			throw new Error('id do usuario deve ser uma string.');
 		}
-
-		if (req.headers.authorization && video_id) {
-			const [, token] = req.headers.authorization.split(' ');
+		if (video_id) {
+			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
 
 			const watchVideo = new WatchVideoService();
 
@@ -82,10 +109,32 @@ videosRouter.get('/watch', async (req, res) => {
 	}
 });
 
+videosRouter.post('/get', async (req, res) => {
+	try {
+		var { video_id } = req.body;
+		// console.log(req.body);
+		if (typeof video_id !== 'string') {
+			throw new Error('id do usuario deve ser uma string.');
+		}
+		if (video_id) {
+			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
+
+			const player = new GetPlayerService();
+
+			const data = await player.execute({ video_id });
+
+			res.status(200).json(data);
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (err) {
+		console.log(err);
+	}
+});
+
 videosRouter.post('/sendComment', async (req, res) => {
 	try {
 		var { token, text, video_id, reply_id } = req.body;
-		console.log('entrou');
 		console.log(req.body);
 		if (typeof video_id !== 'string') {
 			throw new Error('id do usuario deve ser uma string.');
@@ -98,6 +147,29 @@ videosRouter.post('/sendComment', async (req, res) => {
 			const statusSubs = await Comment.execute({ token, text, video_id, reply_id });
 
 			res.status(200).json(statusSubs);
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+videosRouter.post('/getComment', async (req, res) => {
+	try {
+		var { video_id, token } = req.body;
+		// console.log(req.body);
+		if (typeof video_id !== 'string') {
+			throw new Error('id do usuario deve ser uma string.');
+		}
+		if (video_id) {
+			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
+
+			const Comment = new GetCommentService();
+
+			const data = await Comment.execute({ video_id, token });
+
+			res.status(200).json(data);
 		} else {
 			throw new Error('Token não recebido.');
 		}

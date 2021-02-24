@@ -131,7 +131,7 @@ usersRouter.put('/profile/edit', async (request, response) => {
 	}
 });
 
-usersRouter.put('/subs', async (req, res) => {
+usersRouter.post('/subs', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
 		var { token, target_id } = req.body;

@@ -44,23 +44,21 @@ class SendVideoService {
 					thumb,
 				});
 
-
-			//(file, type, id, title, extension)
-			//uploadWithId(,'video', user_id, title, 'mp4')
-
+				//(file, type, id, title, extension)
+				//uploadWithId(,'video', user_id, title, 'mp4')
 
 				// LEMBRAR: E SE ISSO DER ERRO? JÁ VAI TER SALVO NO BANCO ANTERIOR E O VIDEO ESTARA NO SERVIDOR
-				// await userVideoRepository.save({
-				// 	user_id,
-				// 	video_id: video.id,
-				// 	liked: 0,
-				// 	reported: false,
-				// 	report_option: '',
-				// 	report_text: '',
-				// 	watches: 0,
-				// 	is_owner: true,
-				// 	created_at,
-				// });
+				await userVideoRepository.save({
+					user_id,
+					video_id: video.id,
+					liked: 0,
+					reported: false,
+					report_option: '',
+					report_text: '',
+					watches: 0,
+					is_owner: true,
+					created_at,
+				});
 				return 1;
 			} else {
 				throw new Error('Erro ao resgatar repositório de vídeo.');

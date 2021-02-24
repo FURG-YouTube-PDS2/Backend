@@ -21,15 +21,12 @@ class ActionVideoService {
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
 			const userVideoRepository = getRepository(UserVideo);
-			const commentRepository = getRepository(Comment);
 			const subscriptionRepository = getRepository(Subscription);
-
-			const user_id = checkJwt(token).sub;
-
-			// const video = await videoRepository.findOne(video_id)
-			// const user = await userRepository.findOne(user_id)
-
-			const created_at = new Date();
+			if (token !== '') {
+				const user_id = checkJwt(token).sub;
+			} else {
+				const user_id = 'random';
+			}
 
 			// Aqui temos video_id, title, file e description
 			const videoUser = await userVideoRepository.findOne({ where: { video_id, user_id } });
@@ -40,7 +37,14 @@ class ActionVideoService {
 				//Pq isso
 				// Adicionar +1 em watch
 				const { is_owner, liked } = videoUser;
+				var wat = videoUser.watches + 1;
+				await userVideoRepository.save({
+					id: videoUser.id,
+					user_id,
+					watches: wat,
+				});
 			} else {
+				const created_at = new Date();
 				const watches = 1;
 				const reported = false,
 					report_text = '',
@@ -81,12 +85,12 @@ class ActionVideoService {
 				.where('user_videos.liked = -1')
 				.getCount();
 
-
 			// AINDA FALTA AVATAR
 			const videoData = {
 				watches,
 				likes,
 				dislikes,
+				liked,
 			};
 
 			return videoData;
