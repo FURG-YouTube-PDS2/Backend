@@ -1,5 +1,7 @@
 import { Router } from 'express';
+import { getRepository } from 'typeorm';
 
+import Nintube from '../models/Nintube';
 import AuthenticateUserService from '../services/AuthenticateUserService';
 import Mail from '../middlewares/sendMail';
 

@@ -2,12 +2,14 @@ import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
 import Video from '../models/Video';
-import UserVideo from '../models/UserVideo';
 import User from '../models/User';
-import Comment from '../models/Comment';
 import Subscription from '../models/Subscription';
 
-import checkJwt from '../middlewares/checkJwt'
+import checkJwt from '../middlewares/checkJwt';
+import ActionVideoService from './ActionVideoService';
+import SubscribedService from './SubscribedService';
+import DescriptionVideoService from './DescriptionVideoService';
+// import GetSubsService from './GetSubsService';
 
 interface Request {
 	video_id: string;
@@ -18,124 +20,43 @@ interface Request {
 class WatchVideoService {
 	public async execute({ video_id, token }: Request): Promise<object> {
 		try {
-
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
-			const userVideoRepository = getRepository(UserVideo);
-			const commentRepository = getRepository(Comment);
-			const subscriptionRepository = getRepository(Subscription);
 
+			const actionVideo = new ActionVideoService();
+			const descVideo = new DescriptionVideoService();
+			const subscribed = new SubscribedService();
+			const varVideo = await actionVideo.execute({ video_id, token });
+			const infoVideo = await descVideo.execute({ video_id });
+			var target_id = infoVideo.owner_id;
 
-			const user_id = checkJwt(token).sub;
-
-			const video = await videoRepository.findOne(video_id)
-			const user = await userRepository.findOne(user_id)
-
-			const created_at = new Date();
-
-			// Aqui temos video_id, title, file e description
-			if (video && user) {
-				const videoUser = await userVideoRepository.findOne({ where: { video_id, user_id } });
-				const is_owner = false, liked = 0;
-
-				if (videoUser) {
-					// Adicionar +1 em watch
-					const { is_owner, liked } = videoUser;
-				} else {
-					const watches = 1;
-					const reported = false, report_text = "", report_option = "";
-
-					await userVideoRepository.save({
-						video_id,
-						user_id,
-						is_owner,
-						liked,
-						watches,
-						reported,
-						report_text,
-						report_option,
-						created_at
-					})
-				}
-				// A partir daqui temos is_owner e liked
-
-
-				// // // Get watches, query return [ { sum: valor } ]
-				// const watchesQuery = await userVideoRepository
-				// 	.createQueryBuilder("user_videos")
-				// 	.select("SUM(user_videos.watches)", "sum")
-				// 	.getRawOne()
-				// const watches = watchesQuery.sum;
-
-
-				// // Count Likes
-				// const likes = await userVideoRepository
-				// 	.createQueryBuilder("user_videos")
-				// 	.select("user_videos.liked")
-				// 	.where("user_videos.liked = 1")
-				// 	.getCount();
-
-				// // Count Dislikes
-				// const dislikes = await userVideoRepository
-				// 	.createQueryBuilder("user_videos")
-				// 	.select("user_videos.liked")
-				// 	.where("user_videos.liked = -1")
-				// 	.getCount();
-
-
-				/// REVISAR GET USER
-				// Get Video owner username
-				const userVideoOwner = await userVideoRepository.findOne({ where: { video_id, is_owner: true } });
-				const user_owner_id = userVideoOwner!.user_id
-				const videoOwner = await userRepository.findOne(user_owner_id);
-				const username = videoOwner!.username;
-				const avatar = videoOwner!.avatar;
-
-				// Count Comments
-				const comment_count = await commentRepository.count({ where: { video_id: video_id } });
-
-				// Comment count with query builder
-				// const comment_count = await commentRepository
-				// 	.createQueryBuilder("comment")
-				// 	.select("comment.id")
-				// 	.where("comment.video_id = video_id")
-				// 	.getCount();
-
-
-				// Count Subscriptions
-				const subscriptions = await subscriptionRepository.count({ where: { user_target: user_owner_id } });
-
-				console.log(user_id);
-
-				// Verify if user is subscribed in channel
-				const verifySubscribed = await subscriptionRepository
-					.findOne({
-						where: { user_subscriber: user_id, user_target: user_owner_id }
-					});
-				const is_subscribed = verifySubscribed ? true : false;
-
-				// AINDA FALTA AVATAR
-				const pageData = {
-					description: video.description,
-					file: video.file,
-					title: video.title,
-					is_subscribed,
-					subscriptions,
-					comment_count,
-					is_owner,
-					avatar
-				}
-
-
-				return pageData;
-
+			if (token !== '') {
+				const is_subscribed = await subscribed.execute({ token, target_id });
 			} else {
-				throw new Error("Erro ao resgatar repositório de vídeo.");
+				const is_subscribed = false;
 			}
+
+			// // AINDA FALTA AVATAR
+			const pageData = {
+				owner_id: infoVideo.owner_id,
+				owner_nick: infoVideo.owner_nick,
+				owner_avatar: infoVideo.owner_avatar,
+				all_subs: infoVideo.all_subs,
+				title: infoVideo.title,
+				description: infoVideo.description,
+				views: varVideo.watches,
+				likes: varVideo.likes,
+				dislikes: varVideo.dislikes,
+				liked: varVideo.liked,
+				is_subscribed,
+			};
+			// const pageData = {
+			// 	status: 1,
+			// };
+			return pageData;
 		} catch (err) {
 			throw new Error(err);
 		}
-
 	}
 }
 
