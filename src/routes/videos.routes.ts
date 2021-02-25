@@ -15,6 +15,7 @@ import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
 
 import User from '../models/User';
+import EditVideoDataService from '../services/EditVideoDataService';
 
 const videosRouter = Router();
 
@@ -41,6 +42,37 @@ videosRouter.post('/send', async (req, res) => {
 				sent = await sendVideo.execute({
 					token,
 					file,
+					title,
+					description,
+					privacy,
+					thumb,
+				});
+			} catch (e) {
+				console.log(e);
+			}
+			if (sent) {
+				return res.status(200).json({ status: 1 });
+			}
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (err) {
+		res.status(400).json({ status: 0, errorName: err, errorMessage: err.message });
+	}
+});
+
+videosRouter.post('/edit', async (req, res) =>{
+	try {
+		const { title, description, privacy, thumb } = req.body;
+		if (req.headers.authorization) {
+			const token = req.headers.authorization;
+
+			const id = checkJwt(token).sub;
+			var sent = null;
+			const editVideoData = new EditVideoDataService();
+			try {
+				sent = await editVideoData.execute({
+					token,
 					title,
 					description,
 					privacy,
