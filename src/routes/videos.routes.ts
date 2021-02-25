@@ -16,6 +16,10 @@ import checkJwt from '../middlewares/checkJwt';
 
 import User from '../models/User';
 import EditVideoDataService from '../services/EditVideoDataService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import Video from '../models/Video';
+import UserVideo from '../models/UserVideo';
+import ListVideoService from '../services/ListVideoService';
 
 const videosRouter = Router();
 
@@ -123,7 +127,7 @@ videosRouter.post('/watch', async (req, res) => {
 	try {
 		var { video_id, token } = req.body;
 		if (typeof video_id !== 'string') {
-			throw new Error('id do usuario deve ser uma string.');
+			throw new Error('id do video deve ser uma string.');
 		}
 		if (video_id) {
 			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
@@ -138,6 +142,21 @@ videosRouter.post('/watch', async (req, res) => {
 		}
 	} catch (err) {
 		console.log(err);
+	}
+});
+
+videosRouter.post('/myVideos', ensureAuthenticated, async (req, res) => {
+	try{
+		var { token } = req.body;
+		if (token){
+			const myVideos = new ListVideoService();
+			const myVideosList = await myVideos.execute({ token });
+			return res.status(200).json(myVideosList);
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (e){
+		console.log(e);
 	}
 });
 
