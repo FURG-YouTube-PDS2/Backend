@@ -15,6 +15,11 @@ import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
 
 import User from '../models/User';
+import EditVideoDataService from '../services/EditVideoDataService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import Video from '../models/Video';
+import UserVideo from '../models/UserVideo';
+import ListVideoService from '../services/ListVideoService';
 
 const videosRouter = Router();
 
@@ -41,6 +46,37 @@ videosRouter.post('/send', async (req, res) => {
 				sent = await sendVideo.execute({
 					token,
 					file,
+					title,
+					description,
+					privacy,
+					thumb,
+				});
+			} catch (e) {
+				console.log(e);
+			}
+			if (sent) {
+				return res.status(200).json({ status: 1 });
+			}
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (err) {
+		res.status(400).json({ status: 0, errorName: err, errorMessage: err.message });
+	}
+});
+
+videosRouter.post('/edit', async (req, res) =>{
+	try {
+		const { title, description, privacy, thumb } = req.body;
+		if (req.headers.authorization) {
+			const token = req.headers.authorization;
+
+			const id = checkJwt(token).sub;
+			var sent = null;
+			const editVideoData = new EditVideoDataService();
+			try {
+				sent = await editVideoData.execute({
+					token,
 					title,
 					description,
 					privacy,
@@ -91,7 +127,7 @@ videosRouter.post('/watch', async (req, res) => {
 	try {
 		var { video_id, token } = req.body;
 		if (typeof video_id !== 'string') {
-			throw new Error('id do usuario deve ser uma string.');
+			throw new Error('id do video deve ser uma string.');
 		}
 		if (video_id) {
 			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
@@ -106,6 +142,21 @@ videosRouter.post('/watch', async (req, res) => {
 		}
 	} catch (err) {
 		console.log(err);
+	}
+});
+
+videosRouter.post('/myVideos', async (req, res) => {
+	try{
+		var { token } = req.body;
+		if (token){
+			const myVideos = new ListVideoService();
+			const myVideosList = await myVideos.execute({ token });
+			return res.status(200).json(myVideosList);
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (e){
+		return res.status(400).json({ status: 0, errorName: e.name, errorMessage: e.message });
 	}
 });
 
