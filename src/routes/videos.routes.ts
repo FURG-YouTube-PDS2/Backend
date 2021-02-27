@@ -145,7 +145,7 @@ videosRouter.post('/watch', async (req, res) => {
 	}
 });
 
-videosRouter.post('/myVideos', ensureAuthenticated, async (req, res) => {
+videosRouter.post('/myVideos', async (req, res) => {
 	try{
 		var { token } = req.body;
 		if (token){
@@ -156,7 +156,7 @@ videosRouter.post('/myVideos', ensureAuthenticated, async (req, res) => {
 			throw new Error('Token não recebido.');
 		}
 	} catch (e){
-		console.log(e);
+		return res.status(400).json({ status: 0, errorName: e.name, errorMessage: e.message });
 	}
 });
 
