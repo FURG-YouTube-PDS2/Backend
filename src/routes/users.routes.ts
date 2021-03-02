@@ -61,7 +61,7 @@ usersRouter.post('/signup', async (request, response) => {
 		} else {
 			file = avatar;
 		}
-		console.log(file);
+		// console.log(file);
 		const createUser = new CreateUserService();
 
 		const id = await createUser.execute({

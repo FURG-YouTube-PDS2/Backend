@@ -30,8 +30,7 @@ class ActionVideoService {
 
 			// Aqui temos video_id, title, file e description
 			const videoUser = await userVideoRepository.findOne({ where: { video_id, user_id } });
-			const is_owner = false,
-				liked = 0;
+			const is_owner = false;
 
 			if (videoUser) {
 				//Pq isso
@@ -54,7 +53,7 @@ class ActionVideoService {
 					video_id,
 					user_id,
 					is_owner,
-					liked,
+					liked: 0,
 					watches,
 					reported,
 					report_text,
@@ -62,6 +61,7 @@ class ActionVideoService {
 					created_at,
 				});
 			}
+			console.log('liked: ' + liked);
 			// A partir daqui temos is_owner e liked
 
 			// Get watches, query return [ { sum: valor } ]
