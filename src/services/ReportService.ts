@@ -10,10 +10,16 @@ interface Request {
 	token: string;
 	video_id: string;
 	report_text: string;
+	report_option: string;
 }
 
 class ReportService {
-	public async execute({ token, video_id, report_text }: Request): Promise<object> {
+	public async execute({
+		token,
+		video_id,
+		report_text,
+		report_option,
+	}: Request): Promise<object> {
 		try {
 			const videoUserRepository = getRepository(UserVideo);
 			const user_id = checkJwt(token).sub;
@@ -25,6 +31,8 @@ class ReportService {
 				console.log(videoInfo);
 				const is_liked = await videoUserRepository.save({
 					id: videoInfo.id,
+					report_option,
+					reported: true,
 					report_text,
 				});
 				const Data = {

@@ -35,7 +35,7 @@ class ActionVideoService {
 			if (videoUser) {
 				//Pq isso
 				// Adicionar +1 em watch
-				const { is_owner, liked } = videoUser;
+				const { is_owner, liked, reported } = videoUser;
 				var wat = videoUser.watches + 1;
 				await userVideoRepository.save({
 					id: videoUser.id,
@@ -61,7 +61,7 @@ class ActionVideoService {
 					created_at,
 				});
 			}
-			console.log('liked: ' + liked);
+			// console.log('liked: ' + liked);
 			// A partir daqui temos is_owner e liked
 
 			// Get watches, query return [ { sum: valor } ]
@@ -91,7 +91,9 @@ class ActionVideoService {
 				likes,
 				dislikes,
 				liked,
+				reported,
 			};
+			// console.log(videoData);
 
 			return videoData;
 		} catch (err) {
