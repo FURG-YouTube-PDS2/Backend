@@ -48,8 +48,10 @@ class WatchVideoService {
 				likes: varVideo.likes,
 				dislikes: varVideo.dislikes,
 				liked: varVideo.liked,
+				reported: varVideo.reported,
 				is_subscribed,
 			};
+			// console.log(pageData);
 			// const pageData = {
 			// 	status: 1,
 			// };

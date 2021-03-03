@@ -10,7 +10,7 @@ import CommentCreateService from '../services/CommentService';
 import LikedService from '../services/LikedService';
 import GetCommentService from '../services/GetCommentService';
 import ActionVideoService from '../services/ActionVideoService';
-import SubscribedService from '../services//SubscribedService';
+import ReportService from '../services/ReportService';
 import GetPlayerService from '../services/GetPlayerService';
 
 import uploadWithId from '../middlewares/awsUpload';
@@ -225,6 +225,34 @@ videosRouter.post('/liked', async (req, res) => {
 			const statusSubs = await sendLiked.execute({ token, video_id, liked });
 
 			res.status(200).json(statusSubs);
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+videosRouter.put('/report', async (req, res) => {
+	try {
+		var { token, video_id, report_text, report_option } = req.body;
+		console.log(req.body);
+		if (typeof video_id !== 'string') {
+			throw new Error('id do video deve ser uma string.');
+		}
+		if (token && video_id) {
+			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
+
+			const sendReport = new ReportService();
+
+			const statusReport = await sendReport.execute({
+				token,
+				video_id,
+				report_text,
+				report_option,
+			});
+
+			res.status(200).json(sendReport);
 		} else {
 			throw new Error('Token não recebido.');
 		}
