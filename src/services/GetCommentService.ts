@@ -8,11 +8,11 @@ import checkJwt from '../middlewares/checkJwt';
 
 interface Request {
 	video_id: string;
-	token: string;
+	numberSkip: string;
 }
 
 class GetCommentService {
-	public async execute({ video_id }: Request): Promise<object> {
+	public async execute({ video_id, numberSkip }: Request): Promise<object> {
 		try {
 			const commentRepository = getRepository(Comment);
 			const usersRepository = getRepository(User);
@@ -20,8 +20,16 @@ class GetCommentService {
 			// Aqui temos video_id, title, file e description
 			var data = new Array();
 			if (commentRepository) {
+				var number = parseInt(numberSkip);
 				const comment = await commentRepository.find({
-					video_id,
+					where: {
+						video_id: video_id,
+					},
+					take: 20,
+					skip: number,
+					order: {
+						created_at: 'DESC',
+					},
 				});
 				for (let i = 0; i < comment.length; i++) {
 					var user = await usersRepository.findOne({

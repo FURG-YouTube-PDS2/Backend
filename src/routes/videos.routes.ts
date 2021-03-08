@@ -142,7 +142,7 @@ videosRouter.post('/watch', async (req, res) => {
 
 			res.status(200).json(videoData);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Video Id não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
@@ -213,7 +213,7 @@ videosRouter.post('/get', async (req, res) => {
 videosRouter.post('/liked', async (req, res) => {
 	try {
 		var { token, video_id, liked } = req.body;
-		console.log(req.body);
+		// console.log(req.body);
 		if (typeof video_id !== 'string') {
 			throw new Error('id do video deve ser uma string.');
 		}
@@ -286,7 +286,7 @@ videosRouter.post('/sendComment', async (req, res) => {
 
 videosRouter.post('/getComment', async (req, res) => {
 	try {
-		var { video_id, token } = req.body;
+		var { video_id, numberSkip } = req.body;
 		// console.log(req.body);
 		if (typeof video_id !== 'string') {
 			throw new Error('id do usuario deve ser uma string.');
@@ -296,7 +296,7 @@ videosRouter.post('/getComment', async (req, res) => {
 
 			const Comment = new GetCommentService();
 
-			const data = await Comment.execute({ video_id, token });
+			const data = await Comment.execute({ video_id, numberSkip });
 
 			res.status(200).json(data);
 		} else {

@@ -68,6 +68,7 @@ class ActionVideoService {
 			const watchesQuery = await userVideoRepository
 				.createQueryBuilder('user_videos')
 				.select('SUM(user_videos.watches)', 'sum')
+				.where('video_id = :video_id', { video_id })
 				.getRawOne();
 			const watches = watchesQuery.sum;
 
@@ -75,14 +76,16 @@ class ActionVideoService {
 			const likes = await userVideoRepository
 				.createQueryBuilder('user_videos')
 				.select('user_videos.liked')
-				.where('user_videos.liked = 1')
+				.where('user_videos.liked = 1 and video_id = :video_id', { video_id })
+				// .where('video_id = :video_id', { video_id })
 				.getCount();
 
 			// Count Dislikes
 			const dislikes = await userVideoRepository
 				.createQueryBuilder('user_videos')
 				.select('user_videos.liked')
-				.where('user_videos.liked = -1')
+				.where('user_videos.liked = -1 and video_id = :video_id', { video_id })
+				// .where('video_id = :video_id', { video_id })
 				.getCount();
 
 			// AINDA FALTA AVATAR

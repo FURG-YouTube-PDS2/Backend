@@ -4,7 +4,6 @@ import { getRepository } from 'typeorm';
 import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
 import User from '../models/User';
-import Comment from '../models/Comment';
 import Subscription from '../models/Subscription';
 
 import checkJwt from '../middlewares/checkJwt';
@@ -38,12 +37,6 @@ class DescriptionVideoService {
 					where: { user_target: user_id },
 				});
 
-				const watchesQuery = await userVideoRepository
-					.createQueryBuilder('user_videos')
-					.select('SUM(user_videos.watches)', 'sum')
-					.getRawOne();
-				const watches = watchesQuery.sum;
-
 				const data = {
 					owner_id: owner?.id,
 					owner_nick: owner?.username,
@@ -51,7 +44,6 @@ class DescriptionVideoService {
 					all_subs: subs,
 					title: video?.title,
 					description: video?.description,
-					views: watches,
 					thumb: video?.thumb,
 				};
 				// console.log(data);

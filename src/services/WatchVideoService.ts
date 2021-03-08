@@ -9,7 +9,6 @@ import checkJwt from '../middlewares/checkJwt';
 import ActionVideoService from './ActionVideoService';
 import SubscribedService from './SubscribedService';
 import DescriptionVideoService from './DescriptionVideoService';
-// import GetSubsService from './GetSubsService';
 
 interface Request {
 	video_id: string;
@@ -32,12 +31,20 @@ class WatchVideoService {
 
 			if (token !== '') {
 				const is_subscribed = await subscribed.execute({ token, target_id });
+				const user_id = checkJwt(token).sub;
 			} else {
 				const is_subscribed = false;
+				const user_id = 'Ramdon';
 			}
 
+			if (user_id === infoVideo.owner_id) {
+				var owner = true;
+			} else {
+				var owner = false;
+			}
 			// // AINDA FALTA AVATAR
 			const pageData = {
+				owner,
 				owner_id: infoVideo.owner_id,
 				owner_nick: infoVideo.owner_nick,
 				owner_avatar: infoVideo.owner_avatar,
