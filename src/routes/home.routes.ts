@@ -1,9 +1,5 @@
 import { Router } from 'express';
 
-// IMPORTE PARA A UTILIZAÇÃO DE DATAS NO CREATED AT
-// import { getHours, format } from 'date-fns';
-// import pt from 'date-fns/locale/pt-BR';
-
 import { getRepository } from 'typeorm';
 
 import GetVideosService from '../services/GetVideosService';

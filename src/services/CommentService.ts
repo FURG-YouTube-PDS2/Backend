@@ -25,7 +25,7 @@ class CommentCreateService {
 			const edited = false;
 			// Aqui temos video_id, title, file e description
 			if (commentRepository) {
-				const subs = await commentRepository.save({
+				const comment = await commentRepository.save({
 					text,
 					created_at,
 					edited,
