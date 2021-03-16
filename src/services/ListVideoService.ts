@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 
 import Comment from '../models/Comment';
 import User from '../models/User';
-import UserVideo from '../models/UserVideo'
+import UserVideo from '../models/UserVideo';
 import checkJwt from '../middlewares/checkJwt';
 import Video from '../models/Video';
 
@@ -18,18 +18,22 @@ class ListVideoService {
 			const videoRepo = getRepository(Video);
 			const user_id = checkJwt(token).sub;
 			var data = userVideoRepo.find({
-				select: ["video_id"],
-				where: { user_id: user_id }
+				select: ['video_id'],
+				where: { user_id: user_id },
 			});
 			var resolvedData = await data;
 			var newData = Array();
+
 			for (let index = 0; index < resolvedData.length; index++) {
-				newData.push( await videoRepo.find({
-					select: ["title", "description", "thumb"],
-					where: {id: resolvedData[index].video_id}
-				}));
-			};
+				newData.push(
+					await videoRepo.find({
+						select: ['id', 'title', 'description', 'thumb', 'created_at', 'privacy'],
+						where: { id: resolvedData[index].video_id },
+					}),
+				);
+			}
 			var resolvedNewData = newData;
+			console.log(resolvedData);
 			return resolvedNewData;
 		} catch (err) {
 			throw new Error(err);
