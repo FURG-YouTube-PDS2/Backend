@@ -15,12 +15,17 @@ interface Request {
 class AddVideoPlaylist {
 	public async execute({ position, token, video_id, playlist_id }: Request): Promise<object> {
 		try {
-			var pos = parseInt(position);
 			const playVideoRepository = getRepository(PlaylistVideo);
 			const user_id = checkJwt(token).sub;
-
+			var pos = parseInt(position);
+			if (pos !== 0) {
+				const data = await playVideoRepository.find({
+					where: { playlist_id, user_id },
+				});
+				pos = data.length;
+			}
 			const created_at = new Date();
-
+			console.log(video_id);
 			// Aqui temos video_id, title, file e description
 			if (playVideoRepository) {
 				const plt = await playVideoRepository.save({
