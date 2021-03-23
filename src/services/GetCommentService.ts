@@ -24,6 +24,7 @@ class GetCommentService {
 				const comment = await commentRepository.find({
 					where: {
 						video_id: video_id,
+						reply_id: '',
 					},
 					take: 20,
 					skip: number,
@@ -44,10 +45,35 @@ class GetCommentService {
 						date: comment[i].created_at,
 						reply_id: comment[i].reply_id,
 					});
-					// console.log(user);
 				}
-
-				// const data = comment;
+				// var vec_comments = new Array();
+				for (let j = 0; j < comment.length; j++) {
+					var sec_comment = await commentRepository.find({
+						where: {
+							video_id: video_id,
+							reply_id: comment[j].user_id,
+						},
+						take: 20,
+						skip: number,
+						order: {
+							created_at: 'DESC',
+						},
+					});
+					for (let w = 0; w < sec_comment.length; w++) {
+						var user = await usersRepository.findOne({
+							where: { id: sec_comment[w].user_id },
+						});
+						data.push({
+							id: sec_comment[w].id,
+							user_id: sec_comment[w].user_id,
+							nickname: user?.username,
+							src: user?.avatar,
+							comment: sec_comment[w].text,
+							date: sec_comment[w].created_at,
+							reply_id: sec_comment[w].reply_id,
+						});
+					}
+				}
 
 				return data;
 			} else {

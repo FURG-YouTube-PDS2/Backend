@@ -1,46 +1,58 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Video from '../models/Video';
-import UserVideo from '../models/UserVideo';
-import User from '../models/User';
+import Video from '../../models/Video';
+import UserVideo from '../../models/UserVideo';
+import User from '../../models/User';
+
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	numberSkip: string;
+	token: string;
 }
 
-class GetVideosService {
-	public async execute({ numberSkip }: Request): Promise<object> {
+class HistoricService {
+	public async execute({ numberSkip, token }: Request): Promise<object> {
 		try {
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
 			const userVideoRepository = getRepository(UserVideo);
+			const user_id = checkJwt(token).sub;
 
 			if (videoRepository && userRepository && userVideoRepository) {
 				var number = parseInt(numberSkip);
-				const videos = await videoRepository.find({
-					select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
+				const hist_videos = await userVideoRepository.find({
+					select: ['video_id'],
 					take: 20,
 					skip: number,
 					where: {
-						privacy: false,
+						user_id,
 					},
 					order: {
-						created_at: 'DESC',
+						last_watch: 'DESC',
 					},
 				});
 				var newData = new Array();
 				// console.log(videos.length);
 
-				for (let i = 0; i < videos.length; i++) {
+				for (let i = 0; i < hist_videos.length; i++) {
+					var videos = await videoRepository.find({
+						select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
+						take: 20,
+						skip: number,
+						where: {
+							id: hist_videos[i].id,
+						},
+					});
 					var userVideo = await userVideoRepository.findOne({
-						where: { video_id: videos[i].id, is_owner: true },
+						where: { video_id: hist_videos[i].id, is_owner: true },
 					});
 					var user = await userRepository.findOne({
 						select: ['id', 'username', 'avatar'],
 						where: { id: userVideo?.user_id },
 					});
-					var video_id = videos[i].id;
+					var video_id = hist_videos[i].id;
 					var watchesQuery = await userVideoRepository
 						.createQueryBuilder('user_videos')
 						.select('SUM(user_videos.watches)', 'sum')
@@ -56,7 +68,6 @@ class GetVideosService {
 						views: watches,
 						date: videos[i].created_at,
 						avatar: user?.avatar,
-						channel_id: user?.id,
 						thumb: videos[i].thumb,
 					});
 				}
@@ -71,4 +82,4 @@ class GetVideosService {
 	}
 }
 
-export default GetVideosService;
+export default HistoricService;
