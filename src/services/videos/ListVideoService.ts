@@ -1,11 +1,11 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Comment from '../models/Comment';
-import User from '../models/User';
-import UserVideo from '../models/UserVideo';
-import checkJwt from '../middlewares/checkJwt';
-import Video from '../models/Video';
+import Comment from '../../models/Comment';
+import User from '../../models/User';
+import UserVideo from '../../models/UserVideo';
+import checkJwt from '../../middlewares/checkJwt';
+import Video from '../../models/Video';
 
 interface Request {
 	token: string;
@@ -17,9 +17,10 @@ class ListVideoService {
 			const userVideoRepo = getRepository(UserVideo);
 			const videoRepo = getRepository(Video);
 			const user_id = checkJwt(token).sub;
+			// console.log(user_id);
 			var data = userVideoRepo.find({
 				select: ['video_id'],
-				where: { user_id: user_id },
+				where: { user_id: user_id, is_owner: true },
 			});
 			var resolvedData = await data;
 			var newData = Array();
@@ -33,7 +34,7 @@ class ListVideoService {
 				);
 			}
 			var resolvedNewData = newData;
-			console.log(resolvedData);
+			// console.log(resolvedData);
 			return resolvedNewData;
 		} catch (err) {
 			throw new Error(err);

@@ -3,25 +3,25 @@ import { Router } from 'express';
 import { getRepository } from 'typeorm';
 
 import s3Upload from '../middlewares/awsS3Upload';
-import SendVideoService from '../services/SendVideoService';
-import WatchVideoService from '../services/WatchVideoService';
-import DataVideoService from '../services/DataVideoService';
-import CommentCreateService from '../services/CommentService';
-import LikedService from '../services/LikedService';
-import GetCommentService from '../services/GetCommentService';
-import ActionVideoService from '../services/ActionVideoService';
-import ReportService from '../services/ReportService';
-import GetPlayerService from '../services/GetPlayerService';
+import SendVideoService from '../services/videos/SendVideoService';
+import WatchVideoService from '../services/videos/WatchVideoService';
+import DataVideoService from '../services/videos/DataVideoService';
+import CommentCreateService from '../services/comment/CommentService';
+import LikedService from '../services/actions/LikedService';
+import GetCommentService from '../services/comment/GetCommentService';
+import ActionVideoService from '../services/videos/ActionVideoService';
+import ReportService from '../services/actions/ReportService';
+import GetPlayerService from '../services/videos/GetPlayerService';
+import ListVideoService from '../services/videos/ListVideoService';
 
 import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
 
 import User from '../models/User';
-import EditVideoDataService from '../services/EditVideoDataService';
+import EditVideoDataService from '../services/videos/EditVideoDataService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
-import ListVideoService from '../services/ListVideoService';
 
 const videosRouter = Router();
 

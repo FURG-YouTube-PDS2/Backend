@@ -7,6 +7,9 @@ import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import User from '../models/User';
 
+import GetToken from '../services/GetToken';
+import CreatePlaylistService from '../services/playlist/CreatePlaylistService';
+
 import { create } from 'domain';
 import { parse } from 'path';
 import Mail from '../middlewares/sendMail';
@@ -31,6 +34,18 @@ emailRouter.post('/confirm_email', async (request, response) => {
 			id,
 			verified: verification,
 		});
+		const playlist = new CreatePlaylistService();
+		var name = 'Assitir mais tarde';
+		var is_public = false;
+		var tokenService = new GetToken();
+		var token = await tokenService.execute({ user_id: id });
+		var fixed = true;
+		var video_id = '';
+		var statusList;
+		var likedList;
+		statusList = await playlist.execute({ name, is_public, token, fixed, video_id });
+		name = 'Vídeos curtidos';
+		likedList = await playlist.execute({ name, is_public, token, fixed, video_id });
 
 		return response.status(200).json({ status: 1 });
 	} catch (err) {

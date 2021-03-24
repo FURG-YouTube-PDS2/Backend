@@ -1,14 +1,14 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Comment from '../models/Comment';
-import User from '../models/User';
+import Comment from '../../models/Comment';
+import User from '../../models/User';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	video_id: string;
-	numberSkip: string;
+	numberSkip: number;
 }
 
 class GetCommentService {
@@ -20,7 +20,7 @@ class GetCommentService {
 			// Aqui temos video_id, title, file e description
 			var data = new Array();
 			if (commentRepository) {
-				var number = parseInt(numberSkip);
+				var number = numberSkip;
 				const comment = await commentRepository.find({
 					where: {
 						video_id: video_id,
@@ -46,19 +46,20 @@ class GetCommentService {
 						reply_id: comment[i].reply_id,
 					});
 				}
+				// console.log(data);
+
 				// var vec_comments = new Array();
 				for (let j = 0; j < comment.length; j++) {
 					var sec_comment = await commentRepository.find({
 						where: {
 							video_id: video_id,
-							reply_id: comment[j].user_id,
+							reply_id: comment[j].id,
 						},
-						take: 20,
-						skip: number,
 						order: {
 							created_at: 'DESC',
 						},
 					});
+					console.log(sec_comment);
 					for (let w = 0; w < sec_comment.length; w++) {
 						var user = await usersRepository.findOne({
 							where: { id: sec_comment[w].user_id },
@@ -72,6 +73,7 @@ class GetCommentService {
 							date: sec_comment[w].created_at,
 							reply_id: sec_comment[w].reply_id,
 						});
+						// console.log(data);
 					}
 				}
 

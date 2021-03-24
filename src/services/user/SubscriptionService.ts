@@ -1,12 +1,12 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Video from '../models/Video';
-import UserVideo from '../models/UserVideo';
-import User from '../models/User';
-import subscription from '../models/Subscription';
+import Video from '../../models/Video';
+import UserVideo from '../../models/UserVideo';
+import User from '../../models/User';
+import subscription from '../../models/Subscription';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	token: string;

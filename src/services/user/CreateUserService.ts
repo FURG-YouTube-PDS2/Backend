@@ -1,7 +1,7 @@
-import User from '../models/User';
+import User from '../../models/User';
 import { getRepository } from 'typeorm';
 
-import s3Upload from '../middlewares/awsS3Upload';
+import s3Upload from '../../middlewares/awsS3Upload';
 
 interface Request {
 	username: string;
@@ -14,11 +14,18 @@ interface Request {
 }
 
 class CreateUserService {
-	public async execute({ username, email, password, avatar, birthdate, gender, phone }: Request): Promise<string> {
+	public async execute({
+		username,
+		email,
+		password,
+		avatar,
+		birthdate,
+		gender,
+		phone,
+	}: Request): Promise<string> {
 		// Recebe todos os metodos de repositorio
 		//const customRepository = getCustomRepository()
 		const userRepository = getRepository(User);
-
 
 		const created_at = new Date();
 		const updated_at = new Date();
@@ -33,7 +40,7 @@ class CreateUserService {
 			birthdate,
 			gender,
 			phone,
-			verified: false
+			verified: false,
 		});
 
 		// efetivamente salva o usuario no banco de dados

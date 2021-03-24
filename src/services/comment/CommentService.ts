@@ -1,12 +1,12 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Video from '../models/Video';
-import UserVideo from '../models/UserVideo';
-import User from '../models/User';
-import Comment from '../models/Comment';
+import Video from '../../models/Video';
+import UserVideo from '../../models/UserVideo';
+import User from '../../models/User';
+import Comment from '../../models/Comment';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	token: string;
@@ -19,6 +19,7 @@ class CommentCreateService {
 	public async execute({ token, text, video_id, reply_id }: Request): Promise<object> {
 		try {
 			const commentRepository = getRepository(Comment);
+			const userRepository = getRepository(User);
 			const user_id = checkJwt(token).sub;
 
 			const created_at = new Date();
@@ -34,8 +35,25 @@ class CommentCreateService {
 					user_id,
 				});
 
+				const id = await commentRepository.findOne({
+					select: ['id'],
+					where: { video_id, user_id, reply_id, created_at, text },
+				});
+				const user = await userRepository.findOne({
+					select: ['avatar', 'username'],
+					where: { id: user_id },
+				});
+
 				const Data = {
-					status: 1,
+					id,
+					username: user?.username,
+					src: user?.avatar,
+					text,
+					created_at,
+					edited,
+					video_id,
+					reply_id,
+					user_id,
 				};
 
 				return Data;

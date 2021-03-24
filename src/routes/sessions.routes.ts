@@ -26,9 +26,14 @@ sessionsRouter.post('/', async (request, response) => {
 		// }
 		return response.json({ status: 1, token, avatar: user!.avatar });
 	} catch (err) {
-		return response
-			.status(400)
-			.json({ status: 0, errorName: err.name, errorMessage: err.message });
+		var errorMessage;
+		if (err.message === 1) {
+			errorMessage = 'Email não vefiricado.';
+		} else {
+			errorMessage = 'Combinação de email e senha incorreta.';
+		}
+
+		return response.status(400).json({ status: 0, errorName: err.name, errorMessage });
 	}
 });
 

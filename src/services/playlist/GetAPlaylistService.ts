@@ -6,7 +6,7 @@ import PlaylistVideo from '../../models/PlaylistVideo';
 import Video from '../../models/Video';
 
 import checkJwt from '../../middlewares/checkJwt';
-import DescriptionVideoService from '../DescriptionVideoService';
+import DescriptionVideoService from '../videos/DescriptionVideoService';
 
 interface Request {
 	token: string;
@@ -48,4 +48,4 @@ class GetAPlaylistService {
 	}
 }
 
-export default DeletePlaylistService;
+export default GetAPlaylistService;
