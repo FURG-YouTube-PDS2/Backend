@@ -6,10 +6,12 @@ import { Router } from 'express';
 
 import { getRepository } from 'typeorm';
 
-import CreateUserService from '../services/CreateUserService';
-import EditUserService from '../services/EditUserService';
+import CreateUserService from '../services/user/CreateUserService';
+import EditUserService from '../services/user/EditUserService';
+import CreatePlaylistService from '../services/playlist/CreatePlaylistService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
-import SubscriptionService from '../services/SubscriptionService';
+import SubscriptionService from '../services/user/SubscriptionService';
+import GetToken from '../services/GetToken';
 
 import User from '../models/User';
 import s3Upload from '../middlewares/awsS3Upload';

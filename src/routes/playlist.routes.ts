@@ -6,6 +6,7 @@ import AddVideoPlaylist from '../services/playlist/AddVideoPlaylist';
 import DeletePlaylistService from '../services/playlist/DeletePlaylistService';
 import GetAPlaylistService from '../services/playlist/GetAPlaylistService';
 import GetPlaylistsService from '../services/playlist/GetPlaylistsService';
+import GetPlaylistsAVideo from '../services/playlist/GetPlaylistsAVideo';
 import EditPlaylistService from '../services/playlist/EditPlaylistService';
 import RemoveVideoService from '../services/playlist/RemoveVideoService';
 
@@ -103,10 +104,23 @@ playlistRouter.post('/get', async (req, res) => {
 
 playlistRouter.post('/list', async (req, res) => {
 	try {
-		const { token, playlist_id } = req.body;
+		const { token, playlist_id, video_id } = req.body;
 
 		const Playlist = new GetAPlaylistService();
-		const status = await Playlist.execute({ token, playlist_id });
+		const statusPlaylist = await Playlist.execute({ token, playlist_id });
+
+		res.status(200).json(status);
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+playlistRouter.post('/list_videoid', async (req, res) => {
+	try {
+		const { token, _id, video_id } = req.body;
+
+		const Playlist = new GetPlaylistsAVideo();
+		const statusPlaylist = await Playlist.execute({ token, video_id });
 
 		res.status(200).json(status);
 	} catch (err) {

@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
-import uploadWithId from '../middlewares/awsUpload';
+import uploadWithId from '../../middlewares/awsUpload';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
-import UserVideo from '../models/UserVideo';
-import Video from '../models/Video';
+import UserVideo from '../../models/UserVideo';
+import Video from '../../models/Video';
 
 interface Request {
 	token: string;
@@ -58,6 +58,7 @@ class SendVideoService {
 					watches: 0,
 					is_owner: true,
 					created_at,
+					last_watch: created_at,
 				});
 				return 1;
 			} else {
