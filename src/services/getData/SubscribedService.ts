@@ -13,7 +13,7 @@ interface Request {
 	target_id: string;
 }
 
-class SubscriptionService {
+class SubscribedService {
 	public async execute({ token, target_id }: Request): Promise<object> {
 		try {
 			const subscriptionRepository = getRepository(subscription);
@@ -24,28 +24,15 @@ class SubscriptionService {
 				where: { user_subscriber: user_id, user_target: target_id },
 			});
 			const is_subscribed = verifySubscribed ? true : false;
+
 			// Aqui temos video_id, title, file e description
 			if (subscriptionRepository) {
-				// const subscriptions = await subscriptionRepository.count({ where: { user_target: owner_id } });
-				if (!is_subscribed) {
-					const subs = await subscriptionRepository.save({
-						user_subscriber: user_id,
-						user_target: target_id,
-						created_at,
-					});
+				var Data;
+				if (is_subscribed) {
+					return true;
 				} else {
-					// console.log(verifySubscribed?.id);
-					await subscriptionRepository.delete({
-						id: verifySubscribed?.id,
-					});
+					return false;
 				}
-
-				// AINDA FALTA AVATAR
-				const Data = {
-					status: 1,
-				};
-
-				return Data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}
@@ -55,4 +42,4 @@ class SubscriptionService {
 	}
 }
 
-export default SubscriptionService;
+export default SubscribedService;
