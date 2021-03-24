@@ -7,10 +7,10 @@ import SendVideoService from '../services/videos/SendVideoService';
 import WatchVideoService from '../services/videos/WatchVideoService';
 import DataVideoService from '../services/videos/DataVideoService';
 import CommentCreateService from '../services/comment/CommentService';
-import LikedService from '../services/actions/LikedService';
+import LikedService from '../services/getData/LikedService';
 import GetCommentService from '../services/comment/GetCommentService';
 import ActionVideoService from '../services/videos/ActionVideoService';
-import ReportService from '../services/actions/ReportService';
+import ReportService from '../services/getData/ReportService';
 import GetPlayerService from '../services/videos/GetPlayerService';
 import ListVideoService from '../services/videos/ListVideoService';
 
@@ -286,7 +286,7 @@ videosRouter.post('/sendComment', async (req, res) => {
 
 videosRouter.post('/getComment', async (req, res) => {
 	try {
-		var { video_id, numberSkip } = req.body;
+		var { token, video_id, numberSkip } = req.body;
 		// console.log(req.body);
 		if (typeof video_id !== 'string') {
 			throw new Error('id do usuario deve ser uma string.');
@@ -296,7 +296,7 @@ videosRouter.post('/getComment', async (req, res) => {
 
 			const Comment = new GetCommentService();
 
-			const data = await Comment.execute({ video_id, numberSkip });
+			const data = await Comment.execute({ token, video_id, numberSkip });
 
 			res.status(200).json(data);
 		} else {

@@ -56,8 +56,6 @@ class RiseVideosService {
 					.offset()
 
 					.getRawMany();
-				// var wats = watsQuery;
-				console.log(watsQuery);
 				return watsQuery;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');

@@ -7,7 +7,7 @@ import Subscription from '../../models/Subscription';
 
 import checkJwt from '../../middlewares/checkJwt';
 import ActionVideoService from './ActionVideoService';
-import SubscribedService from '../actions/SubscribedService';
+import SubscribedService from '../getData/SubscribedService';
 import DescriptionVideoService from './DescriptionVideoService';
 
 interface Request {
