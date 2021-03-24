@@ -109,7 +109,7 @@ playlistRouter.post('/list', async (req, res) => {
 		const Playlist = new GetAPlaylistService();
 		const statusPlaylist = await Playlist.execute({ token, playlist_id });
 
-		res.status(200).json(status);
+		res.status(200).json(statusPlaylist);
 	} catch (err) {
 		console.log(err);
 	}
@@ -122,7 +122,7 @@ playlistRouter.post('/list_videoid', async (req, res) => {
 		const Playlist = new GetPlaylistsAVideo();
 		const statusPlaylist = await Playlist.execute({ token, video_id });
 
-		res.status(200).json(status);
+		res.status(200).json(statusPlaylist);
 	} catch (err) {
 		console.log(err);
 	}
