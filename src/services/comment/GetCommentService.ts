@@ -5,17 +5,21 @@ import Comment from '../../models/Comment';
 import User from '../../models/User';
 
 import checkJwt from '../../middlewares/checkJwt';
+import DataCommentService from './DataCommentService';
 
 interface Request {
 	video_id: string;
 	numberSkip: number;
+	token: string;
 }
 
 class GetCommentService {
-	public async execute({ video_id, numberSkip }: Request): Promise<object> {
+	public async execute({ token, video_id, numberSkip }: Request): Promise<object> {
 		try {
 			const commentRepository = getRepository(Comment);
 			const usersRepository = getRepository(User);
+			const infoComment = new DataCommentService();
+			const user_id = checkJwt(token).sub;
 
 			// Aqui temos video_id, title, file e description
 			var data = new Array();
@@ -36,15 +40,32 @@ class GetCommentService {
 					var user = await usersRepository.findOne({
 						where: { id: comment[i].user_id },
 					});
-					data.push({
-						id: comment[i].id,
-						user_id: comment[i].user_id,
-						nickname: user?.username,
-						src: user?.avatar,
-						comment: comment[i].text,
-						date: comment[i].created_at,
-						reply_id: comment[i].reply_id,
-					});
+					var info = await infoComment.execute({ user_id, comment_id: comment[i].id });
+					if (user_id === comment[i].user_id) {
+						data.push({
+							id: comment[i].id,
+							user_id: token,
+							nickname: user?.username,
+							src: user?.avatar,
+							comment: comment[i].text,
+							date: comment[i].created_at,
+							reply_id: comment[i].reply_id,
+							likes: info.likes,
+							liked: info.liked,
+						});
+					} else {
+						data.push({
+							id: comment[i].id,
+							user_id: comment[i].user_id,
+							nickname: user?.username,
+							src: user?.avatar,
+							comment: comment[i].text,
+							date: comment[i].created_at,
+							reply_id: comment[i].reply_id,
+							likes: info.likes,
+							liked: info.liked,
+						});
+					}
 				}
 				// console.log(data);
 
@@ -59,20 +80,41 @@ class GetCommentService {
 							created_at: 'DESC',
 						},
 					});
-					console.log(sec_comment);
 					for (let w = 0; w < sec_comment.length; w++) {
 						var user = await usersRepository.findOne({
 							where: { id: sec_comment[w].user_id },
 						});
-						data.push({
-							id: sec_comment[w].id,
-							user_id: sec_comment[w].user_id,
-							nickname: user?.username,
-							src: user?.avatar,
-							comment: sec_comment[w].text,
-							date: sec_comment[w].created_at,
-							reply_id: sec_comment[w].reply_id,
+
+						var info = await infoComment.execute({
+							user_id,
+							comment_id: sec_comment[w].id,
 						});
+						if (user_id === sec_comment[w].user_id) {
+							data.push({
+								id: sec_comment[w].id,
+								user_id: token,
+								nickname: user?.username,
+								src: user?.avatar,
+								comment: sec_comment[w].text,
+								date: sec_comment[w].created_at,
+								reply_id: sec_comment[w].reply_id,
+								likes: info.likes,
+								liked: info.liked,
+							});
+						} else {
+							data.push({
+								id: sec_comment[w].id,
+								user_id: sec_comment[w].user_id,
+								nickname: user?.username,
+								src: user?.avatar,
+								comment: sec_comment[w].text,
+								date: sec_comment[w].created_at,
+								reply_id: sec_comment[w].reply_id,
+								likes: info.likes,
+								liked: info.liked,
+							});
+						}
+
 						// console.log(data);
 					}
 				}

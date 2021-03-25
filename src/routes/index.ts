@@ -5,6 +5,7 @@ import videosRouter from './videos.routes';
 import nintubeRouter from './nintube.routes';
 import emailRouter from './confirms.routes';
 import homeRouter from './home.routes';
+import commentsRouter from './comments.routes';
 import mediaProxy from './mediaProxy';
 import playlistRouter from './playlist.routes';
 
@@ -21,5 +22,6 @@ routes.use('/playlist', playlistRouter);
 routes.use('/email', emailRouter);
 routes.use('/nin', nintubeRouter);
 routes.use('/media', mediaProxy);
+routes.use('/comment', commentsRouter);
 
 export default routes;
