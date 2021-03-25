@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinColumn, CreateDateColumn } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	ManyToOne,
+	ManyToMany,
+	JoinColumn,
+	CreateDateColumn,
+} from 'typeorm';
 import User from './User';
 import Playlist from './Playlist';
 import Video from './Video';
@@ -25,7 +33,7 @@ class PlaylistVideo {
 	playlist_id: string;
 
 	@CreateDateColumn()
-	timestamp: Date;
+	created_at: Date;
 }
 
 export default PlaylistVideo;

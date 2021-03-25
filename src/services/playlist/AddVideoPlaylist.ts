@@ -8,7 +8,7 @@ import checkJwt from '../../middlewares/checkJwt';
 interface Request {
 	token: string;
 	playlist_id: string;
-	position: string;
+	position: number;
 	video_id: string;
 }
 
@@ -17,19 +17,19 @@ class AddVideoPlaylist {
 		try {
 			const playVideoRepository = getRepository(PlaylistVideo);
 			const user_id = checkJwt(token).sub;
-			var pos = parseInt(position);
-			if (pos !== 0) {
+
+			if (position !== 0) {
 				const data = await playVideoRepository.find({
 					where: { playlist_id, user_id },
 				});
-				pos = data.length;
+				position = data.length;
 			}
 			const created_at = new Date();
 			console.log(video_id);
 			// Aqui temos video_id, title, file e description
 			if (playVideoRepository) {
 				const plt = await playVideoRepository.save({
-					position: pos,
+					position,
 					playlist_id,
 					video_id,
 					created_at,

@@ -31,13 +31,13 @@ class CreatePlaylistService {
 					user_id,
 				});
 
+				const data = await playlistRepository.findOne({
+					where: { name, user_id },
+				});
 				if (video_id !== '') {
-					const data = await playlistRepository.findOne({
-						where: { name, user_id },
-					});
 					return { id: data?.id, position: 0 };
 				} else {
-					return { status: 1 };
+					return { status: 1, id: data?.id };
 				}
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
