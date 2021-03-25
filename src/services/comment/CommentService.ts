@@ -53,7 +53,7 @@ class CommentCreateService {
 					edited,
 					video_id,
 					reply_id,
-					user_id,
+					user_id: token,
 				};
 
 				return Data;

@@ -9,7 +9,7 @@ import checkJwt from '../../middlewares/checkJwt';
 interface Request {
 	token: string;
 	video_id: string;
-	liked: Int16Array;
+	liked: number;
 }
 
 class LikedService {

@@ -12,11 +12,18 @@ import RemoveVideoService from '../services/playlist/RemoveVideoService';
 
 const playlistRouter = Router();
 
-playlistRouter.post('/created', async (req, res) => {
+playlistRouter.post('/create', async (req, res) => {
 	try {
-		const { name, is_public, token, video_id, fixed } = req.body;
+		const { name, is_public, token, video_id } = req.body;
+		console.log(req.body);
 		const Playlist = new CreatePlaylistService();
-		const statusPlaylist = await Playlist.execute({ name, is_public, token, fixed, video_id });
+		const statusPlaylist = await Playlist.execute({
+			name,
+			is_public,
+			token,
+			fixed: false,
+			video_id,
+		});
 
 		if (video_id !== '') {
 			const addVideo = new AddVideoPlaylist();
@@ -26,6 +33,10 @@ playlistRouter.post('/created', async (req, res) => {
 				video_id,
 				playlist_id: statusPlaylist.id,
 			});
+			var status = {
+				status: statusAdd.status,
+				id: statusPlaylist.id,
+			};
 			res.status(200).json(statusAdd);
 		} else {
 			res.status(200).json(statusPlaylist);
@@ -41,7 +52,7 @@ playlistRouter.post('/add', async (req, res) => {
 
 		const addVideo = new AddVideoPlaylist();
 		const statusAdd = await addVideo.execute({
-			position: '1',
+			position: 1,
 			token,
 			video_id,
 			playlist_id,
