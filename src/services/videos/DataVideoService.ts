@@ -1,13 +1,13 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Video from '../models/Video';
-import UserVideo from '../models/UserVideo';
-import User from '../models/User';
-import Comment from '../models/Comment';
-import Subscription from '../models/Subscription';
+import Video from '../../models/Video';
+import UserVideo from '../../models/UserVideo';
+import User from '../../models/User';
+import Comment from '../../models/Comment';
+import Subscription from '../../models/Subscription';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	video_id: string;

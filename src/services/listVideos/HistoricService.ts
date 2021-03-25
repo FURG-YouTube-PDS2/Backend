@@ -8,7 +8,7 @@ import User from '../../models/User';
 import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
-	numberSkip: string;
+	numberSkip: number;
 	token: string;
 }
 
@@ -21,7 +21,7 @@ class HistoricService {
 			const user_id = checkJwt(token).sub;
 
 			if (videoRepository && userRepository && userVideoRepository) {
-				var number = parseInt(numberSkip);
+				var number = numberSkip;
 				const hist_videos = await userVideoRepository.find({
 					select: ['video_id'],
 					take: 20,
@@ -34,41 +34,42 @@ class HistoricService {
 					},
 				});
 				var newData = new Array();
-				// console.log(videos.length);
 
 				for (let i = 0; i < hist_videos.length; i++) {
-					var videos = await videoRepository.find({
+					var videos = await videoRepository.findOne({
 						select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
-						take: 20,
-						skip: number,
+
 						where: {
-							id: hist_videos[i].id,
+							id: hist_videos[i].video_id,
 						},
 					});
+
 					var userVideo = await userVideoRepository.findOne({
-						where: { video_id: hist_videos[i].id, is_owner: true },
+						select: ['user_id'],
+						where: { video_id: hist_videos[i].video_id, is_owner: true },
 					});
+
 					var user = await userRepository.findOne({
 						select: ['id', 'username', 'avatar'],
 						where: { id: userVideo?.user_id },
 					});
-					var video_id = hist_videos[i].id;
+
+					var video_id = hist_videos[i].video_id;
 					var watchesQuery = await userVideoRepository
 						.createQueryBuilder('user_videos')
 						.select('SUM(user_videos.watches)', 'sum')
 						.where('video_id = :video_id', { video_id })
 						.getRawOne();
 					var watches = watchesQuery.sum;
-					// console.log(watches);
 
 					newData.push({
-						id: videos[i].id,
-						title: videos[i].title,
+						id: videos?.id,
+						title: videos?.title,
 						channel: user?.username,
 						views: watches,
-						date: videos[i].created_at,
+						date: videos?.created_at,
 						avatar: user?.avatar,
-						thumb: videos[i].thumb,
+						thumb: videos?.thumb,
 					});
 				}
 

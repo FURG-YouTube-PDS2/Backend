@@ -1,10 +1,10 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import UserVideo from '../models/UserVideo';
-import User from '../models/User';
+import UserVideo from '../../models/UserVideo';
+import User from '../../models/User';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	token: string;
@@ -22,7 +22,7 @@ class LikedService {
 				where: { user_id: user_id, video_id: video_id },
 			});
 			if (videoInfo) {
-				console.log(videoInfo);
+				// console.log(videoInfo);
 				const is_liked = await videoUserRepository.save({
 					id: videoInfo.id,
 					liked,

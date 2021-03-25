@@ -1,12 +1,12 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Video from '../models/Video';
-import UserVideo from '../models/UserVideo';
-import User from '../models/User';
-import subscription from '../models/Subscription';
+import Video from '../../models/Video';
+import UserVideo from '../../models/UserVideo';
+import User from '../../models/User';
+import subscription from '../../models/Subscription';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	token: string;
@@ -24,7 +24,6 @@ class SubscriptionService {
 				where: { user_subscriber: user_id, user_target: target_id },
 			});
 			const is_subscribed = verifySubscribed ? true : false;
-			console.log('subs ' + is_subscribed);
 			// Aqui temos video_id, title, file e description
 			if (subscriptionRepository) {
 				// const subscriptions = await subscriptionRepository.count({ where: { user_target: owner_id } });

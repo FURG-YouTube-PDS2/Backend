@@ -1,13 +1,13 @@
 import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
-import Video from '../models/Video';
-import UserVideo from '../models/UserVideo';
-import User from '../models/User';
-import Comment from '../models/Comment';
-import Subscription from '../models/Subscription';
+import Video from '../../models/Video';
+import UserVideo from '../../models/UserVideo';
+import User from '../../models/User';
+import Comment from '../../models/Comment';
+import Subscription from '../../models/Subscription';
 
-import checkJwt from '../middlewares/checkJwt';
+import checkJwt from '../../middlewares/checkJwt';
 
 interface Request {
 	video_id: string;
@@ -31,6 +31,7 @@ class ActionVideoService {
 			// Aqui temos video_id, title, file e description
 			const videoUser = await userVideoRepository.findOne({ where: { video_id, user_id } });
 			const is_owner = false;
+			const last_watch = new Date();
 
 			if (videoUser) {
 				//Pq isso
@@ -41,6 +42,7 @@ class ActionVideoService {
 					id: videoUser.id,
 					user_id,
 					watches: wat,
+					last_watch,
 				});
 			} else {
 				const created_at = new Date();
@@ -59,6 +61,7 @@ class ActionVideoService {
 					report_text,
 					report_option,
 					created_at,
+					last_watch,
 				});
 			}
 			// console.log('liked: ' + liked);
