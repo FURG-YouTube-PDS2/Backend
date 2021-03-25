@@ -1,5 +1,5 @@
 import { Response as res } from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, getManager } from 'typeorm';
 
 import Playlist from '../../models/Playlist';
 import PlaylistVideo from '../../models/PlaylistVideo';
@@ -26,8 +26,24 @@ class GetPlaylistsAVideo {
 					select: ['playlist_id'],
 					where: { user_id, video_id },
 				});
-				data.push(playlists);
-				data.push(locked);
+				var id = '';
+				var aux = [];
+				for (let i = 0; i < playlists.length; i++) {
+					if (playlists[i].name !== 'Vídeos curtidos') {
+						aux.push(playlists[i]);
+					} else {
+						id = playlists[i].id;
+					}
+				}
+
+				data.push(aux);
+				var aux = [];
+				for (let i = 0; i < locked.length; i++) {
+					if (id !== locked[i].playlist_id) {
+						aux.push(locked[i].playlist_id);
+					}
+				}
+				data.push(aux);
 				return data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
