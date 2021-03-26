@@ -22,16 +22,19 @@ class EditCommentService {
 			// Aqui temos video_id, title, file e description
 			if (commentRepository) {
 				const comment = await commentRepository.save({
+					id: comment_id,
 					text,
 					created_at,
 					edited,
 				});
 
 				const Data = {
+					comment_id,
 					text,
 					edited,
+					created_at,
 				};
-
+				console.log(Data);
 				return Data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');

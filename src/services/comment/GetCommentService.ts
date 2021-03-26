@@ -52,6 +52,7 @@ class GetCommentService {
 							reply_id: comment[i].reply_id,
 							likes: info.likes,
 							liked: info.liked,
+							edited: comment[i].edited,
 						});
 					} else {
 						data.push({
@@ -64,6 +65,7 @@ class GetCommentService {
 							reply_id: comment[i].reply_id,
 							likes: info.likes,
 							liked: info.liked,
+							edited: comment[i].edited,
 						});
 					}
 				}
@@ -100,6 +102,7 @@ class GetCommentService {
 								reply_id: sec_comment[w].reply_id,
 								likes: info.likes,
 								liked: info.liked,
+								edited: sec_comment[w].edited,
 							});
 						} else {
 							data.push({
@@ -112,6 +115,7 @@ class GetCommentService {
 								reply_id: sec_comment[w].reply_id,
 								likes: info.likes,
 								liked: info.liked,
+								edited: sec_comment[w].edited,
 							});
 						}
 
