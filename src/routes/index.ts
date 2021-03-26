@@ -8,6 +8,7 @@ import homeRouter from './home.routes';
 import commentsRouter from './comments.routes';
 import mediaProxy from './mediaProxy';
 import playlistRouter from './playlist.routes';
+import channelRouter from './channel.routes';
 
 const routes = Router();
 
@@ -23,5 +24,6 @@ routes.use('/email', emailRouter);
 routes.use('/nin', nintubeRouter);
 routes.use('/media', mediaProxy);
 routes.use('/comment', commentsRouter);
+routes.use('/channel', channelRouter);
 
 export default routes;
