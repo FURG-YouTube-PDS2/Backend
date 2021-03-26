@@ -52,7 +52,7 @@ class RiseVideosService {
 
 					// .addOrderBy('date', 'DESC')
 					.addOrderBy('views', 'DESC')
-					.limit(20)
+					.limit(100)
 					.offset()
 
 					.getRawMany();
