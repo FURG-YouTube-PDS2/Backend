@@ -104,10 +104,17 @@ playlistRouter.post('/remove', async (req, res) => {
 playlistRouter.post('/get', async (req, res) => {
 	try {
 		const { token, id_target } = req.body;
-		const Playlists = new GetPlaylistsService();
-		const status = await Playlists.execute({ token, id_target });
+		if (typeof token !== 'string') {
+			throw new Error('id do usuario deve ser uma string.');
+		}
+		if (id_target || token) {
+			const Playlists = new GetPlaylistsService();
+			const status = await Playlists.execute({ token, id_target });
 
-		res.status(200).json(status);
+			res.status(200).json(status);
+		} else {
+			throw new Error('Token não recebido.');
+		}
 	} catch (err) {
 		console.log(err);
 	}

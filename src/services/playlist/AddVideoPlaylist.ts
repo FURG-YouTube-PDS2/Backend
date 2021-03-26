@@ -2,6 +2,7 @@ import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
 import PlaylistVideo from '../../models/PlaylistVideo';
+import Playlist from '../../models/Playlist';
 
 import checkJwt from '../../middlewares/checkJwt';
 
@@ -16,6 +17,7 @@ class AddVideoPlaylist {
 	public async execute({ position, token, video_id, playlist_id }: Request): Promise<object> {
 		try {
 			const playVideoRepository = getRepository(PlaylistVideo);
+			const playlistRepository = getRepository(Playlist);
 			const user_id = checkJwt(token).sub;
 
 			if (position !== 0) {
@@ -28,6 +30,10 @@ class AddVideoPlaylist {
 			console.log(video_id);
 			// Aqui temos video_id, title, file e description
 			if (playVideoRepository) {
+				await playlistRepository.save({
+					id: playlist_id,
+					created_at,
+				});
 				const plt = await playVideoRepository.save({
 					position,
 					playlist_id,

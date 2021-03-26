@@ -11,7 +11,7 @@ interface Request {
 	name: string;
 	playlist_id: string;
 	is_public: boolean;
-	videos: Array;
+	videos: [];
 }
 
 class EditPlaylistService {

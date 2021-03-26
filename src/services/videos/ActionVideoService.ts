@@ -23,20 +23,20 @@ class ActionVideoService {
 			const userVideoRepository = getRepository(UserVideo);
 			const subscriptionRepository = getRepository(Subscription);
 			if (token !== '') {
-				const user_id = checkJwt(token).sub;
+				var user_id = checkJwt(token).sub;
 			} else {
-				const user_id = 'random';
+				var user_id = 'random';
 			}
 
 			// Aqui temos video_id, title, file e description
 			const videoUser = await userVideoRepository.findOne({ where: { video_id, user_id } });
-			const is_owner = false;
+			var is_owner = false;
 			const last_watch = new Date();
 
 			if (videoUser) {
 				//Pq isso
 				// Adicionar +1 em watch
-				const { is_owner, liked, reported } = videoUser;
+				var { is_owner, liked, reported } = videoUser;
 				var wat = videoUser.watches + 1;
 				await userVideoRepository.save({
 					id: videoUser.id,
@@ -47,7 +47,7 @@ class ActionVideoService {
 			} else {
 				const created_at = new Date();
 				const watches = 1;
-				const reported = false,
+				var reported = false,
 					report_text = '',
 					report_option = '';
 
