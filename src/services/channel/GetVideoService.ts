@@ -36,7 +36,7 @@ class GetVideoService {
 					select: ['id', 'title', 'thumb', 'created_at'],
 					where: { id: data[i].video_id, privacy: false },
 				});
-				var video_id = data[i].video_id;
+				var video_id = videoData?.id;
 				var watchesQuery = await userVideoRepository
 					.createQueryBuilder('user_videos')
 					.select('SUM(user_videos.watches)', 'sum')
