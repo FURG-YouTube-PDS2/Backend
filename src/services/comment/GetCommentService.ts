@@ -44,7 +44,7 @@ class GetCommentService {
 					if (user_id === comment[i].user_id) {
 						data.push({
 							id: comment[i].id,
-							user_id: token,
+							user_id: user_id,
 							nickname: user?.username,
 							src: user?.avatar,
 							comment: comment[i].text,
@@ -53,6 +53,7 @@ class GetCommentService {
 							likes: info.likes,
 							liked: info.liked,
 							edited: comment[i].edited,
+							is_owner: true,
 						});
 					} else {
 						data.push({
@@ -66,6 +67,7 @@ class GetCommentService {
 							likes: info.likes,
 							liked: info.liked,
 							edited: comment[i].edited,
+							is_owner: false,
 						});
 					}
 				}
@@ -94,7 +96,7 @@ class GetCommentService {
 						if (user_id === sec_comment[w].user_id) {
 							data.push({
 								id: sec_comment[w].id,
-								user_id: token,
+								user_id: user_id,
 								nickname: user?.username,
 								src: user?.avatar,
 								comment: sec_comment[w].text,
@@ -103,6 +105,7 @@ class GetCommentService {
 								likes: info.likes,
 								liked: info.liked,
 								edited: sec_comment[w].edited,
+								is_owner: true,
 							});
 						} else {
 							data.push({
@@ -116,6 +119,7 @@ class GetCommentService {
 								likes: info.likes,
 								liked: info.liked,
 								edited: sec_comment[w].edited,
+								is_owner: false,
 							});
 						}
 
