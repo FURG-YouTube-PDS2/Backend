@@ -31,8 +31,6 @@ commentsRouter.post('/sendComment', async (req, res) => {
 			throw new Error('id do usuario deve ser uma string.');
 		}
 		if (token && video_id) {
-			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
-
 			const Comment = new CommentCreateService();
 
 			const statusSubs = await Comment.execute({ token, text, video_id, reply_id });
@@ -54,8 +52,6 @@ commentsRouter.post('/getComment', async (req, res) => {
 			throw new Error('id do usuario deve ser uma string.');
 		}
 		if (video_id) {
-			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
-
 			const Comment = new GetCommentService();
 
 			const data = await Comment.execute({ token, video_id, numberSkip });
@@ -77,8 +73,6 @@ commentsRouter.post('/liked', async (req, res) => {
 			throw new Error('id do comentario deve ser uma string.');
 		}
 		if (token && comment_id) {
-			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
-
 			const sendLiked = new LikedCommentService();
 
 			const status = await sendLiked.execute({ token, comment_id, liked });
@@ -100,8 +94,6 @@ commentsRouter.put('/edit_comment', async (req, res) => {
 			throw new Error('id do comentario deve ser uma string.');
 		}
 		if (comment_id) {
-			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
-
 			const Comment = new EditCommentService();
 
 			const status = await Comment.execute({ text, comment_id });
@@ -123,8 +115,6 @@ commentsRouter.put('/delet_comment', async (req, res) => {
 			throw new Error('id do comentario deve ser uma string.');
 		}
 		if (comment_id) {
-			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
-
 			const comment = new DeleteCommentService();
 
 			const status = await comment.execute({ comment_id });

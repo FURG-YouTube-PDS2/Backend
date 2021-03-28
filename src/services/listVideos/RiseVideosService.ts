@@ -4,9 +4,10 @@ import { getRepository, getManager } from 'typeorm';
 import Video from '../../models/Video';
 import UserVideo from '../../models/UserVideo';
 import User from '../../models/User';
+import getDate from '../../util/getDate';
 
 interface Request {
-	numberSkip: string;
+	numberSkip: number;
 }
 
 class RiseVideosService {
@@ -52,11 +53,39 @@ class RiseVideosService {
 
 					// .addOrderBy('date', 'DESC')
 					.addOrderBy('views', 'DESC')
-					.limit(100)
-					.offset()
+					// .limit(100)
+					.offset(numberSkip)
 
 					.getRawMany();
-				return watsQuery;
+				var data = new Array();
+				var today = new Date();
+				for (let i = 0; i < watsQuery.length; i++) {
+					var currentMouth = today.getMonth();
+					var currentYear = today.getFullYear();
+					var currentDay = today.getDate();
+					var created_Year = watsQuery[i].date.getFullYear();
+					var created_Mouth = watsQuery[i].date.getMonth();
+					var created_Day = watsQuery[i].date.getDate();
+					if (currentYear === created_Year) {
+						if (currentMouth === created_Mouth) {
+							if (currentDay - created_Day <= 3) {
+								data.push({
+									id: watsQuery[i].v_id,
+									title: watsQuery[i].title,
+									description: watsQuery[i].description,
+									privacy: watsQuery[i].privacy,
+									thumb: watsQuery[i].thumb,
+									date: watsQuery[i].created_at,
+									is_owner: watsQuery[i].owner,
+									channel_id: watsQuery[i].channel_id,
+									views: watsQuery[i].views,
+									avatar: watsQuery[i].avatar,
+								});
+							}
+						}
+					}
+				}
+				return data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}
