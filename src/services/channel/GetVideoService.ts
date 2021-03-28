@@ -36,20 +36,22 @@ class GetVideoService {
 					select: ['id', 'title', 'thumb', 'created_at'],
 					where: { id: data[i].video_id, privacy: false },
 				});
-				var video_id = videoData?.id;
-				var watchesQuery = await userVideoRepository
-					.createQueryBuilder('user_videos')
-					.select('SUM(user_videos.watches)', 'sum')
-					.where('video_id = :video_id', { video_id })
-					.getRawOne();
-				var watches = watchesQuery.sum;
-				newData.push({
-					video_id: videoData?.id,
-					title: videoData?.title,
-					thumb: videoData?.thumb,
-					views: watches,
-					created_at: videoData?.created_at,
-				});
+				if (videoData) {
+					var video_id = videoData?.id;
+					var watchesQuery = await userVideoRepository
+						.createQueryBuilder('user_videos')
+						.select('SUM(user_videos.watches)', 'sum')
+						.where('video_id = :video_id', { video_id })
+						.getRawOne();
+					var watches = watchesQuery.sum;
+					newData.push({
+						video_id: videoData?.id,
+						title: videoData?.title,
+						thumb: videoData?.thumb,
+						views: watches,
+						created_at: videoData?.created_at,
+					});
+				}
 			}
 			var resolvedNewData = newData;
 			// console.log(resolvedData);
