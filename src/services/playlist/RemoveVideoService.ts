@@ -24,7 +24,7 @@ class RemoveVideoService {
 				});
 				const videos = await playVideoRepository.find({
 					where: { playlist_id: playlist_id },
-					order: { position: 1 },
+					order: { position: 'ASC' },
 				});
 				for (let i = 0; i < videos.length; i++) {
 					await playVideoRepository.save({
