@@ -28,6 +28,7 @@ class GetPlaylistsService {
 					const data = await playlistRepository.find({
 						select: ['id', 'name', 'created_at'],
 						where: { user_id: user_id },
+						order: { created_at: 'ASC' },
 					});
 					var newData = Array();
 					for (let i = 0; i < data.length; i++) {

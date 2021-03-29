@@ -29,7 +29,7 @@ export default function getButton(cond: number, id: string) {
                               style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;font-size:19px;color:rgba(0,0,0,0.87);line-height:20px;padding-top:20px;text-align:center">
                               Por Favor verifique seu email clicando no botão abaixo.<div
                                 style="padding-top:32px;text-align:center"><a
-                                  href="http://localhost:3000/#/confirmation/${id}" style="
+                                  href="http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3000/#/confirmation/${id}" style="
                                 box-shadow: inset 0px -3px 0px 0px white;
                                 background: linear-gradient(to bottom, #B3272C, #f03a41e1);
                                 border-radius: 6px;
@@ -101,7 +101,7 @@ export default function getButton(cond: number, id: string) {
                               style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;font-size:19px;color:rgba(0,0,0,0.87);line-height:20px;padding-top:20px;text-align:center">
                               Se sim clicar no link abaixo para altera-la.<div
                                 style="padding-top:32px;text-align:center"><a
-                                  href="http://localhost:3000/#/forgot_password/${id}" style="
+                                  href="http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3000/#/forgot_password/${id}" style="
                                 box-shadow: inset 0px -3px 0px 0px white;
                                 background: linear-gradient(to bottom, #B3272C, #f03a41e1);
                                 border-radius: 6px;

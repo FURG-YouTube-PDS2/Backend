@@ -65,10 +65,10 @@ playlistRouter.post('/add', async (req, res) => {
 
 playlistRouter.post('/edit', async (req, res) => {
 	try {
-		const { name, is_public, token, videos } = req.body;
+		const { name, is_public, token, videos, playlist_id } = req.body;
 
 		const edit = new EditPlaylistService();
-		const status = await edit.execute({ name, is_public, token, videos });
+		const status = await edit.execute({ name, is_public, token, videos, playlist_id });
 
 		res.status(200).json(status);
 	} catch (err) {
@@ -88,6 +88,7 @@ playlistRouter.post('/delete', async (req, res) => {
 		console.log(err);
 	}
 });
+
 playlistRouter.post('/remove', async (req, res) => {
 	try {
 		const { playlist_id, video_id } = req.body;
@@ -122,7 +123,7 @@ playlistRouter.post('/get', async (req, res) => {
 
 playlistRouter.post('/list', async (req, res) => {
 	try {
-		const { token, playlist_id, video_id } = req.body;
+		const { token, playlist_id } = req.body;
 
 		const Playlist = new GetAPlaylistService();
 		const statusPlaylist = await Playlist.execute({ token, playlist_id });
