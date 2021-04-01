@@ -13,12 +13,12 @@ class Mail {
 		};
 
 		const transporter = nodemailer.createTransport({
-			host: 'smtp.ethereal.email',
+			host: 'smtp.gmail.com',
 			port: 587,
-			secure: STARTTLS,
+			secure: false,
 			auth: {
-				user: 'terrill.balistreri@ethereal.email',
-				pass: 'CSFXWjhNdATAZa5gMF',
+				user: 'nintube.rg@gmail.com',
+				pass: 'youtoba2020',
 			},
 			tls: { rejectUnauthorized: false },
 		});
