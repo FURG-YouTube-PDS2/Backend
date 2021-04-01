@@ -23,7 +23,7 @@ class SendVideoService {
 		title,
 		privacy,
 		thumb,
-	}: Request): Promise<number> {
+	}: Request): Promise<string> {
 		try {
 			const videoRepository = getRepository(Video);
 			const userVideoRepository = getRepository(UserVideo);
@@ -60,7 +60,8 @@ class SendVideoService {
 					created_at,
 					last_watch: created_at,
 				});
-				return 1;
+
+				return video.id;
 			} else {
 				throw new Error('Erro ao resgatar repositório de vídeo.');
 			}

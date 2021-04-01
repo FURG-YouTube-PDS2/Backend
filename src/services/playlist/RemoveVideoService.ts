@@ -22,6 +22,17 @@ class RemoveVideoService {
 				await playVideoRepository.delete({
 					id: data?.id,
 				});
+				const videos = await playVideoRepository.find({
+					where: { playlist_id: playlist_id },
+					order: { position: 'ASC' },
+				});
+				for (let i = 0; i < videos.length; i++) {
+					await playVideoRepository.save({
+						id: videos[i].id,
+						position: i,
+						playlist_id,
+					});
+				}
 				return { status: 1 };
 			} else {
 				throw new Error('Erro ao resgatar repositório.');

@@ -56,8 +56,8 @@ videosRouter.post('/send', async (req, res) => {
 			} catch (e) {
 				console.log(e);
 			}
-			if (sent) {
-				return res.status(200).json({ status: 1 });
+			if (sent !== '') {
+				return res.status(200).json({ sent });
 			}
 		} else {
 			throw new Error('Token não recebido.');

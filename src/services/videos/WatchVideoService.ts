@@ -30,10 +30,10 @@ class WatchVideoService {
 			var target_id = infoVideo.owner_id;
 
 			if (token !== '') {
-				const is_subscribed = await subscribed.execute({ token, target_id });
+				var is_subscribed = await subscribed.execute({ token, target_id });
 				const user_id = checkJwt(token).sub;
 			} else {
-				const is_subscribed = false;
+				var is_subscribed = false;
 				const user_id = 'Ramdon';
 			}
 

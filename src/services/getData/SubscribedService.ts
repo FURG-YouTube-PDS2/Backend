@@ -14,7 +14,7 @@ interface Request {
 }
 
 class SubscribedService {
-	public async execute({ token, target_id }: Request): Promise<object> {
+	public async execute({ token, target_id }: Request): Promise<boolean> {
 		try {
 			const subscriptionRepository = getRepository(subscription);
 			const user_id = checkJwt(token).sub;
