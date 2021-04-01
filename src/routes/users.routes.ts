@@ -137,7 +137,7 @@ usersRouter.post('/subs', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
 		var { token, target_id } = req.body;
-		if (typeof target_id !== 'string') {
+		if (typeof target_id !== 'string' || typeof token !== 'string') {
 			throw new Error('id do usuario deve ser uma string.');
 		}
 		if (token && target_id) {
@@ -149,7 +149,7 @@ usersRouter.post('/subs', async (req, res) => {
 
 			res.status(200).json(statusSubs);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Token ou id do user não recebido.');
 		}
 	} catch (err) {
 		console.log(err);

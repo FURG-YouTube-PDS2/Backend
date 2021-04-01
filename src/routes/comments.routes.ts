@@ -26,9 +26,9 @@ const commentsRouter = Router();
 commentsRouter.post('/sendComment', async (req, res) => {
 	try {
 		var { token, text, video_id, reply_id } = req.body;
-		// console.log(req.body);
-		if (typeof video_id !== 'string') {
-			throw new Error('id do usuario deve ser uma string.');
+
+		if (typeof video_id !== 'string' || typeof token !== 'string') {
+			throw new Error('id do video e token deve ser uma string.');
 		}
 		if (token && video_id) {
 			const Comment = new CommentCreateService();
@@ -37,7 +37,7 @@ commentsRouter.post('/sendComment', async (req, res) => {
 
 			res.status(200).json(statusSubs);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Token ou Id do video não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
@@ -48,8 +48,8 @@ commentsRouter.post('/getComment', async (req, res) => {
 	try {
 		var { token, video_id, numberSkip } = req.body;
 		// console.log(req.body);
-		if (typeof video_id !== 'string') {
-			throw new Error('id do usuario deve ser uma string.');
+		if (typeof video_id !== 'string' || typeof token !== 'string') {
+			throw new Error('id do video e token deve ser uma string.');
 		}
 		if (video_id) {
 			const Comment = new GetCommentService();
@@ -58,7 +58,7 @@ commentsRouter.post('/getComment', async (req, res) => {
 
 			res.status(200).json(data);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Token ou Id do video não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
@@ -69,7 +69,7 @@ commentsRouter.post('/liked', async (req, res) => {
 	try {
 		var { token, comment_id, liked } = req.body;
 		// console.log(req.body);
-		if (typeof comment_id !== 'string') {
+		if (typeof comment_id !== 'string' || typeof token !== 'string') {
 			throw new Error('id do comentario deve ser uma string.');
 		}
 		if (token && comment_id) {
@@ -79,7 +79,7 @@ commentsRouter.post('/liked', async (req, res) => {
 
 			res.status(200).json(status);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Token ou Id do comentario não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
@@ -100,7 +100,7 @@ commentsRouter.put('/edit_comment', async (req, res) => {
 
 			res.status(200).json(status);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Id do comentario não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
@@ -121,7 +121,7 @@ commentsRouter.put('/delet_comment', async (req, res) => {
 
 			res.status(200).json(status);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Id do comentario não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
