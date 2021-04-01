@@ -23,7 +23,7 @@ class DescriptionVideoService {
 
 			const video = await videoRepository.findOne(video_id);
 
-			if (video) {
+			if (videoRepository) {
 				const user_owner = await userVideoRepository.findOne({
 					where: { video_id, is_owner: true },
 				});
@@ -38,6 +38,7 @@ class DescriptionVideoService {
 				});
 
 				const data = {
+					video_id,
 					owner_id: owner?.id,
 					owner_nick: owner?.username,
 					owner_avatar: owner?.avatar,

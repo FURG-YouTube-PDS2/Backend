@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken';
 
 import authConfig from '../config/auth';
 import User from '../models/User';
+import Mail from '../middlewares/sendMail';
 
 interface Request {
 	email: string;
@@ -50,6 +51,7 @@ class AuthenticateUserService {
 				token,
 			};
 		} else {
+			let result = Mail.sendMail(email, user.id, 0);
 			throw new Error(1); // 'Email não vefiricado.
 		}
 	}

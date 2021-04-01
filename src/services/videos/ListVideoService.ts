@@ -33,8 +33,6 @@ class ListVideoService {
 				);
 			}
 
-			console.log(newData);
-
 			return newData;
 		} catch (err) {
 			throw new Error(err);

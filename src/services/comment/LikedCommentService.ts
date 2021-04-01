@@ -43,7 +43,6 @@ class LikedCommentService {
 					where: { user_id: user_id },
 				});
 				if (nots) {
-					console.log('não');
 				} else {
 					const commentId = await CommentRepo.findOne({
 						select: ['video_id'],
