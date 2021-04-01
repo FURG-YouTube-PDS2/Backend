@@ -261,4 +261,21 @@ videosRouter.put('/report', async (req, res) => {
 	}
 });
 
+videosRouter.post('/recommended', async (req, res) =>{
+	try {
+		var { token, video_name, channel } = req.body;
+
+		if (token) {
+			const recSimilarVideosBuilder = new RecVideosService();
+			const recSimilarVideos = await recSimilarVideos.execute({
+				videos_list
+			});
+
+			res.status(200).json(recSimilarVideos);
+		}
+	} catch (error) {
+		console.log(error.message)
+	}
+});
+
 export default videosRouter;
