@@ -9,8 +9,8 @@ channelRouter.post('/info', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
 		const { user_id, token } = req.body;
-		if (typeof user_id !== 'string') {
-			throw new Error('id do usuario deve ser uma string.');
+		if (typeof user_id !== 'string' || typeof token !== 'string') {
+			throw new Error('id do usuario e token deve ser uma string.');
 		}
 		if (user_id || token) {
 			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
@@ -21,7 +21,7 @@ channelRouter.post('/info', async (req, res) => {
 
 			res.status(200).json(status);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Token ou Id não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
@@ -32,7 +32,7 @@ channelRouter.post('/videos', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
 		const { user_id, token } = req.body;
-		if (typeof user_id !== 'string') {
+		if (typeof user_id !== 'string' || typeof token !== 'string') {
 			throw new Error('id do usuario deve ser uma string.');
 		}
 		if (user_id || token) {
@@ -44,7 +44,7 @@ channelRouter.post('/videos', async (req, res) => {
 
 			res.status(200).json(status);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Token ou Id não recebido.');
 		}
 	} catch (err) {
 		console.log(err);

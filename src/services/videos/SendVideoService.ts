@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import uploadWithId from '../../middlewares/awsUpload';
 
 import checkJwt from '../../middlewares/checkJwt';
+import CreateNotificationService from '../notification/CreateNotificationService';
 
 import UserVideo from '../../models/UserVideo';
 import Video from '../../models/Video';
@@ -48,7 +49,7 @@ class SendVideoService {
 				//uploadWithId(,'video', user_id, title, 'mp4')
 
 				// LEMBRAR: E SE ISSO DER ERRO? JÁ VAI TER SALVO NO BANCO ANTERIOR E O VIDEO ESTARA NO SERVIDOR
-				await userVideoRepository.save({
+				const userVideo = await userVideoRepository.save({
 					user_id,
 					video_id: video.id,
 					liked: 0,
@@ -60,7 +61,13 @@ class SendVideoService {
 					created_at,
 					last_watch: created_at,
 				});
-
+				const notification = new CreateNotificationService();
+				const status = await notification.execute({
+					type: 'new_video',
+					action_id: video.id,
+					target_id: user_id,
+				});
+				// console.log(status);
 				return video.id;
 			} else {
 				throw new Error('Erro ao resgatar repositório de vídeo.');

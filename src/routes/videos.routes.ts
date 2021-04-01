@@ -215,7 +215,7 @@ videosRouter.post('/liked', async (req, res) => {
 	try {
 		var { token, video_id, liked } = req.body;
 		// console.log(req.body);
-		if (typeof video_id !== 'string') {
+		if (typeof token !== 'string') {
 			throw new Error('id do video deve ser uma string.');
 		}
 		if (token && video_id) {
@@ -238,7 +238,7 @@ videosRouter.put('/report', async (req, res) => {
 	try {
 		var { token, video_id, report_text, report_option } = req.body;
 		console.log(req.body);
-		if (typeof video_id !== 'string') {
+		if (typeof video_id !== 'string' || typeof token !== 'string') {
 			throw new Error('id do video deve ser uma string.');
 		}
 		if (token && video_id) {
@@ -255,7 +255,7 @@ videosRouter.put('/report', async (req, res) => {
 
 			res.status(200).json(sendReport);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('Token ou Id doS video não recebido.');
 		}
 	} catch (err) {
 		console.log(err);

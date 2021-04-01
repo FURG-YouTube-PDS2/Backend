@@ -18,24 +18,24 @@ class ListVideoService {
 			const videoRepo = getRepository(Video);
 			const user_id = checkJwt(token).sub;
 			// console.log(user_id);
-			var data = userVideoRepo.find({
+			var data = await userVideoRepo.find({
 				select: ['video_id'],
 				where: { user_id: user_id, is_owner: true },
 			});
-			var resolvedData = await data;
 			var newData = Array();
 
-			for (let index = 0; index < resolvedData.length; index++) {
+			for (let index = 0; index < data.length; index++) {
 				newData.push(
 					await videoRepo.find({
 						select: ['id', 'title', 'description', 'thumb', 'created_at', 'privacy'],
-						where: { id: resolvedData[index].video_id },
+						where: { id: data[index].video_id },
 					}),
 				);
 			}
-			var resolvedNewData = newData;
-			// console.log(resolvedData);
-			return resolvedNewData;
+
+			console.log(newData);
+
+			return newData;
 		} catch (err) {
 			throw new Error(err);
 		}
