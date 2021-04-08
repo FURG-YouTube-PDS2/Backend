@@ -71,7 +71,7 @@ class GetCommentService {
 						});
 					}
 				}
-				// console.log(data);
+				// (data);
 
 				// var vec_comments = new Array();
 				for (let j = 0; j < comment.length; j++) {
@@ -123,7 +123,7 @@ class GetCommentService {
 							});
 						}
 
-						// console.log(data);
+						// (data);
 					}
 				}
 

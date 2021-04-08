@@ -11,7 +11,7 @@ interface Request {
 	name: string;
 	playlist_id: string;
 	is_public: boolean;
-	videos: [];
+	// videos: [];
 }
 
 class EditPlaylistService {
@@ -19,7 +19,7 @@ class EditPlaylistService {
 		name,
 		is_public,
 		token,
-		videos,
+		// videos,
 		playlist_id,
 	}: Request): Promise<object> {
 		try {
@@ -38,14 +38,14 @@ class EditPlaylistService {
 					created_at,
 					user_id,
 				});
-				for (let i = 0; i < videos.length; i++) {
-					await playVideoRepository.save({
-						position: i,
-						playlist_id,
-						video_id: videos[i].id,
-						user_id,
-					});
-				}
+				// for (let i = 0; i < videos.length; i++) {
+				// 	await playVideoRepository.save({
+				// 		position: i,
+				// 		playlist_id,
+				// 		video_id: videos[i].id,
+				// 		user_id,
+				// 	});
+				// }
 
 				return { status: 1 };
 			} else {

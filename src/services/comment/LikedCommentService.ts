@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 
 import UserComment from '../../models/UserComment';
 import Comment from '../../models/Comment';
+import Notification from '../../models/Notification';
 import CreateNotificationService from '../notification/CreateNotificationService';
 import checkJwt from '../../middlewares/checkJwt';
 
@@ -23,6 +24,7 @@ class LikedCommentService {
 			const comment = await userCommentRepo.findOne({
 				where: { user_id: user_id, comment_id: comment_id },
 			});
+
 			const created_at = new Date();
 			const is_liked = comment ? true : false;
 			// Aqui temos video_id, title, file e description
@@ -34,26 +36,24 @@ class LikedCommentService {
 						comment_id,
 						created_at,
 					});
+					const commId = await CommentRepo.findOne({
+						where: { id: comment_id },
+					});
+					const nots = await notificationRepo.findOne({
+						where: { user_id: commId?.user_id, target_id: comment_id },
+					});
+
+					if (!nots) {
+						const notification = new CreateNotificationService();
+						const status = await notification.execute({
+							type: 'like_comment',
+							action_id: commId!.video_id,
+							target_id: comment_id,
+						});
+					}
 				} else {
 					await userCommentRepo.delete({
 						id: comment?.id,
-					});
-				}
-				const nots = await notificationRepo.findOne({
-					where: { user_id: user_id },
-				});
-				if (nots) {
-					console.log('não');
-				} else {
-					const commentId = await CommentRepo.findOne({
-						select: ['video_id'],
-						where: { id: comment_id },
-					});
-					const notification = new CreateNotificationService();
-					const status = await notification.execute({
-						type: 'like_comment',
-						action_id: commentId!.video_id,
-						target_id: comment_id,
 					});
 				}
 

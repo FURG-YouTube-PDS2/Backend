@@ -50,7 +50,7 @@ class CommentCreateService {
 					const status = await notification.execute({
 						type: 'comment',
 						action_id: video_id,
-						target_id: id!.id,
+						target_id: reply_id,
 					});
 				}
 

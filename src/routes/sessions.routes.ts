@@ -27,13 +27,12 @@ sessionsRouter.post('/', async (request, response) => {
 		return response.json({ status: 1, token, avatar: user!.avatar });
 	} catch (err) {
 		var errorMessage;
-		if (err.message === 1) {
-			errorMessage = 'Email não vefiricado.';
+		if (err.message == 1) {
+			errorMessage = 'Email não verificado.';
+			return response.json({ status: 0, errorMessage });
 		} else {
-			errorMessage = 'Combinação de email e senha incorreta.';
+			return response.status(400).json({ status: 0 });
 		}
-
-		return response.status(400).json({ status: 0, errorName: err.name, errorMessage });
 	}
 });
 

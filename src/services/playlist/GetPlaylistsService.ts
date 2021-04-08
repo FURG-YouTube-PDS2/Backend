@@ -59,7 +59,6 @@ class GetPlaylistsService {
 						select: ['id', 'name', 'created_at'],
 						where: { user_id: id_target, public: true },
 					});
-					console.log(id_target);
 					var newData = Array();
 					for (let i = 0; i < data.length; i++) {
 						const allVideos = await playlistVideoRepo.find({

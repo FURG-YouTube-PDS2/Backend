@@ -2,7 +2,8 @@ import { Router } from 'express';
 
 import { getRepository } from 'typeorm';
 
-import CommentCreateService from '../services/comment/CommentService';
+import GetNotificationService from '../services/notification/GetNotificationService';
+import ViewsNotsService from '../services/notification/ViewsNotsService';
 
 const notificationRouter = Router();
 
@@ -18,9 +19,27 @@ notificationRouter.post('/get', async (req, res) => {
 			throw new Error('id do usuario deve ser uma string.');
 		}
 		if (token) {
-			const Comment = new CommentCreateService();
+			const notif = new GetNotificationService();
 
-			const status = await Comment.execute({ token });
+			const status = await notif.execute({ token });
+
+			res.status(200).json(status);
+		} else {
+			throw new Error('Token não recebido.');
+		}
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+notificationRouter.post('/edit', async (req, res) => {
+	try {
+		var { nots } = req.body;
+
+		if (nots) {
+			const notif = new ViewsNotsService();
+
+			const status = await notif.execute({ nots });
 
 			res.status(200).json(status);
 		} else {

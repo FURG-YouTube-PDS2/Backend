@@ -13,6 +13,7 @@ import ActionVideoService from '../services/videos/ActionVideoService';
 import ReportService from '../services/getData/ReportService';
 import GetPlayerService from '../services/videos/GetPlayerService';
 import ListVideoService from '../services/videos/ListVideoService';
+import DeleteVideoService from '../services/videos/DeleteVideoService';
 
 import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
@@ -31,7 +32,7 @@ const videosRouter = Router();
 // videosRouter.post('/send', s3Upload({}).single('file'), async (req, res) => {
 videosRouter.post('/send', async (req, res) => {
 	try {
-		const { file, title, description, privacy, thumb } = req.body;
+		const { file, title, description, privacy, thumb, tags } = req.body;
 		if (req.headers.authorization) {
 			const token = req.headers.authorization;
 
@@ -53,6 +54,7 @@ videosRouter.post('/send', async (req, res) => {
 					description,
 					privacy,
 					thumb,
+					tags,
 				});
 			} catch (e) {
 				console.log(e);
@@ -237,7 +239,6 @@ videosRouter.post('/liked', async (req, res) => {
 videosRouter.put('/report', async (req, res) => {
 	try {
 		var { token, video_id, report_text, report_option } = req.body;
-		console.log(req.body);
 		if (typeof video_id !== 'string' || typeof token !== 'string') {
 			throw new Error('id do video deve ser uma string.');
 		}
@@ -262,7 +263,7 @@ videosRouter.put('/report', async (req, res) => {
 	}
 });
 
-videosRouter.post('/recommended', async (req, res) =>{
+videosRouter.post('/recommended', async (req, res) => {
 	// para recomendar videos similares ao assitido no momento.
 	// logica no service
 	try {
@@ -270,12 +271,34 @@ videosRouter.post('/recommended', async (req, res) =>{
 
 		const recSimilarVideosBuilder = new RecVideosService();
 		const recSimilarVideos = await recSimilarVideosBuilder.execute({
-			video_name, channel_id
+			video_name,
+			channel_id,
 		});
 
-			res.status(200).json(recSimilarVideos);
+		res.status(200).json(recSimilarVideos);
 	} catch (error) {
-		console.log(error.message)
+		console.log(error.message);
+	}
+});
+
+videosRouter.post('/delet', async (req, res) => {
+	// watch?v=DQMWPDM1P2M&t=20s
+	try {
+		var { video_id } = req.body;
+		if (typeof video_id !== 'string') {
+			throw new Error('id do video deve ser uma string.');
+		}
+		if (video_id) {
+			const delet_video = new DeleteVideoService();
+
+			const status = await delet_video.execute({ video_id });
+
+			res.status(200).json(status);
+		} else {
+			throw new Error('Id do video não recebido.');
+		}
+	} catch (err) {
+		console.log(err);
 	}
 });
 
