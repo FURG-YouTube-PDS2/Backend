@@ -6,6 +6,7 @@ import CreateNotificationService from '../notification/CreateNotificationService
 
 import UserVideo from '../../models/UserVideo';
 import Video from '../../models/Video';
+import TagsVideo from '../../models/TagsVideo';
 
 interface Request {
 	token: string;
@@ -14,6 +15,7 @@ interface Request {
 	description?: string;
 	privacy: boolean;
 	thumb: string;
+	tags: [];
 }
 
 class SendVideoService {
@@ -24,10 +26,12 @@ class SendVideoService {
 		title,
 		privacy,
 		thumb,
+		tags,
 	}: Request): Promise<string> {
 		try {
 			const videoRepository = getRepository(Video);
 			const userVideoRepository = getRepository(UserVideo);
+			const tagsVideoRepo = getRepository(TagsVideo);
 
 			const user_id = checkJwt(token).sub;
 
@@ -47,26 +51,34 @@ class SendVideoService {
 
 				//(file, type, id, title, extension)
 				//uploadWithId(,'video', user_id, title, 'mp4')
-
+				if (video) {
+					const userVideo = await userVideoRepository.save({
+						user_id,
+						video_id: video.id,
+						liked: 0,
+						reported: false,
+						report_option: '',
+						report_text: '',
+						watches: 0,
+						is_owner: true,
+						created_at,
+						last_watch: created_at,
+					});
+					const notification = new CreateNotificationService();
+					const status = await notification.execute({
+						type: 'new_video',
+						action_id: video.id,
+						target_id: user_id,
+					});
+					for (let i = 0; i < tags.length; i++) {
+						await tagsVideoRepo.save({
+							video_id: video.id,
+							tags_id: tags[i],
+						});
+					}
+				}
 				// LEMBRAR: E SE ISSO DER ERRO? JÁ VAI TER SALVO NO BANCO ANTERIOR E O VIDEO ESTARA NO SERVIDOR
-				const userVideo = await userVideoRepository.save({
-					user_id,
-					video_id: video.id,
-					liked: 0,
-					reported: false,
-					report_option: '',
-					report_text: '',
-					watches: 0,
-					is_owner: true,
-					created_at,
-					last_watch: created_at,
-				});
-				const notification = new CreateNotificationService();
-				const status = await notification.execute({
-					type: 'new_video',
-					action_id: video.id,
-					target_id: user_id,
-				});
+
 				// console.log(status);
 				return video.id;
 			} else {

@@ -32,7 +32,7 @@ const videosRouter = Router();
 // videosRouter.post('/send', s3Upload({}).single('file'), async (req, res) => {
 videosRouter.post('/send', async (req, res) => {
 	try {
-		const { file, title, description, privacy, thumb } = req.body;
+		const { file, title, description, privacy, thumb, tags } = req.body;
 		if (req.headers.authorization) {
 			const token = req.headers.authorization;
 
@@ -54,6 +54,7 @@ videosRouter.post('/send', async (req, res) => {
 					description,
 					privacy,
 					thumb,
+					tags,
 				});
 			} catch (e) {
 				console.log(e);
