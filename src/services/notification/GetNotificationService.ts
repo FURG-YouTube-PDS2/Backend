@@ -32,7 +32,7 @@ class GetNotificationService {
 				const all_nots = await notificationRepo.find({
 					where: { user_id: user_id },
 					take: 20,
-					order: { created_at: 'ASC' },
+					order: { created_at: 'DESC' },
 				});
 				var data = new Array();
 				for (let i = 0; i < all_nots.length; i++) {
@@ -46,6 +46,7 @@ class GetNotificationService {
 							where: { id: all_nots[i].target_id },
 						});
 						data.push({
+							id: all_nots[i].id,
 							avatar: user?.avatar,
 							name: user?.username,
 							type: all_nots[i].type,
@@ -53,6 +54,7 @@ class GetNotificationService {
 							thumb: video?.thumb,
 							date: all_nots[i].created_at,
 							readed: all_nots[i].readed,
+							video_id: all_nots[i].action_id,
 						});
 					} else if (all_nots[i].type === 'like_comment') {
 						var nin = await ninRepository.findOne({
@@ -67,6 +69,7 @@ class GetNotificationService {
 							where: { id: all_nots[i].target_id },
 						});
 						data.push({
+							id: all_nots[i].id,
 							avatar: nin?.file,
 							name: 'Alguém',
 							type: all_nots[i].type,
@@ -74,6 +77,7 @@ class GetNotificationService {
 							thumb: video?.thumb,
 							date: all_nots[i].created_at,
 							readed: all_nots[i].readed,
+							video_id: all_nots[i].action_id,
 						});
 					} else if (all_nots[i].type === 'comment') {
 						var nin = await ninRepository.findOne({
@@ -88,6 +92,7 @@ class GetNotificationService {
 							where: { id: all_nots[i].target_id },
 						});
 						data.push({
+							id: all_nots[i].id,
 							avatar: nin?.file,
 							name: 'Alguém',
 							type: all_nots[i].type,
@@ -95,6 +100,7 @@ class GetNotificationService {
 							thumb: video?.thumb,
 							date: all_nots[i].created_at,
 							readed: all_nots[i].readed,
+							video_id: all_nots[i].action_id,
 						});
 					}
 					// else if (all_nots[i].type === 'new_comment') {
