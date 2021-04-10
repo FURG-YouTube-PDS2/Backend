@@ -9,6 +9,8 @@ import commentsRouter from './comments.routes';
 import mediaProxy from './mediaProxy';
 import playlistRouter from './playlist.routes';
 import channelRouter from './channel.routes';
+import notificationRouter from './notification.routes';
+import recommendedRouter from './recommended.routes';
 
 const routes = Router();
 
@@ -25,5 +27,7 @@ routes.use('/nin', nintubeRouter);
 routes.use('/media', mediaProxy);
 routes.use('/comment', commentsRouter);
 routes.use('/channel', channelRouter);
+routes.use('/notification', notificationRouter);
+routes.use('/recommended', recommendedRouter);
 
 export default routes;

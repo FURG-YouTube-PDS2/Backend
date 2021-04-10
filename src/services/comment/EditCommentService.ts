@@ -34,7 +34,6 @@ class EditCommentService {
 					edited,
 					created_at,
 				};
-				console.log(Data);
 				return Data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');

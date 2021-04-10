@@ -58,13 +58,10 @@ emailRouter.post('/confirm_email', async (request, response) => {
 emailRouter.post('/edit_pass', async (request, response) => {
 	try {
 		const { id, password } = request.body;
-		console.log(id);
 		const nwId = id.id;
-		console.log(password);
 		const userRepository = getRepository(User);
 
 		const user = await userRepository.findOne({ where: { id } });
-		console.log(user);
 		if (!user) {
 			throw new Error('Usuario Não Existe.');
 		}

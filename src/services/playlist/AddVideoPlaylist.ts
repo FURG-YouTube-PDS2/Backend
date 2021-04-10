@@ -27,7 +27,6 @@ class AddVideoPlaylist {
 				position = data.length;
 			}
 			const created_at = new Date();
-			console.log(video_id);
 			// Aqui temos video_id, title, file e description
 			if (playVideoRepository) {
 				await playlistRepository.save({

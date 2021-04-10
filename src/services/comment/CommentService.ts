@@ -5,6 +5,7 @@ import Video from '../../models/Video';
 import UserVideo from '../../models/UserVideo';
 import User from '../../models/User';
 import Comment from '../../models/Comment';
+import CreateNotificationService from '../notification/CreateNotificationService';
 
 import checkJwt from '../../middlewares/checkJwt';
 
@@ -43,6 +44,15 @@ class CommentCreateService {
 					select: ['avatar', 'username'],
 					where: { id: user_id },
 				});
+
+				if (reply_id !== '') {
+					const notification = new CreateNotificationService();
+					const status = await notification.execute({
+						type: 'comment',
+						action_id: video_id,
+						target_id: reply_id,
+					});
+				}
 
 				const Data = {
 					id,

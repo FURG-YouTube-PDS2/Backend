@@ -39,11 +39,18 @@ homeRouter.post('/historic', async (req, res) => {
 	try {
 		const { numberSkip, token } = req.body;
 
-		const video = new HistoricService();
+		if (typeof token !== 'string') {
+			throw new Error('token deve ser uma string.');
+		}
+		if (token) {
+			const video = new HistoricService();
 
-		const data = await video.execute({ numberSkip, token });
+			const data = await video.execute({ numberSkip, token });
 
-		res.status(200).json(data);
+			res.status(200).json(data);
+		} else {
+			throw new Error('Token não recebido.');
+		}
 	} catch (err) {
 		console.log(err);
 	}

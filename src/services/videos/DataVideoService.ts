@@ -6,6 +6,8 @@ import UserVideo from '../../models/UserVideo';
 import User from '../../models/User';
 import Comment from '../../models/Comment';
 import Subscription from '../../models/Subscription';
+import TagsVideo from '../../models/TagsVideo';
+import Tags from '../../models/Tags';
 
 import checkJwt from '../../middlewares/checkJwt';
 
@@ -20,6 +22,8 @@ class DataVideoService {
 		try {
 			const videoRepository = getRepository(Video);
 			const userVideoRepository = getRepository(UserVideo);
+			const tagsVideoRepo = getRepository(TagsVideo);
+			const tagsRepo = getRepository(Tags);
 
 			const video = await videoRepository.findOne(video_id);
 
@@ -36,8 +40,21 @@ class DataVideoService {
 						thumb: video?.thumb,
 						privacy: video?.privacy,
 					};
+					const tags_id = await tagsVideoRepo.find({
+						where: { video_id },
+					});
+					var tags = new Array();
+					for (let i = 0; i < tags_id.length; i++) {
+						tags.push(
+							await tagsRepo.findOne({
+								select: ['id', 'name'],
+								where: { id: tags_id[i].tag_id },
+							}),
+						);
+					}
 					// console.log(data);
-					return data;
+					var status = { data: data, tags: tags };
+					return status;
 				} else {
 					return { status: 0 };
 				}
