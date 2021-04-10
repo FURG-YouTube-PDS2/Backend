@@ -6,6 +6,8 @@
   "author": "lucascust <lucascustodio@hotmail.com.br>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --builld --clean",
     "dev": "nodemon src/server.js",
     "dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
