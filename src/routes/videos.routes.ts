@@ -14,6 +14,7 @@ import ReportService from '../services/getData/ReportService';
 import GetPlayerService from '../services/videos/GetPlayerService';
 import ListVideoService from '../services/videos/ListVideoService';
 import DeleteVideoService from '../services/videos/DeleteVideoService';
+import GetRecommendedService from '../services/recommended/GetRecommendedService';
 
 import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
@@ -23,7 +24,6 @@ import EditVideoDataService from '../services/videos/EditVideoDataService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
-import RecVideosService from '../services/videos/RecVideosService';
 
 const videosRouter = Router();
 
@@ -72,7 +72,7 @@ videosRouter.post('/send', async (req, res) => {
 
 videosRouter.put('/edit', async (req, res) => {
 	try {
-		const { file, title, description, privacy, thumb, video_id } = req.body;
+		const { file, title, description, privacy, thumb, video_id, tags } = req.body;
 		if (req.headers.authorization) {
 			const token = req.headers.authorization;
 
@@ -88,6 +88,7 @@ videosRouter.put('/edit', async (req, res) => {
 					privacy,
 					thumb,
 					video_id,
+					tags,
 				});
 			} catch (e) {
 				console.log(e);
@@ -163,8 +164,11 @@ videosRouter.post('/getData', async (req, res) => {
 			const video = new DataVideoService();
 
 			const videoData = await video.execute({ token, video_id });
+			const tag = new GetRecommendedService();
 
-			res.status(200).json(videoData);
+			const status = await tag.execute({});
+
+			res.status(200).json({ videoData, rec: status });
 		} else {
 			throw new Error('Token não recebido.');
 		}
@@ -260,24 +264,6 @@ videosRouter.put('/report', async (req, res) => {
 		}
 	} catch (err) {
 		console.log(err);
-	}
-});
-
-videosRouter.post('/recommended', async (req, res) => {
-	// para recomendar videos similares ao assitido no momento.
-	// logica no service
-	try {
-		var { video_name, channel_id } = req.body;
-
-		const recSimilarVideosBuilder = new RecVideosService();
-		const recSimilarVideos = await recSimilarVideosBuilder.execute({
-			video_name,
-			channel_id,
-		});
-
-		res.status(200).json(recSimilarVideos);
-	} catch (error) {
-		console.log(error.message);
 	}
 });
 

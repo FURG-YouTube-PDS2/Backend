@@ -76,10 +76,19 @@ class EditVideoDataService {
 						thumb,
 					});
 				}
+				const tag_video = await tagsVideoRepo.find({
+					where: { video_id },
+				});
+				for (let i = 0; i < tag_video.length; i++) {
+					await tagsVideoRepo.delete({
+						id: tag_video[i].id,
+					});
+				}
 				for (let i = 0; i < tags.length; i++) {
 					await tagsVideoRepo.save({
 						video_id,
-						tags_id: tags[i],
+						tag_id: tags[i],
+						created_at,
 					});
 				}
 				return 1;
