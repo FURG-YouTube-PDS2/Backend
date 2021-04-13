@@ -114,7 +114,6 @@ class GetVideosService {
 						}),
 					);
 				}
-				console.log(Data);
 
 				for (let i = 0; i < Data.length; i++) {
 					var userVideo = await userVideoRepository.findOne({
