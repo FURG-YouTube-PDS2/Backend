@@ -98,15 +98,15 @@ playlistRouter.post('/edit', async (req, res) => {
 	}
 });
 
-playlistRouter.post('/delete', async (req, res) => {
+playlistRouter.post('/delet', async (req, res) => {
 	try {
-		const { playlist_id } = req.body;
+		const { playlist_id, token } = req.body;
 		if (typeof playlist_id !== 'string') {
 			throw new Error('id da playlist deve ser uma string.');
 		}
 		if (playlist_id) {
 			const deletePlaylist = new DeletePlaylistService();
-			const status = await deletePlaylist.execute({ playlist_id });
+			const status = await deletePlaylist.execute({ playlist_id, token });
 			res.status(200).json(status);
 		} else {
 			throw new Error('Id da playlist não recebido.');

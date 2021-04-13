@@ -4,6 +4,8 @@ import { getRepository } from 'typeorm';
 import Video from '../../models/Video';
 import User from '../../models/User';
 import Subscription from '../../models/Subscription';
+import TagsVideo from '../../models/TagsVideo';
+import Tags from '../../models/Tags';
 
 import checkJwt from '../../middlewares/checkJwt';
 import ActionVideoService from './ActionVideoService';
@@ -21,6 +23,8 @@ class WatchVideoService {
 		try {
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
+			const tagsVideoRepo = getRepository(TagsVideo);
+			const tagsRepo = getRepository(Tags);
 
 			const actionVideo = new ActionVideoService();
 			const descVideo = new DescriptionVideoService();
@@ -58,11 +62,23 @@ class WatchVideoService {
 				reported: varVideo.reported,
 				is_subscribed,
 			};
+			const tags_id = await tagsVideoRepo.find({
+				where: { video_id },
+			});
+			var tags = new Array();
+			for (let i = 0; i < tags_id.length; i++) {
+				tags.push(
+					await tagsRepo.findOne({
+						select: ['id', 'name'],
+						where: { id: tags_id[i].tag_id },
+					}),
+				);
+			}
 			// console.log(pageData);
 			// const pageData = {
 			// 	status: 1,
 			// };
-			return pageData;
+			return { pageData, tags };
 		} catch (err) {
 			throw new Error(err);
 		}
