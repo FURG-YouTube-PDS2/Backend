@@ -80,17 +80,22 @@ class GetLibraryService {
 							select: ['thumb'],
 							where: { id: allVideos[0].video_id },
 						});
+						newData.push({
+							id: dataPlaylist[i].id,
+							name: dataPlaylist[i].name,
+							created_at: dataPlaylist[i].created_at,
+							all_videos: allVideos.length,
+							thumb: videoThumb?.thumb,
+						});
 					} else {
-						var videoThumb = { thumb: 'undefined' };
+						newData.push({
+							id: dataPlaylist[i].id,
+							name: dataPlaylist[i].name,
+							created_at: dataPlaylist[i].created_at,
+							all_videos: allVideos.length,
+							thumb: 'undefined',
+						});
 					}
-
-					newData.push({
-						id: dataPlaylist[i].id,
-						name: dataPlaylist[i].name,
-						created_at: dataPlaylist[i].created_at,
-						all_videos: allVideos.length,
-						thumb: videoThumb?.thumb,
-					});
 				}
 				var data = Array();
 				for (let i = 0; i < newData.length; i++) {
@@ -101,7 +106,7 @@ class GetLibraryService {
 					}
 				}
 
-				return { id_videos_lik, videos_lik, id_videos_later, videos_lat, data };
+				return { id_videos_lik, videos_lik, id_videos_later, videos_lat, playlist: data };
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}

@@ -14,7 +14,7 @@ class ViewsNotsService {
 			if (notificationRepo) {
 				for (let i = 0; i < nots.length; i++) {
 					await notificationRepo.save({
-						id: nots[i].id,
+						id: nots[i],
 						readed: true,
 					});
 				}
