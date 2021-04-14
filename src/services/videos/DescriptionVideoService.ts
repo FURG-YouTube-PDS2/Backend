@@ -21,6 +21,7 @@ interface Response {
 	title: string;
 	description: string;
 	thumb: string;
+	views: number;
 }
 
 // Não finalizado, verificar funcionamento e aprimorar erro handling
@@ -47,6 +48,12 @@ class DescriptionVideoService {
 				const subs = await subscriptionRepository.count({
 					where: { user_target: user_id },
 				});
+				var watchesQuery = await userVideoRepository
+					.createQueryBuilder('user_videos')
+					.select('SUM(user_videos.watches)', 'sum')
+					.where('video_id = :videoId', { video_id })
+					.getRawOne();
+				var watches = watchesQuery.sum;
 
 				// const data = {
 				// 	video_id,
@@ -68,6 +75,7 @@ class DescriptionVideoService {
 					title: video!.title,
 					description: video!.description,
 					thumb: video!.thumb,
+					views: watches,
 				};
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
