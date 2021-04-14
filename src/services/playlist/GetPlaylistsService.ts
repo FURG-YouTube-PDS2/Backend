@@ -41,8 +41,6 @@ class GetPlaylistsService {
 								select: ['thumb'],
 								where: { id: allVideos[0].video_id },
 							});
-						} else {
-							var videoThumb = { thumb: 'undefined' };
 						}
 
 						newData.push({
@@ -70,8 +68,6 @@ class GetPlaylistsService {
 								select: ['thumb'],
 								where: { id: allVideos[0].video_id },
 							});
-						} else {
-							var videoThumb = { thumb: 'undefined' };
 						}
 						newData.push({
 							id: data[i].id,

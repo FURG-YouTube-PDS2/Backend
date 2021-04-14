@@ -27,6 +27,8 @@ git remote add upstream https://github.com/FURG-YouTube-PDS2/Backend
 git pull upstream master
 ```
 
+# Build:
+yarn build
 
 ## Autores
 * **Lucas Custodio** - *Colaborador* - [lucascust](https://github.com/lucascust)

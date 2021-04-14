@@ -25,6 +25,9 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
 
+import RecVideosService from '../services/recommended/RecVideosService';
+
+
 const videosRouter = Router();
 
 // O vídeo é enviado no middleware dentro da requisição
@@ -88,7 +91,7 @@ videosRouter.put('/edit', async (req, res) => {
 					privacy,
 					thumb,
 					video_id,
-					tags,
+					tags
 				});
 			} catch (e) {
 				console.log(e);
@@ -264,6 +267,23 @@ videosRouter.put('/report', async (req, res) => {
 		}
 	} catch (err) {
 		console.log(err);
+	}
+});
+
+videosRouter.post('/recommended', async (req, res) => {
+	// para recomendar videos similares ao assitido no momento.
+	// logica no service
+	try {
+		var { video_id } = req.body;
+
+		const recSimilarVideosBuilder = new RecVideosService();
+		const recSimilarVideos = await recSimilarVideosBuilder.execute({
+			video_id,
+		});
+
+		res.status(200).json(recSimilarVideos);
+	} catch (error) {
+		console.log(error.message);
 	}
 });
 

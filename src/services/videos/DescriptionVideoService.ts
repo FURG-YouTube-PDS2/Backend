@@ -1,4 +1,4 @@
-import { Response as res } from 'express';
+/*import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
 import Video from '../../models/Video';
@@ -58,4 +58,4 @@ class DescriptionVideoService {
 	}
 }
 
-export default DescriptionVideoService;
+export default DescriptionVideoService;*/

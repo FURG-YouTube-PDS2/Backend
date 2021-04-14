@@ -33,7 +33,7 @@ class AddVideoPlaylist {
 					id: playlist_id,
 					created_at,
 				});
-				const plt = await playVideoRepository.save({
+				var plt = await playVideoRepository.save({
 					position,
 					playlist_id,
 					video_id,
