@@ -34,7 +34,6 @@ class SendVideoService {
 			const tagsVideoRepo = getRepository(TagsVideo);
 
 			const user_id = checkJwt(token).sub;
-
 			const created_at = new Date();
 			// console.log('Troquei');
 
@@ -70,11 +69,14 @@ class SendVideoService {
 						action_id: video.id,
 						target_id: user_id,
 					});
+
 					for (let i = 0; i < tags.length; i++) {
-						await tagsVideoRepo.save({
+						var tag = await tagsVideoRepo.save({
 							video_id: video.id,
-							tags_id: tags[i],
+							tag_id: tags[i],
+							created_at,
 						});
+						// console.log(tag);
 					}
 				}
 				// LEMBRAR: E SE ISSO DER ERRO? JÁ VAI TER SALVO NO BANCO ANTERIOR E O VIDEO ESTARA NO SERVIDOR

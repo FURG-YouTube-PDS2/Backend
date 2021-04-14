@@ -11,6 +11,7 @@ import playlistRouter from './playlist.routes';
 import channelRouter from './channel.routes';
 import notificationRouter from './notification.routes';
 import recommendedRouter from './recommended.routes';
+import searchRouter from './search.routes';
 
 const routes = Router();
 
@@ -29,5 +30,6 @@ routes.use('/comment', commentsRouter);
 routes.use('/channel', channelRouter);
 routes.use('/notification', notificationRouter);
 routes.use('/recommended', recommendedRouter);
+routes.use('/search', searchRouter);
 
 export default routes;

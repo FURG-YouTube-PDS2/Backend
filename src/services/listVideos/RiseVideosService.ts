@@ -74,16 +74,18 @@ class RiseVideosService {
 									description: watsQuery[i].description,
 									privacy: watsQuery[i].privacy,
 									thumb: watsQuery[i].thumb,
-									date: watsQuery[i].created_at,
+									channel: watsQuery[i].channel,
+									date: watsQuery[i].date,
 									is_owner: watsQuery[i].owner,
 									channel_id: watsQuery[i].channel_id,
 									views: watsQuery[i].views,
-									avatar: watsQuery[i].avatar,
+									// avatar: watsQuery[i].avatar,
 								});
 							}
 						}
 					}
 				}
+
 				return data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
