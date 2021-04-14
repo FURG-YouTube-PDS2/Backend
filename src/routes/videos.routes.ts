@@ -23,7 +23,7 @@ import EditVideoDataService from '../services/videos/EditVideoDataService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
-import RecVideosService from '../services/videos/RecVideosService';
+import RecVideosService from '../services/recommended/RecVideosService';
 
 const videosRouter = Router();
 
@@ -72,7 +72,7 @@ videosRouter.post('/send', async (req, res) => {
 
 videosRouter.put('/edit', async (req, res) => {
 	try {
-		const { file, title, description, privacy, thumb, video_id } = req.body;
+		const { file, title, description, privacy, thumb, video_id, tags } = req.body;
 		if (req.headers.authorization) {
 			const token = req.headers.authorization;
 
@@ -88,6 +88,7 @@ videosRouter.put('/edit', async (req, res) => {
 					privacy,
 					thumb,
 					video_id,
+					tags
 				});
 			} catch (e) {
 				console.log(e);
@@ -267,12 +268,11 @@ videosRouter.post('/recommended', async (req, res) => {
 	// para recomendar videos similares ao assitido no momento.
 	// logica no service
 	try {
-		var { video_name, channel_id } = req.body;
+		var { video_id } = req.body;
 
 		const recSimilarVideosBuilder = new RecVideosService();
 		const recSimilarVideos = await recSimilarVideosBuilder.execute({
-			video_name,
-			channel_id,
+			video_id,
 		});
 
 		res.status(200).json(recSimilarVideos);

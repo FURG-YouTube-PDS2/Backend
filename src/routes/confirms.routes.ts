@@ -86,7 +86,7 @@ emailRouter.post('/send', async (request, response) => {
 	if (token === '') {
 		const userRepo = getRepository(User);
 		const user = await userRepo.findOne({ email });
-		id = user?.id;
+		id = String(user?.id);
 	} else {
 		id = checkJwt(token).sub;
 	}

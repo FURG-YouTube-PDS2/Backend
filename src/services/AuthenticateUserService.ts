@@ -22,7 +22,7 @@ class AuthenticateUserService {
 		const user = await usersRepository.findOne({ where: { email, password } });
 		// console.log(user);
 		if (!user) {
-			throw new Error(0); // 'Combinação de email e senha incorreta.'
+			throw new Error(); // 'Combinação de email e senha incorreta.'
 		}
 
 		// user.password - Senha criptografada
@@ -52,7 +52,7 @@ class AuthenticateUserService {
 			};
 		} else {
 			let result = Mail.sendMail(email, user.id, 0);
-			throw new Error(1); // 'Email não vefiricado.
+			throw new Error(); // 'Email não vefiricado.
 		}
 	}
 }

@@ -4,7 +4,6 @@ import { getRepository, getManager } from 'typeorm';
 import Video from '../../models/Video';
 import UserVideo from '../../models/UserVideo';
 import User from '../../models/User';
-import getDate from '../../util/getDate';
 
 interface Request {
 	numberSkip: number;
