@@ -1,4 +1,4 @@
-/*import { Response as res } from 'express';
+import { Response as res } from 'express';
 import { getRepository } from 'typeorm';
 
 import Video from '../../models/Video';
@@ -12,9 +12,20 @@ interface Request {
 	video_id: string;
 }
 
+interface Response {
+	video_id: string;
+	owner_id: string;
+	owner_nick: string;
+	owner_avatar: string;
+	all_subs: number;
+	title: string;
+	description: string;
+	thumb: string;
+}
+
 // Não finalizado, verificar funcionamento e aprimorar erro handling
 class DescriptionVideoService {
-	public async execute({ video_id }: Request): Promise<object> {
+	public async execute({ video_id }: Request): Promise<Response> {
 		try {
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
@@ -37,18 +48,27 @@ class DescriptionVideoService {
 					where: { user_target: user_id },
 				});
 
-				const data = {
-					video_id,
-					owner_id: owner?.id,
-					owner_nick: owner?.username,
-					owner_avatar: owner?.avatar,
-					all_subs: subs,
-					title: video?.title,
-					description: video?.description,
-					thumb: video?.thumb,
-				};
+				// const data = {
+				// 	video_id,
+				// 	owner_id: owner?.id,
+				// 	owner_nick: owner?.username,
+				// 	owner_avatar: owner?.avatar,
+				// 	all_subs: subs,
+				// 	title: video?.title,
+				// 	description: video?.description,
+				// 	thumb: video?.thumb,
+				// };
 				// console.log(data);
-				return data;
+				return {
+					video_id,
+					owner_id: owner!.id,
+					owner_nick: owner!.username,
+					owner_avatar: owner!.avatar,
+					all_subs: subs,
+					title: video!.title,
+					description: video!.description,
+					thumb: video!.thumb,
+				};
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}
@@ -58,4 +78,4 @@ class DescriptionVideoService {
 	}
 }
 
-export default DescriptionVideoService;*/
+export default DescriptionVideoService;
