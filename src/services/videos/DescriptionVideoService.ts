@@ -51,7 +51,7 @@ class DescriptionVideoService {
 				var watchesQuery = await userVideoRepository
 					.createQueryBuilder('user_videos')
 					.select('SUM(user_videos.watches)', 'sum')
-					.where('video_id = :videoId', { video_id })
+					.where('video_id = :video_id', { video_id })
 					.getRawOne();
 				var watches = watchesQuery.sum;
 
