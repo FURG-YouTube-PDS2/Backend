@@ -27,7 +27,7 @@ sessionsRouter.post('/', async (request, response) => {
 		return response.json({ status: 1, token, avatar: user!.avatar });
 	} catch (err) {
 		var errorMessage;
-		if (err.message == 1) {
+		if (err.message == '0') {
 			errorMessage = 'Email não verificado.';
 			return response.json({ status: 0, errorMessage });
 		} else {

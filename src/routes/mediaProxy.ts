@@ -26,58 +26,6 @@ mediaProxy.get('/*', async (req, res) => {
 		var file_name = file.split('/')[1];
 		// consoletype.log();
 
-		// if (type == 'image') {
-		// 	const userRepository = getRepository(User);
-		// 	const user = await userRepository.findOne({ where: { avatar: file } });
-		// 	if (user) {
-		// 		//connect to bucket and get file
-		// 		var imgStream = s3
-		// 			.getObject({
-		// 				Bucket: aws_bucket,
-		// 				Key: file,
-		// 			})
-		// 			.createReadStream();
-		// 		//pipe file to response
-		// 		imgStream.pipe(res);
-		// 	}
-		// }
-
-		// if (type === 'video' && req.headers.authorization) {
-		// 	const token = req.headers.authorization;
-		// 	var user_id = checkJwt(token).sub;
-
-		// 	//privacy verification (private) below
-
-		// 	const videoRepository = getRepository(Video);
-		// 	const video = await videoRepository.findOne({ where: { file } });
-		// 	const userVideoRepository = getRepository(UserVideo);
-		// 	const userVideo = await userVideoRepository.findOne({
-		// 		where: [{ user_id, video_id: video?.id } /* tumb test */],
-		// 	});
-
-		// 	if (video && video?.private && userVideo && userVideo?.is_owner) {
-		// 		//connect to bucket and get file
-		// 		var imgStream = s3
-		// 			.getObject({
-		// 				Bucket: aws_bucket,
-		// 				Key: file,
-		// 			})
-		// 			.createReadStream();
-		// 		//pipe file to response
-		// 		imgStream.pipe(res);
-		// 	}
-
-		// 	if (video && !video?.private) {
-		// 		//connect to bucket and get file
-		// 		var imgStream = s3
-		// 			.getObject({
-		// 				Bucket: aws_bucket,
-		// 				Key: file,
-		// 			})
-		// 			.createReadStream();
-		// 		//pipe file to response
-		// 		imgStream.pipe(res);
-		// 	}
 		// }
 
 		if (file_type == 'nintube') {
@@ -91,16 +39,6 @@ mediaProxy.get('/*', async (req, res) => {
 			res.send(img);
 			// imgStream.pipe(res);
 		}
-
-		//connect to bucket and get file
-		// var imgStream = s3
-		// 	.getObject({
-		// 		Bucket: aws_bucket,
-		// 		Key: 'nintube/404.png',
-		// 	})
-		// 	.createReadStream();
-		// //pipe file to response
-		// imgStream.pipe(res);
 	} catch (err) {
 		res.status(400).json({ status: 0, errorName: err, errorMessage: err.message });
 	}
