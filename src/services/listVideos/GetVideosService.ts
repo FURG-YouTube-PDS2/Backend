@@ -20,12 +20,12 @@ class GetVideosService {
 			const tagsVideoRepo = getRepository(TagsVideo);
 			const userRepository = getRepository(User);
 			const userVideoRepository = getRepository(UserVideo);
-
+			console.log(token);
 			if (videoRepository && userRepository && userVideoRepository) {
-				if (token !== '') {
-					var user_id = checkJwt(token).sub;
-				} else {
+				if (token === '') {
 					var user_id = 'Random';
+				} else {
+					var user_id = checkJwt(token).sub;
 				}
 
 				const hist_videos = await userVideoRepository.find({

@@ -21,7 +21,11 @@ class GetCommentService {
 			const usersRepository = getRepository(User);
 			const videoRepo = getRepository(Video);
 			const infoComment = new DataCommentService();
-			const user_id = checkJwt(token).sub;
+			if (token === '') {
+				var user_id = 'random';
+			} else {
+				var user_id = checkJwt(token).sub;
+			}
 
 			var exists_video = await videoRepo.findOne({
 				id: video_id,
