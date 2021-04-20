@@ -80,9 +80,11 @@ usersRouter.post('/signup', async (request, response) => {
 			return response.status(200).json({ status: 1 });
 		}
 	} catch (err) {
-		return response
-			.status(400)
-			.json({ status: 0, errorName: err.name, errorMessage: err.message });
+		var errorMessage;
+		if (err.message == '1') {
+			errorMessage = 'Email Já Cadastrado';
+		}
+		return response.json({ status: 0, errorName: err.name, errorMessage });
 	}
 });
 

@@ -13,8 +13,13 @@ interface Request {
 	video_id: string;
 }
 
+interface Response {
+	status: number;
+	id: string;
+}
+
 class CreatePlaylistService {
-	public async execute({ name, is_public, token, fixed, video_id }: Request): Promise<object> {
+	public async execute({ name, is_public, token, fixed, video_id }: Request): Promise<Response> {
 		try {
 			const playlistRepository = getRepository(Playlist);
 			const user_id = checkJwt(token).sub;
@@ -35,9 +40,9 @@ class CreatePlaylistService {
 					where: { name, user_id },
 				});
 				if (video_id !== '') {
-					return { id: data?.id, position: 0 };
+					return { status: 0, id: data!.id };
 				} else {
-					return { status: 1, id: data?.id };
+					return { status: 1, id: data!.id };
 				}
 			} else {
 				throw new Error('Erro ao resgatar repositório.');

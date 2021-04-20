@@ -31,15 +31,11 @@ playlistRouter.post('/create', async (req, res) => {
 			if (video_id !== '') {
 				const addVideo = new AddVideoPlaylist();
 				var statusAdd = await addVideo.execute({
-					position: statusPlaylist.position,
+					position: statusPlaylist.status,
 					token,
 					video_id,
 					playlist_id: statusPlaylist.id,
 				});
-				var status = {
-					status: statusAdd.status,
-					id: statusPlaylist.id,
-				};
 				res.status(200).json(statusAdd);
 			} else {
 				res.status(200).json(statusPlaylist);
@@ -88,8 +84,7 @@ playlistRouter.post('/edit', async (req, res) => {
 		}
 		if (playlist_id && token) {
 			const edit = new EditPlaylistService();
-			const status = await edit.execute({ name, is_public, token,
-				 playlist_id });
+			const status = await edit.execute({ name, is_public, token, videos, playlist_id });
 			res.status(200).json(status);
 		} else {
 			throw new Error('Token ou Id da playlist não recebido.');

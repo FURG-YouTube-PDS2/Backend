@@ -27,20 +27,24 @@ class GetSubsVideos {
 					where: { user_subscriber: user_id },
 				});
 				var videos = new Array();
+
 				for (let i = 0; i < subs.length; i++) {
 					var video_ids = await userVideoRepository.find({
 						select: ['video_id'],
 						where: { user_id: subs[i].user_target, is_owner: true },
 					});
-					var all_videos = await videoRepository.find({
-						select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
-						where: {
-							id: video_ids[i].video_id,
-							privacy: false,
-						},
-					});
-					for (let j = 0; j < all_videos.length; j++) {
-						videos.push(all_videos[j]);
+
+					for (let j = 0; j < video_ids.length; j++) {
+						videos.push(
+							await videoRepository.findOne({
+								select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
+								where: {
+									id: video_ids[j].video_id,
+									privacy: false,
+								},
+								order: { created_at: 'DESC' },
+							}),
+						);
 					}
 				}
 
@@ -74,8 +78,8 @@ class GetSubsVideos {
 						thumb: videos[i].thumb,
 					});
 				}
-				console.log(newData);
-				return { newData: 1 };
+
+				return newData;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}

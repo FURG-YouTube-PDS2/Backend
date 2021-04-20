@@ -12,9 +12,14 @@ interface Request {
 	comment_id: string;
 }
 
+interface Response {
+	likes: number;
+	liked: number;
+}
+
 // Não finalizado, verificar funcionamento e aprimorar erro handling
 class DataCommentService {
-	public async execute({ user_id, comment_id }: Request): Promise<object> {
+	public async execute({ user_id, comment_id }: Request): Promise<Response> {
 		try {
 			const userRepository = getRepository(User);
 			const UserCommentRepo = getRepository(UserComment);

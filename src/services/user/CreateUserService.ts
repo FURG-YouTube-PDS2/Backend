@@ -29,26 +29,32 @@ class CreateUserService {
 
 		const created_at = new Date();
 		const updated_at = new Date();
-
-		const userData = userRepository.create({
-			username,
-			email,
-			password,
-			created_at,
-			updated_at,
-			avatar,
-			birthdate,
-			gender,
-			phone,
-			verified: false,
+		const exist = await userRepository.findOne({
+			where: { email },
 		});
+		if (!exist) {
+			const userData = userRepository.create({
+				username,
+				email,
+				password,
+				created_at,
+				updated_at,
+				avatar,
+				birthdate,
+				gender,
+				phone,
+				verified: false,
+			});
 
-		// efetivamente salva o usuario no banco de dados
-		await userRepository.save(userData);
+			// efetivamente salva o usuario no banco de dados
+			await userRepository.save(userData);
 
-		const user = await userRepository.findOne({ where: { email } });
+			const user = await userRepository.findOne({ where: { email } });
 
-		return user!.id;
+			return user!.id;
+		} else {
+			throw new Error('1');
+		}
 	}
 }
 

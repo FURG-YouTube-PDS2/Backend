@@ -14,9 +14,17 @@ interface Request {
 	token: string;
 }
 
+interface Response {
+	watches: number;
+	likes: number;
+	dislikes: number;
+	liked: number;
+	reported: boolean;
+}
+
 // Não finalizado, verificar funcionamento e aprimorar erro handling
 class ActionVideoService {
-	public async execute({ video_id, token }: Request): Promise<object> {
+	public async execute({ video_id, token }: Request): Promise<Response> {
 		try {
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
@@ -73,10 +81,10 @@ class ActionVideoService {
 				.select('SUM(user_videos.watches)', 'sum')
 				.where('video_id = :video_id', { video_id })
 				.getRawOne();
-			const watches = watchesQuery.sum;
+			var watches = watchesQuery.sum;
 
 			// Count Likes
-			const likes = await userVideoRepository
+			var likes = await userVideoRepository
 				.createQueryBuilder('user_videos')
 				.select('user_videos.liked')
 				.where('user_videos.liked = 1 and video_id = :video_id', { video_id })
@@ -84,7 +92,7 @@ class ActionVideoService {
 				.getCount();
 
 			// Count Dislikes
-			const dislikes = await userVideoRepository
+			var dislikes = await userVideoRepository
 				.createQueryBuilder('user_videos')
 				.select('user_videos.liked')
 				.where('user_videos.liked = -1 and video_id = :video_id', { video_id })
@@ -101,7 +109,13 @@ class ActionVideoService {
 			};
 			// console.log(videoData);
 
-			return videoData;
+			return {
+				watches,
+				likes,
+				dislikes,
+				liked,
+				reported,
+			};
 		} catch (err) {
 			throw new Error(err);
 		}
