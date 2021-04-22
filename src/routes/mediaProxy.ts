@@ -8,15 +8,15 @@ import Nintube from '../models/Nintube';
 
 import checkJwt from '../middlewares/checkJwt';
 import aws from 'aws-sdk';
-import awsConfig from '../config/aws';
+//import awsConfig from '../config/aws';
 const mediaProxy = Router();
 
-const s3 = new aws.S3({
+/*const s3 = new aws.S3({
 	accessKeyId: awsConfig.accessKeyId,
 	secretAccessKey: awsConfig.secretAccessKey,
-});
+});*/
 
-const aws_bucket = awsConfig.bucketName;
+//const aws_bucket = awsConfig.bucketName;
 
 mediaProxy.get('/*', async (req, res) => {
 	try {
