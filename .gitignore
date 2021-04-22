@@ -153,5 +153,4 @@ dist
 /src/config
 
 ormconfig.json
-yarn.lock
 
