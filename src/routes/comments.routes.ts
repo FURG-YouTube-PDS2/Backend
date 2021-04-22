@@ -8,7 +8,7 @@ import GetCommentService from '../services/comment/GetCommentService';
 import EditCommentService from '../services/comment/EditCommentService';
 import DeleteCommentService from '../services/comment/DeleteCommentService';
 
-import uploadWithId from '../middlewares/awsUpload';
+//import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
 
 import User from '../models/User';

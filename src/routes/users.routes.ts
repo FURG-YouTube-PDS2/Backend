@@ -14,8 +14,8 @@ import SubscriptionService from '../services/user/SubscriptionService';
 import GetToken from '../services/GetToken';
 
 import User from '../models/User';
-import s3Upload from '../middlewares/awsS3Upload';
-import uploadWithId from '../middlewares/awsUpload';
+//import s3Upload from '../middlewares/awsS3Upload';
+//import uploadWithId from '../middlewares/awsUpload';
 
 import { create } from 'domain';
 import { parse } from 'path';
