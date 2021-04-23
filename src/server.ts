@@ -1,8 +1,7 @@
-import express from 'express';
 import 'reflect-metadata';
+import express from 'express';
 import './database';
 import routes from './routes';
-import 'reflect-metadata';
 // import bodyParser from 'body-parser';
 import cors from 'cors';
 

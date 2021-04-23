@@ -5,34 +5,27 @@
 	"repository": "https://github.com/lucascust/Backend.git",
 	"author": "lucascust <lucascustodio@hotmail.com.br>",
 	"license": "MIT",
-	"type": "module",
 	"scripts": {
 		"build": "babel --extensions \".ts, .tsx\" src --out-dir build",
 		"clean": "tsc --builld --clean",
 		"dev": "nodemon src/server.js",
 		"dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
 		"start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-		"run_build": "node --experimental-specifier-resolution=node build/server.js",
-	"scripts": {
-		"build": "tsc --build",
-		"clean": "tsc --builld --clean",
-		"dev": "nodemon src/server.js",
-		"dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-		"start": "cross-env NODE_ENV=production node dist/server.js",
-
+		"run_build": "node --experimental-modules --harmony --experimental-specifier-resolution=node build/server.js",
 		"debug": "nodemon --inspect src/server.js",
 		"typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
 		"run_migrations": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
 		"lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix"
 	},
 	"dependencies": {
-
 		"@babel/cli": "^7.13.16",
 		"@babel/core": "^7.13.16",
 		"@babel/node": "^7.13.13",
 		"@babel/plugin-proposal-decorators": "^7.13.15",
+		"@babel/plugin-transform-runtime": "^7.13.15",
+		"@babel/preset-env": "^7.13.15",
 		"@babel/preset-typescript": "^7.13.0",
-
+		"@babel/runtime": "^7.13.17",
 		"@types/cors": "^2.8.8",
 		"@types/express": "^4.17.9",
 		"@types/multer": "^1.4.4",
@@ -72,17 +65,16 @@
 		"@types/node": "^14.14.7",
 		"@typescript-eslint/eslint-plugin": "^4.8.2",
 		"@typescript-eslint/parser": "^4.8.2",
-
 		"babel-core": "^7.0.0-bridge.0",
 		"babel-jest": "^26.6.3",
+		"babel-plugin-transform-class-properties": "^6.24.1",
+		"babel-plugin-transform-typescript-metadata": "^0.3.2",
 		"eslint": "^7.14.0",
 		"eslint-config-prettier": "^6.15.0",
 		"eslint-plugin-prettier": "^3.1.4",
 		"nodemon": "^2.0.2",
 		"prettier": "^2.2.0",
-
 		"regenerator-runtime": "^0.13.7",
-
 		"sucrase": "^3.12.1",
 		"ts-node-dev": "^1.1.1"
 	}

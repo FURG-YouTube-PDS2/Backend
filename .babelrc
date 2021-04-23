@@ -1,5 +1,6 @@
 {
-	"presets": ["@babel/preset-typescript"],
-	"plugins": [["@babel/plugin-proposal-decorators", { "legacy": true }]],
-	"ignore": ["node_modules/"]
+	"presets": ["@babel/preset-typescript", "@babel/preset-env"],
+	"plugins": [    "babel-plugin-transform-typescript-metadata", "@babel/transform-runtime",
+		["@babel/plugin-proposal-decorators", { "legacy": true }], "@babel/plugin-proposal-class-properties"] ,
+	"ignore": ["node_modules/", "src/database/migrations/"]
 }
