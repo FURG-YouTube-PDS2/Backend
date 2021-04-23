@@ -13,13 +13,6 @@
 		"dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
 		"start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
 		"run_build": "node --experimental-specifier-resolution=node build/server.js",
-	"scripts": {
-		"build": "tsc --build",
-		"clean": "tsc --builld --clean",
-		"dev": "nodemon src/server.js",
-		"dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-		"start": "cross-env NODE_ENV=production node dist/server.js",
-
 		"debug": "nodemon --inspect src/server.js",
 		"typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
 		"run_migrations": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
@@ -85,5 +78,4 @@
 
 		"sucrase": "^3.12.1",
 		"ts-node-dev": "^1.1.1"
-	}
-}
+	}}
