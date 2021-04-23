@@ -6,7 +6,7 @@ import 'reflect-metadata';
 // import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import awsConfig from './config/aws';
+//import awsConfig from './config/aws';
 
 const app = express();
 var bodyParser = require('body-parser');

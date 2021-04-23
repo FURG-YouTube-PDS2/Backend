@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { getRepository } from 'typeorm';
 
-import s3Upload from '../middlewares/awsS3Upload';
+//import s3Upload from '../middlewares/awsS3Upload';
 import SendVideoService from '../services/videos/SendVideoService';
 import WatchVideoService from '../services/videos/WatchVideoService';
 import DataVideoService from '../services/videos/DataVideoService';
@@ -16,7 +16,7 @@ import ListVideoService from '../services/videos/ListVideoService';
 import DeleteVideoService from '../services/videos/DeleteVideoService';
 import GetRecommendedService from '../services/recommended/GetRecommendedService';
 
-import uploadWithId from '../middlewares/awsUpload';
+//import uploadWithId from '../middlewares/awsUpload';
 import checkJwt from '../middlewares/checkJwt';
 
 import User from '../models/User';
@@ -26,7 +26,6 @@ import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
 
 import RecVideosService from '../services/recommended/RecVideosService';
-
 
 const videosRouter = Router();
 
@@ -91,7 +90,7 @@ videosRouter.put('/edit', async (req, res) => {
 					privacy,
 					thumb,
 					video_id,
-					tags
+					tags,
 				});
 			} catch (e) {
 				console.log(e);

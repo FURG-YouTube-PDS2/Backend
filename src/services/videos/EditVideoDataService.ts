@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import uploadWithId from '../../middlewares/awsUpload';
+//import uploadWithId from '../../middlewares/awsUpload';
 
 import checkJwt from '../../middlewares/checkJwt';
 
