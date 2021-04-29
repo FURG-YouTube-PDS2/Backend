@@ -37,7 +37,7 @@ class HistoricService {
 
 				for (let i = 0; i < hist_videos.length; i++) {
 					var videos = await videoRepository.findOne({
-						select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
+						select: ['id', 'title', 'thumb', 'description', 'created_at', 'privacy'],
 
 						where: {
 							id: hist_videos[i].video_id,
@@ -66,6 +66,8 @@ class HistoricService {
 						id: videos?.id,
 						title: videos?.title,
 						channel: user?.username,
+						description: videos?.description,
+						c_id: user?.id,
 						views: watches,
 						date: videos?.created_at,
 						avatar: user?.avatar,

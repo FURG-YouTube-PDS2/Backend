@@ -20,7 +20,7 @@ class GetVideosService {
 			const tagsVideoRepo = getRepository(TagsVideo);
 			const userRepository = getRepository(User);
 			const userVideoRepository = getRepository(UserVideo);
-			console.log(token);
+			// console.log(token);
 			if (videoRepository && userRepository && userVideoRepository) {
 				if (token === '') {
 					var user_id = 'Random';
