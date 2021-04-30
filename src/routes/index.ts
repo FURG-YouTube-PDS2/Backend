@@ -12,6 +12,7 @@ import channelRouter from './channel.routes';
 import notificationRouter from './notification.routes';
 import recommendedRouter from './recommended.routes';
 import searchRouter from './search.routes';
+import statisticRouter from './statistic.routes';
 
 const routes = Router();
 
@@ -31,5 +32,6 @@ routes.use('/channel', channelRouter);
 routes.use('/notification', notificationRouter);
 routes.use('/recommended', recommendedRouter);
 routes.use('/search', searchRouter);
+routes.use('/statistic', statisticRouter);
 
 export default routes;

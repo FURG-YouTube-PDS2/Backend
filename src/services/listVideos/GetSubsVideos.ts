@@ -28,6 +28,21 @@ class GetSubsVideos {
 				});
 				var videos = new Array();
 
+				var users_id = new Array();
+				for (let i = 0; i < subs.length; i++) {
+					users_id.push(subs[i].user_target);
+				}
+
+				const channels = await userRepository
+					.createQueryBuilder('user')
+					.select('username')
+					.addSelect('avatar')
+					.addSelect('id')
+					.where('id IN (:...users_id)', {
+						users_id,
+					})
+					.getRawMany();
+
 				for (let i = 0; i < subs.length; i++) {
 					var video_ids = await userVideoRepository.find({
 						select: ['video_id'],
@@ -79,7 +94,7 @@ class GetSubsVideos {
 					});
 				}
 
-				return newData;
+				return { channels, videos: newData };
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}

@@ -20,7 +20,7 @@ class RiseVideosService {
 				// var id = '6925afb8-498f-40e7-a10d-7486c72ef408';
 				var watsQuery = await getManager()
 					.createQueryBuilder(Video, 'v')
-					.addSelect('v.id', 'v_id')
+					.select('v.id', 'id')
 					.addSelect('v.title', 'title')
 					.addSelect('v.description', 'description')
 					.addSelect('v.privacy', 'privacy')
@@ -48,7 +48,7 @@ class RiseVideosService {
 					}, 'avatar')
 					// .addSelect('SUM(uv.watches)', 'watches')
 					.innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
-					.where('uv.is_owner = true')
+					.where('extract(day from NOW()-v.created_at) < 5 AND uv.is_owner = true')
 
 					// .addOrderBy('date', 'DESC')
 					.addOrderBy('views', 'DESC')
@@ -56,37 +56,39 @@ class RiseVideosService {
 					.offset(numberSkip)
 
 					.getRawMany();
-				var data = new Array();
-				var today = new Date();
-				for (let i = 0; i < watsQuery.length; i++) {
-					var currentMouth = today.getMonth();
-					var currentYear = today.getFullYear();
-					var currentDay = today.getDate();
-					var created_Year = watsQuery[i].date.getFullYear();
-					var created_Mouth = watsQuery[i].date.getMonth();
-					var created_Day = watsQuery[i].date.getDate();
-					if (currentYear === created_Year) {
-						if (currentMouth === created_Mouth) {
-							if (currentDay - created_Day <= 3) {
-								data.push({
-									id: watsQuery[i].v_id,
-									title: watsQuery[i].title,
-									description: watsQuery[i].description,
-									privacy: watsQuery[i].privacy,
-									thumb: watsQuery[i].thumb,
-									channel: watsQuery[i].channel,
-									date: watsQuery[i].date,
-									is_owner: watsQuery[i].owner,
-									channel_id: watsQuery[i].channel_id,
-									views: watsQuery[i].views,
-									// avatar: watsQuery[i].avatar,
-								});
-							}
-						}
-					}
-				}
 
-				return data;
+				// console.log(watsQuery);
+				var data = new Array();
+				// var today = new Date();
+				// for (let i = 0; i < watsQuery.length; i++) {
+				// 	var currentMouth = today.getMonth();
+				// 	var currentYear = today.getFullYear();
+				// 	var currentDay = today.getDate();
+				// 	var created_Year = watsQuery[i].date.getFullYear();
+				// 	var created_Mouth = watsQuery[i].date.getMonth();
+				// 	var created_Day = watsQuery[i].date.getDate();
+				// 	if (currentYear === created_Year) {
+				// 		if (currentMouth === created_Mouth) {
+				// 			if (currentDay - created_Day <= 3) {
+				// 				data.push({
+				// 					id: watsQuery[i].v_id,
+				// 					title: watsQuery[i].title,
+				// 					description: watsQuery[i].description,
+				// 					privacy: watsQuery[i].privacy,
+				// 					thumb: watsQuery[i].thumb,
+				// 					channel: watsQuery[i].channel,
+				// 					date: watsQuery[i].date,
+				// 					is_owner: watsQuery[i].owner,
+				// 					channel_id: watsQuery[i].channel_id,
+				// 					views: watsQuery[i].views,
+				// 					// avatar: watsQuery[i].avatar,
+				// 				});
+				// 			}
+				// 		}
+				// 	}
+				// }
+
+				return watsQuery;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}
