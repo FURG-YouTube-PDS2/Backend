@@ -13,6 +13,7 @@ import notificationRouter from './notification.routes';
 import recommendedRouter from './recommended.routes';
 import searchRouter from './search.routes';
 import statisticRouter from './statistic.routes';
+import chatRouter from './chat.routes';
 
 const routes = Router();
 
@@ -33,5 +34,6 @@ routes.use('/notification', notificationRouter);
 routes.use('/recommended', recommendedRouter);
 routes.use('/search', searchRouter);
 routes.use('/statistic', statisticRouter);
+routes.use('/livestream', chatRouter);
 
 export default routes;
