@@ -107,6 +107,45 @@ class SearchService {
 						videos_id.push(resultVideo[i].video_id);
 					}
 
+					if (videos_id.length === 0) {
+						var videos = new Array();
+					} else {
+						var videos = await getManager()
+							.createQueryBuilder(Video, 'v')
+							.select('v.id', 'id')
+							.addSelect('v.title', 'title')
+							.addSelect('v.description', 'description')
+							.addSelect('v.privacy', 'privacy')
+							.addSelect('v.thumb', 'thumb')
+							.addSelect('v.created_at', 'created_at')
+							.addSelect('uv.is_owner', 'owner')
+							.addSelect('uv.user_id', 'channel_id')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('SUM(uv.watches)', 'views')
+									.from(UserVideo, 'uv')
+									.where('uv.video_id = v.id');
+							}, 'views')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('u.username', 'channel_name')
+									.from(User, 'u')
+									.where('u.id = uv.user_id');
+							}, 'channel_name')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('u.avatar', 'avatar')
+									.from(User, 'u')
+									.where('u.id = uv.user_id');
+							}, 'avatar')
+							.innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
+							.where(
+								'v.privacy = false AND v.id IN(:...videos_id) AND uv.is_owner = true',
+								{ videos_id },
+							)
+							.getRawMany();
+					}
+
 					var resultUser = await getManager()
 						.createQueryBuilder(User, 'u')
 						.select('u.id', 'id')
@@ -134,46 +173,12 @@ class SearchService {
 						}, 'video_count')
 						// .innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
 						.where('u.username ~*:searchTerm', { searchTerm: input })
-						.take(2)
+						// .take(2)
 						.getRawMany();
 
-					var videos = await getManager()
-						.createQueryBuilder(Video, 'v')
-						.select('v.id', 'id')
-						.addSelect('v.title', 'title')
-						.addSelect('v.description', 'description')
-						.addSelect('v.privacy', 'privacy')
-						.addSelect('v.thumb', 'thumb')
-						.addSelect('v.created_at', 'created_at')
-						.addSelect('uv.is_owner', 'owner')
-						.addSelect('uv.user_id', 'channel_id')
-						.addSelect((subQuery) => {
-							return subQuery
-								.select('SUM(uv.watches)', 'views')
-								.from(UserVideo, 'uv')
-								.where('uv.video_id = v.id');
-						}, 'views')
-						.addSelect((subQuery) => {
-							return subQuery
-								.select('u.username', 'channel_name')
-								.from(User, 'u')
-								.where('u.id = uv.user_id');
-						}, 'channel_name')
-						.addSelect((subQuery) => {
-							return subQuery
-								.select('u.avatar', 'avatar')
-								.from(User, 'u')
-								.where('u.id = uv.user_id');
-						}, 'avatar')
-						.innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
-						.where(
-							'v.privacy = false AND v.id IN(:...videos_id) AND uv.is_owner = true',
-							{ videos_id },
-						)
-						.getRawMany();
 					var data = {
 						videos,
-						channels: resultVideo,
+						channels: resultUser,
 					};
 					return data;
 				}
