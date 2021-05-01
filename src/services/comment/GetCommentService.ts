@@ -95,7 +95,7 @@ class GetCommentService {
 								reply_id: comment[j].id,
 							},
 							order: {
-								created_at: 'DESC',
+								created_at: 'ASC',
 							},
 						});
 						for (let w = 0; w < sec_comment.length; w++) {

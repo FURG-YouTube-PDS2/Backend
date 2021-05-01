@@ -48,7 +48,9 @@ class RiseVideosService {
 					}, 'avatar')
 					// .addSelect('SUM(uv.watches)', 'watches')
 					.innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
-					.where('extract(day from NOW()-v.created_at) < 5 AND uv.is_owner = true')
+					.where(
+						'v.privacy = false AND extract(day from NOW()-v.created_at) < 5 AND uv.is_owner = true',
+					)
 
 					// .addOrderBy('date', 'DESC')
 					.addOrderBy('views', 'DESC')
