@@ -37,7 +37,6 @@ class DataVideoService {
 					const data = {
 						title: video?.title,
 						description: video?.description,
-						thumb: video?.thumb,
 						privacy: video?.privacy,
 					};
 					const tags_id = await tagsVideoRepo.find({

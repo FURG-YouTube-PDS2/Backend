@@ -41,7 +41,7 @@ class CommentCreateService {
 					where: { video_id, user_id, reply_id, created_at, text },
 				});
 				const user = await userRepository.findOne({
-					select: ['avatar', 'username'],
+					select: ['username'],
 					where: { id: user_id },
 				});
 
@@ -57,7 +57,6 @@ class CommentCreateService {
 				const Data = {
 					id,
 					username: user?.username,
-					src: user?.avatar,
 					text,
 					created_at,
 					edited,

@@ -27,7 +27,7 @@ class ListVideoService {
 			for (let index = 0; index < data.length; index++) {
 				newData.push(
 					await videoRepo.find({
-						select: ['id', 'title', 'description', 'thumb', 'created_at', 'privacy'],
+						select: ['id', 'title', 'description', 'created_at', 'privacy'],
 						where: { id: data[index].video_id },
 					}),
 				);

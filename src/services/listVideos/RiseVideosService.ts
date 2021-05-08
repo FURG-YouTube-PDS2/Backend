@@ -24,7 +24,6 @@ class RiseVideosService {
 					.addSelect('v.title', 'title')
 					.addSelect('v.description', 'description')
 					.addSelect('v.privacy', 'privacy')
-					.addSelect('v.thumb', 'thumb')
 					.addSelect('v.created_at', 'date')
 					.addSelect('uv.is_owner', 'owner')
 					.addSelect('uv.user_id', 'channel_id')
@@ -40,12 +39,7 @@ class RiseVideosService {
 							.from(User, 'u')
 							.where('u.id = uv.user_id');
 					}, 'channel')
-					.addSelect((subQuery) => {
-						return subQuery
-							.select('u.avatar', 'avatar')
-							.from(User, 'u')
-							.where('u.id = uv.user_id');
-					}, 'avatar')
+
 					// .addSelect('SUM(uv.watches)', 'watches')
 					.innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
 					.where(
@@ -77,13 +71,11 @@ class RiseVideosService {
 				// 					title: watsQuery[i].title,
 				// 					description: watsQuery[i].description,
 				// 					privacy: watsQuery[i].privacy,
-				// 					thumb: watsQuery[i].thumb,
 				// 					channel: watsQuery[i].channel,
 				// 					date: watsQuery[i].date,
 				// 					is_owner: watsQuery[i].owner,
 				// 					channel_id: watsQuery[i].channel_id,
 				// 					views: watsQuery[i].views,
-				// 					// avatar: watsQuery[i].avatar,
 				// 				});
 				// 			}
 				// 		}
