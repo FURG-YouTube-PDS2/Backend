@@ -7,10 +7,10 @@ interface Request {
 	username: string;
 	email: string;
 	password: string;
-	avatar: string;
 	birthdate: Date;
 	gender: string;
 	phone: string;
+	avatar: string;
 }
 
 class CreateUserService {
@@ -18,8 +18,8 @@ class CreateUserService {
 		username,
 		email,
 		password,
-		avatar,
 		birthdate,
+		avatar,
 		gender,
 		phone,
 	}: Request): Promise<string> {

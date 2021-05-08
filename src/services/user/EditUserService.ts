@@ -22,10 +22,10 @@ class EditUserService {
 		username,
 		email,
 		password,
+		avatar,
 		birthdate,
 		phone,
 		gender,
-		avatar,
 	}: Request): Promise<number> {
 		const userRepository = getRepository(User);
 
@@ -45,8 +45,8 @@ class EditUserService {
 				birthdate,
 				updated_at,
 				gender,
-				phone,
 				avatar,
+				phone,
 			});
 		} else {
 			throw new Error('Usuário não encontrado.');

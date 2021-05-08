@@ -49,7 +49,6 @@ class DescriptionChannelService {
 
 				const data = {
 					channel_nick: user?.username,
-					channel_avatar: user?.avatar,
 					all_subs: subs,
 					is_subs,
 					is_owner,

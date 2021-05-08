@@ -106,7 +106,7 @@ class GetVideosService {
 				for (let w = 0; w < videos_id.length; w++) {
 					Data.push(
 						await videoRepository.findOne({
-							select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
+							select: ['id', 'title', 'created_at', 'privacy'],
 							where: {
 								id: videos_id[w],
 								privacy: false,
@@ -120,7 +120,7 @@ class GetVideosService {
 						where: { video_id: Data[i].id, is_owner: true },
 					});
 					var user = await userRepository.findOne({
-						select: ['id', 'username', 'avatar'],
+						select: ['id', 'username'],
 						where: { id: userVideo?.user_id },
 					});
 					var video_id = Data[i].id;
@@ -138,9 +138,7 @@ class GetVideosService {
 						channel: user?.username,
 						views: watches,
 						date: Data[i].created_at,
-						avatar: user?.avatar,
 						channel_id: user?.id,
-						thumb: Data[i].thumb,
 					});
 				}
 				// console.log(newData);

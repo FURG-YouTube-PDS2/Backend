@@ -55,7 +55,6 @@ class WatchVideoService {
 					owner,
 					owner_id: infoVideo.owner_id,
 					owner_nick: infoVideo.owner_nick,
-					owner_avatar: infoVideo.owner_avatar,
 					all_subs: infoVideo.all_subs,
 					title: infoVideo.title,
 					description: infoVideo.description,
