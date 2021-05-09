@@ -33,7 +33,7 @@ class GetVideoService {
 
 			for (let i = 0; i < data.length; i++) {
 				var videoData = await videoRepo.findOne({
-					select: ['id', 'title', 'thumb', 'created_at'],
+					select: ['id', 'title', 'created_at'],
 					where: { id: data[i].video_id, privacy: false },
 				});
 				if (videoData) {
@@ -47,7 +47,6 @@ class GetVideoService {
 					newData.push({
 						video_id: videoData?.id,
 						title: videoData?.title,
-						thumb: videoData?.thumb,
 						views: watches,
 						created_at: videoData?.created_at,
 					});

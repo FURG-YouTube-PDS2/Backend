@@ -16,11 +16,9 @@ interface Response {
 	video_id: string;
 	owner_id: string;
 	owner_nick: string;
-	owner_avatar: string;
 	all_subs: number;
 	title: string;
 	description: string;
-	thumb: string;
 	views: number;
 }
 
@@ -63,18 +61,15 @@ class DescriptionVideoService {
 				// 	all_subs: subs,
 				// 	title: video?.title,
 				// 	description: video?.description,
-				// 	thumb: video?.thumb,
 				// };
 				// console.log(data);
 				return {
 					video_id,
 					owner_id: owner!.id,
 					owner_nick: owner!.username,
-					owner_avatar: owner!.avatar,
 					all_subs: subs,
 					title: video!.title,
 					description: video!.description,
-					thumb: video!.thumb,
 					views: watches,
 				};
 			} else {

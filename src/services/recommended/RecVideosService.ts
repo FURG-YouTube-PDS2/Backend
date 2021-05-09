@@ -50,7 +50,7 @@ class RecVideosService {
 			for (let idx = 0; idx < videos.length; idx++) {
 				videosData.push(
 					await videoRepo.findOne({
-						select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
+						select: ['id', 'title', 'created_at', 'privacy'],
 						where: {
 							privacy: false,
 							id: videos[idx],
@@ -66,7 +66,7 @@ class RecVideosService {
 					where: { video_id: videosData[i].id, is_owner: true },
 				});
 				var user = await userRepository.findOne({
-					select: ['id', 'username', 'avatar'],
+					select: ['id', 'username'],
 					where: { id: userVideo?.user_id },
 				});
 				var videoId = videosData[i].id;
@@ -85,9 +85,7 @@ class RecVideosService {
 					channel: user?.username,
 					views: watches,
 					date: videosData[i].created_at,
-					avatar: user?.avatar,
 					channel_id: user?.id,
-					thumb: videosData[i].thumb,
 				});
 			}
 			return newData;

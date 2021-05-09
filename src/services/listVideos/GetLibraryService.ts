@@ -94,7 +94,6 @@ class GetLibraryService {
 							name: dataPlaylist[i].name,
 							created_at: dataPlaylist[i].created_at,
 							all_videos: allVideos.length,
-							thumb: 'undefined',
 						});
 					}
 				}

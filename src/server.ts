@@ -10,7 +10,7 @@ const app = express();
 
 var bodyParser = require('body-parser');
 
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.json({ limit: '100mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(express.json());

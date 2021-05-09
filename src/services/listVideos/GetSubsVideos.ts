@@ -36,7 +36,6 @@ class GetSubsVideos {
 				const channels = await userRepository
 					.createQueryBuilder('user')
 					.select('username')
-					.addSelect('avatar')
 					.addSelect('id')
 					.where('id IN (:...users_id)', {
 						users_id,
@@ -52,7 +51,7 @@ class GetSubsVideos {
 					for (let j = 0; j < video_ids.length; j++) {
 						videos.push(
 							await videoRepository.findOne({
-								select: ['id', 'title', 'thumb', 'created_at', 'privacy'],
+								select: ['id', 'title', 'created_at', 'privacy'],
 								where: {
 									id: video_ids[j].video_id,
 									privacy: false,
@@ -70,7 +69,7 @@ class GetSubsVideos {
 						where: { video_id: videos[i].id, is_owner: true },
 					});
 					var user = await userRepository.findOne({
-						select: ['id', 'username', 'avatar'],
+						select: ['id', 'username'],
 						where: { id: userVideo?.user_id },
 					});
 					var video_id = videos[i].id;
@@ -88,9 +87,7 @@ class GetSubsVideos {
 						channel: user?.username,
 						views: watches,
 						date: videos[i].created_at,
-						avatar: user?.avatar,
 						channel_id: user?.id,
-						thumb: videos[i].thumb,
 					});
 				}
 
