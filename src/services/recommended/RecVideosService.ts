@@ -16,11 +16,10 @@ class RecVideosService {
 		const userRepository = getRepository(User);
 		const userVideoRepository = getRepository(UserVideo);
 
-		// console.log(video_id);
-
 		var exists_video = await videoRepo.findOne({
 			id: video_id,
 		});
+
 		if (exists_video) {
 			var tags = await tagsVideoRepo.find({
 				select: ['tag_id'],
@@ -31,21 +30,18 @@ class RecVideosService {
 			var id = new Array();
 
 			for (let i = 0; i < tags.length; i++) {
-				if (videos.length <= 20) {
-					var tag = await tagsVideoRepo.find({
-						select: ['video_id'],
-						where: { tag_id: tags[i].tag_id },
-					});
-					for (let x = 0; x < tag.length; x++) {
-						var cond = true;
-						for (let w = 0; w < videos.length; w++) {
-							if (tag[x].video_id === videos[w]) {
-								cond = false;
-							}
-						}
-						if (cond) {
-							videos.push(tag[x].video_id);
-						}
+				id.push(tags[i].tag_id);
+			}
+			var tag = await tagsVideoRepo
+				.createQueryBuilder('tags_video')
+				.select('video_id')
+				.where('video_id != (:video_id) AND tag_id IN (:...id)', { video_id, id })
+				.getRawMany();
+
+			for (let x = 0; x < tag.length; x++) {
+				if (x < 20) {
+					if (!videos.includes(tag[x].video_id)) {
+						videos.push(tag[x].video_id);
 					}
 				}
 			}
@@ -62,7 +58,6 @@ class RecVideosService {
 					}),
 				);
 			}
-
 			var newData = new Array();
 			// console.log(videos.length);
 
@@ -78,7 +73,7 @@ class RecVideosService {
 				var watchesQuery = await userVideoRepository
 					.createQueryBuilder('user_videos')
 					.select('SUM(user_videos.watches)', 'sum')
-					.where('video_id = :videoId', { videoId })
+					.where('video_id = (:videoId)', { videoId })
 					.getRawOne();
 				var watches = watchesQuery.sum;
 				// console.log(watches);
@@ -95,7 +90,6 @@ class RecVideosService {
 					thumb: videosData[i].thumb,
 				});
 			}
-
 			return newData;
 		} else {
 			return [{ status: 0 }];

@@ -6,6 +6,8 @@ import Tags from '../models/Tags';
 import UserVideo from '../models/UserVideo';
 import TagsVideos from '../models/TagsVideo';
 import Subscription from '../models/Subscription';
+import Playlist from '../models/Playlist';
+import PlaylistVideo from '../models/PlaylistVideo';
 
 import checkJwt from '../middlewares/checkJwt';
 
@@ -22,6 +24,8 @@ class SearchService {
 			const userRepository = getRepository(User);
 			const tagRepository = getRepository(Tags);
 			const tagVideoRepository = getRepository(TagsVideos);
+			const playlistRepositosry = getRepository(Playlist);
+			const playVideoRepository = getRepository(PlaylistVideo);
 			const user_id = checkJwt(token).sub;
 
 			if (tagRepository) {
@@ -39,6 +43,29 @@ class SearchService {
 					for (let i = 0; i < v_ids.length; i++) {
 						videos_id.push(v_ids[i].video_id);
 					}
+
+					var playlists = await getManager()
+						.createQueryBuilder(PlaylistVideo, 'pv')
+						.select('playlist_id', 'pl_id')
+						.addSelect((subQuery) => {
+							return subQuery
+								.select('COUNT(*)')
+								.from(PlaylistVideo, 'plv')
+								.where('plv.playlist_id = pv.playlist_id');
+						}, 'video_count')
+						.addSelect((subQuery) => {
+							return subQuery
+								.select('v.thumb', 'thumb')
+								.from(Video, 'v')
+								.where('pv.video_id = v.id');
+						}, 'thumb')
+						.innerJoin(Playlist, 'p', 'p.id = pv.playlist_id')
+						.where('p.public = true AND pv.video_id IN (:...videos_id)', { videos_id })
+						.orderBy('video_count', 'DESC')
+						.limit(2)
+						.getRawMany();
+					console.log(playlists);
+
 					var videos = await getManager()
 						.createQueryBuilder(Video, 'v')
 						.select('v.id', 'id')
@@ -76,6 +103,7 @@ class SearchService {
 					var data = {
 						videos,
 						channels: new Array(),
+						playlists,
 					};
 					return data;
 				} else {
@@ -146,6 +174,27 @@ class SearchService {
 							.getRawMany();
 					}
 
+					var playlists = await getManager()
+						.createQueryBuilder(PlaylistVideo, 'pv')
+						.select('playlist_id', 'pl_id')
+						.addSelect((subQuery) => {
+							return subQuery
+								.select('COUNT(*)')
+								.from(PlaylistVideo, 'plv')
+								.where('plv.playlist_id = pv.playlist_id');
+						}, 'video_count')
+						.addSelect((subQuery) => {
+							return subQuery
+								.select('v.thumb', 'thumb')
+								.from(Video, 'v')
+								.where('pv.video_id = v.id');
+						}, 'thumb')
+						.innerJoin(Playlist, 'p', 'p.id = pv.playlist_id')
+						.where('p.public = true AND pv.video_id IN (:...videos_id)', { videos_id })
+						.orderBy('video_count', 'DESC')
+						.limit(2)
+						.getRawMany();
+
 					var resultUser = await getManager()
 						.createQueryBuilder(User, 'u')
 						.select('u.id', 'id')
@@ -179,6 +228,7 @@ class SearchService {
 					var data = {
 						videos,
 						channels: resultUser,
+						playlists,
 					};
 					return data;
 				}

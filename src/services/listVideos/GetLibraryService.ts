@@ -77,7 +77,7 @@ class GetLibraryService {
 					});
 					if (allVideos.length !== 0) {
 						var videoThumb = await videoRepository.findOne({
-							select: ['thumb'],
+							select: ['thumb', 'id'],
 							where: { id: allVideos[0].video_id },
 						});
 						newData.push({
@@ -85,6 +85,7 @@ class GetLibraryService {
 							name: dataPlaylist[i].name,
 							created_at: dataPlaylist[i].created_at,
 							all_videos: allVideos.length,
+							video_id: videoThumb?.id,
 							thumb: videoThumb?.thumb,
 						});
 					} else {

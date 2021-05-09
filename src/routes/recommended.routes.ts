@@ -37,7 +37,7 @@ recommendedRouter.post('/videos', async (req, res) => {
 
 			res.status(200).json(data);
 		} else {
-			throw new Error('Token não recebido.');
+			throw new Error('video_id não recebido.');
 		}
 	} catch (err) {
 		console.log(err);

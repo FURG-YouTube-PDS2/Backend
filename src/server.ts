@@ -4,6 +4,8 @@ import routes from './routes';
 import cors from 'cors';
 import express from 'express';
 
+import ExistVideoService from './services/videos/ExistVideoService';
+
 const app = express();
 
 var bodyParser = require('body-parser');
@@ -16,18 +18,40 @@ app.use(routes);
 
 let server = require('http').Server(app);
 let io = require('socket.io')(server, { cors: { origin: '*' } });
+const videoService = new ExistVideoService();
 
-let interval: any;
+io.on('connection', async function (socket: any) {
+	const room_id = socket.handshake.query.room_id;
+	var username = socket.handshake.query.username;
 
-io.on('connection', function (socket: any) {
-	console.log('tee');
-	if (interval) {
-		clearInterval(interval);
+	//se o vídeo não existe no banco, remove a conexão
+	const exists = await videoService.exists({ video_id: room_id });
+
+	if (!exists) {
+		io.to(socket.id).emit('err', { message: 'invalid video_id' });
+		socket.disconnect();
 	}
-	interval = setInterval(() => getApiAndEmit(socket), 1000);
+	socket.join(room_id);
+
+	io.to(room_id).emit('newClient', { username });
+
+	socket.on('message', (data: any) => {
+		data.username = username;
+		//da um broadcast pra sala
+		io.to(room_id).emit('message', data);
+	});
+
+	socket.on('changeUsername', (data: any) => {
+		username = data.username;
+		io.to(room_id).emit('changeUsername', data);
+	});
+
+	socket.on('disconnecting', () => {
+		//some code
+	});
+
 	socket.on('disconnect', () => {
-		console.log('Client disconnected');
-		clearInterval(interval);
+		io.to(room_id).emit('quitClient', { username });
 	});
 });
 
