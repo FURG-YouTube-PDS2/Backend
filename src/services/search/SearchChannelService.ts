@@ -23,6 +23,7 @@ class SearchChannelService {
 					.addSelect('v.title', 'title')
 					.addSelect('v.description', 'description')
 					.addSelect('v.privacy', 'privacy')
+					.addSelect('v.thumb', 'thumb')
 					.addSelect('v.created_at', 'created_at')
 					.addSelect('uv.is_owner', 'owner')
 					.addSelect('uv.user_id', 'channel_id')

@@ -9,6 +9,7 @@ import GetPlaylistsService from '../services/playlist/GetPlaylistsService';
 import GetPlaylistsAVideo from '../services/playlist/GetPlaylistsAVideo';
 import EditPlaylistService from '../services/playlist/EditPlaylistService';
 import RemoveVideoService from '../services/playlist/RemoveVideoService';
+import WatchPlaylistService from '../services/playlist/WatchPlaylistService';
 
 const playlistRouter = Router();
 
@@ -179,6 +180,28 @@ playlistRouter.post('/list_videoid', async (req, res) => {
 			res.status(200).json(statusPlaylist);
 		} else {
 			throw new Error('Token e id do video não recebido.');
+		}
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+playlistRouter.post('/view', async (req, res) => {
+	try {
+		var { playlist_id } = req.body;
+		if (typeof playlist_id !== 'string') {
+			throw new Error('id do video deve ser uma string.');
+		}
+		if (playlist_id) {
+			// const [, token] = req.headers.authorization.split(' '); //tenho q entender isso aki e o if
+
+			const watchVideo = new WatchPlaylistService();
+
+			const videoData = await watchVideo.execute({ playlist_id });
+
+			res.status(200).json(videoData);
+		} else {
+			throw new Error('Video Id não recebido.');
 		}
 	} catch (err) {
 		console.log(err);
