@@ -36,11 +36,20 @@ class GetPlaylistsService {
 							select: ['video_id'],
 							where: { playlist_id: data[i].id },
 						});
+						if (allVideos.length !== 0) {
+							var videoThumb = await VideoRepo.findOne({
+								select: ['thumb', 'id'],
+								where: { id: allVideos[0].video_id },
+							});
+						}
+
 						newData.push({
 							id: data[i].id,
 							name: data[i].name,
 							created_at: data[i].created_at,
 							all_videos: allVideos.length,
+							video_id: videoThumb?.id,
+							thumb: videoThumb?.thumb,
 						});
 					}
 					return newData;
@@ -55,12 +64,19 @@ class GetPlaylistsService {
 							select: ['video_id'],
 							where: { playlist_id: data[i].id },
 						});
-
+						if (allVideos.length !== 0) {
+							var videoThumb = await VideoRepo.findOne({
+								select: ['thumb', 'id'],
+								where: { id: allVideos[0].video_id },
+							});
+						}
 						newData.push({
 							id: data[i].id,
 							name: data[i].name,
 							created_at: data[i].created_at,
 							all_videos: allVideos.length,
+							video_id: videoThumb?.id,
+							thumb: videoThumb?.thumb,
 						});
 					}
 					return newData;

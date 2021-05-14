@@ -6,6 +6,7 @@ import Video from '../../models/Video';
 import Comment from '../../models/Comment';
 import UserComment from '../../models/UserComment';
 import TagsVideo from '../../models/TagsVideo';
+import PlaylistVideo from '../../models/PlaylistVideo';
 
 import checkJwt from '../../middlewares/checkJwt';
 
@@ -21,6 +22,7 @@ class DeleteVideoService {
 			const commentRepo = getRepository(Comment);
 			const userCommentRepo = getRepository(UserComment);
 			const tagsVideoRepo = getRepository(TagsVideo);
+			const playlistVideoRepository = getRepository(PlaylistVideo);
 			if (VideoRepo) {
 				await VideoRepo.delete({
 					id: video_id,
@@ -58,6 +60,14 @@ class DeleteVideoService {
 				for (let i = 0; i < tags.length; i++) {
 					await tagsVideoRepo.delete({
 						id: tags[i].id,
+					});
+				}
+				var playlist = await playlistVideoRepository.find({
+					where: { video_id },
+				});
+				for (let i = 0; i < playlist.length; i++) {
+					await playlistVideoRepository.delete({
+						id: playlist[i].id,
 					});
 				}
 
