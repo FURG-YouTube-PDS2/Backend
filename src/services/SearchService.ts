@@ -26,7 +26,6 @@ class SearchService {
 			const tagVideoRepository = getRepository(TagsVideos);
 			const playlistRepositosry = getRepository(Playlist);
 			const playVideoRepository = getRepository(PlaylistVideo);
-			const user_id = checkJwt(token).sub;
 
 			if (tagRepository) {
 				if (type === 0) {
@@ -47,6 +46,7 @@ class SearchService {
 					var playlists = await getManager()
 						.createQueryBuilder(PlaylistVideo, 'pv')
 						.select('playlist_id', 'pl_id')
+						.addSelect('name', 'name')
 						.addSelect((subQuery) => {
 							return subQuery
 								.select('COUNT(*)')
@@ -55,16 +55,17 @@ class SearchService {
 						}, 'video_count')
 						.addSelect((subQuery) => {
 							return subQuery
-								.select('v.thumb', 'thumb')
+								.select('v.id', 'video_id')
 								.from(Video, 'v')
-								.where('pv.video_id = v.id');
-						}, 'thumb')
+								.innerJoin(PlaylistVideo, 'plv', 'p.id = plv.playlist_id')
+								.where('plv.position = 0 AND plv.video_id = v.id');
+						}, 'video_id')
 						.innerJoin(Playlist, 'p', 'p.id = pv.playlist_id')
 						.where('p.public = true AND pv.video_id IN (:...videos_id)', { videos_id })
 						.orderBy('video_count', 'DESC')
 						.limit(2)
 						.getRawMany();
-					console.log(playlists);
+					// console.log(playlists);
 
 					var videos = await getManager()
 						.createQueryBuilder(Video, 'v')
@@ -164,6 +165,7 @@ class SearchService {
 					var playlists = await getManager()
 						.createQueryBuilder(PlaylistVideo, 'pv')
 						.select('playlist_id', 'pl_id')
+						.addSelect('name', 'name')
 						.addSelect((subQuery) => {
 							return subQuery
 								.select('COUNT(*)')
@@ -172,44 +174,72 @@ class SearchService {
 						}, 'video_count')
 						.addSelect((subQuery) => {
 							return subQuery
-								.select('v.thumb', 'thumb')
+								.select('v.id', 'video_id')
 								.from(Video, 'v')
-								.where('pv.video_id = v.id');
-						}, 'thumb')
+								.innerJoin(PlaylistVideo, 'plv', 'p.id = plv.playlist_id')
+								.where('plv.position = 0 AND plv.video_id = v.id');
+						}, 'video_id')
 						.innerJoin(Playlist, 'p', 'p.id = pv.playlist_id')
 						.where('p.public = true AND pv.video_id IN (:...videos_id)', { videos_id })
 						.orderBy('video_count', 'DESC')
 						.limit(2)
 						.getRawMany();
 
-					var resultUser = await getManager()
-						.createQueryBuilder(User, 'u')
-						.select('u.id', 'id')
-						.addSelect('u.username', 'name')
-						.addSelect((subQuery) => {
-							return subQuery
-								.select('COUNT(*)')
-								.from(Subscription, 'subs')
-								.where('subs.user_target = u.id');
-						}, 'subscribers')
-						.addSelect((subQuery) => {
-							return subQuery
-								.select('COUNT(*)')
-								.from(Subscription, 'subs')
-								.where('subs.user_target = u.id AND user_subscriber = (:user_id)', {
-									user_id,
-								});
-						}, 'is_subscribed')
-						.addSelect((subQuery) => {
-							return subQuery
-								.select('COUNT(*)')
-								.from(UserVideo, 'uv')
-								.where('uv.user_id = u.id AND is_owner = true');
-						}, 'video_count')
-						// .innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
-						.where('u.username ~*:searchTerm', { searchTerm: input })
-						// .take(2)
-						.getRawMany();
+					if (token !== '') {
+						const user_id = checkJwt(token).sub;
+						var resultUser = await getManager()
+							.createQueryBuilder(User, 'u')
+							.select('u.id', 'id')
+							.addSelect('u.username', 'name')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('COUNT(*)')
+									.from(Subscription, 'subs')
+									.where('subs.user_target = u.id');
+							}, 'subscribers')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('COUNT(*)')
+									.from(Subscription, 'subs')
+									.where(
+										'subs.user_target = u.id AND user_subscriber = (:user_id)',
+										{
+											user_id,
+										},
+									);
+							}, 'is_subscribed')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('COUNT(*)')
+									.from(UserVideo, 'uv')
+									.where('uv.user_id = u.id AND is_owner = true');
+							}, 'video_count')
+							// .innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
+							.where('u.username ~*:searchTerm', { searchTerm: input })
+							// .take(2)
+							.getRawMany();
+					} else {
+						var resultUser = await getManager()
+							.createQueryBuilder(User, 'u')
+							.select('u.id', 'id')
+							.addSelect('u.username', 'name')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('COUNT(*)')
+									.from(Subscription, 'subs')
+									.where('subs.user_target = u.id');
+							}, 'subscribers')
+							.addSelect((subQuery) => {
+								return subQuery
+									.select('COUNT(*)')
+									.from(UserVideo, 'uv')
+									.where('uv.user_id = u.id AND is_owner = true');
+							}, 'video_count')
+							// .innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
+							.where('u.username ~*:searchTerm', { searchTerm: input })
+							// .take(2)
+							.getRawMany();
+					}
 
 					var data = {
 						videos,

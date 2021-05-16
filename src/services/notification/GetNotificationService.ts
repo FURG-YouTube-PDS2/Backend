@@ -38,20 +38,19 @@ class GetNotificationService {
 				for (let i = 0; i < all_nots.length; i++) {
 					if (all_nots[i].type === 'new_video') {
 						var video = await VideoRepo.findOne({
-							select: ['thumb', 'title'],
+							select: ['title'],
 							where: { id: all_nots[i].action_id },
 						});
 						var user = await userRepo.findOne({
-							select: ['avatar', 'username'],
+							select: ['id', 'username'],
 							where: { id: all_nots[i].target_id },
 						});
 						data.push({
 							id: all_nots[i].id,
-							avatar: user?.avatar,
+							user_id: user?.id,
 							name: user?.username,
 							type: all_nots[i].type,
 							text: video?.title,
-							thumb: video?.thumb,
 							date: all_nots[i].created_at,
 							readed: all_nots[i].readed,
 							video_id: all_nots[i].action_id,
@@ -61,7 +60,7 @@ class GetNotificationService {
 							where: { nickname: 'default' },
 						});
 						var video = await VideoRepo.findOne({
-							select: ['thumb', 'title'],
+							select: ['title'],
 							where: { id: all_nots[i].action_id },
 						});
 						var comment = await commentRepo.findOne({
@@ -74,7 +73,7 @@ class GetNotificationService {
 							name: 'Alguém',
 							type: all_nots[i].type,
 							text: comment?.text,
-							thumb: video?.thumb,
+
 							date: all_nots[i].created_at,
 							readed: all_nots[i].readed,
 							video_id: all_nots[i].action_id,
@@ -84,7 +83,7 @@ class GetNotificationService {
 							where: { nickname: 'default' },
 						});
 						var video = await VideoRepo.findOne({
-							select: ['thumb', 'title'],
+							select: ['title'],
 							where: { id: all_nots[i].action_id },
 						});
 						var comment = await commentRepo.findOne({
@@ -97,7 +96,6 @@ class GetNotificationService {
 							name: 'Alguém',
 							type: all_nots[i].type,
 							text: comment?.text,
-							thumb: video?.thumb,
 							date: all_nots[i].created_at,
 							readed: all_nots[i].readed,
 							video_id: all_nots[i].action_id,

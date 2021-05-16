@@ -38,7 +38,7 @@ class GetPlaylistsService {
 						});
 						if (allVideos.length !== 0) {
 							var videoThumb = await VideoRepo.findOne({
-								select: ['thumb', 'id'],
+								select: ['id'],
 								where: { id: allVideos[0].video_id },
 							});
 						}
@@ -49,7 +49,6 @@ class GetPlaylistsService {
 							created_at: data[i].created_at,
 							all_videos: allVideos.length,
 							video_id: videoThumb?.id,
-							thumb: videoThumb?.thumb,
 						});
 					}
 					return newData;
@@ -66,7 +65,7 @@ class GetPlaylistsService {
 						});
 						if (allVideos.length !== 0) {
 							var videoThumb = await VideoRepo.findOne({
-								select: ['thumb', 'id'],
+								select: ['id'],
 								where: { id: allVideos[0].video_id },
 							});
 						}
@@ -76,7 +75,6 @@ class GetPlaylistsService {
 							created_at: data[i].created_at,
 							all_videos: allVideos.length,
 							video_id: videoThumb?.id,
-							thumb: videoThumb?.thumb,
 						});
 					}
 					return newData;
