@@ -26,8 +26,28 @@ import Video from '../models/Video';
 import UserVideo from '../models/UserVideo';
 
 import RecVideosService from '../services/recommended/RecVideosService';
+var cors = require('cors');
+import getVideoFileService from '../services/videos/b642VideoService';
 
 const videosRouter = Router();
+
+videosRouter.get('/getVideoFile/:id', cors(), async (req, res) => {
+	try {
+		var id = req.params.id;
+		const getVid = new getVideoFileService();
+		const vid = await getVid.execute({ id });
+		var base64Data = vid.replace(/^data:video\/(mp4);base64,/, '');
+		var actualVid = Buffer.from(base64Data, 'base64');
+
+		res.writeHead(200, {
+			'Content-Type': 'video/mp4',
+			'Content-Length': actualVid.length,
+		});
+		res.end(actualVid);
+	} catch (err) {
+		console.log(err);
+	}
+});
 
 // O vídeo é enviado no middleware dentro da requisição
 // Dentro do objeto passado, de passar parametros (aws;ts)
