@@ -13,7 +13,6 @@ interface Response {
 	video_id: string;
 	channel: string;
 	title: string;
-	thumb: string;
 }
 
 // Não finalizado, verificar funcionamento e aprimorar erro handling
@@ -25,7 +24,7 @@ class DescriptionVideoPService {
 			const userVideoRepository = getRepository(UserVideo);
 			console.log(video_id);
 			const video = await videoRepository.findOne({
-				select: ['title', 'thumb'],
+				select: ['title'],
 				where: { id: video_id },
 			});
 			console.log(video);
@@ -48,7 +47,6 @@ class DescriptionVideoPService {
 					video_id,
 					channel: owner!.username,
 					title: video!.title,
-					thumb: video!.thumb,
 				};
 			} else {
 				throw new Error('Erro ao resgatar repositório.');

@@ -30,7 +30,7 @@ class WatchPlaylistService {
 					select: ['position', 'video_id'],
 					where: { playlist_id },
 				});
-				console.log(allVideos);
+				// console.log(allVideos);
 
 				const user_info = await userRepository.findOne({
 					select: ['id', 'username'],
@@ -47,8 +47,8 @@ class WatchPlaylistService {
 					channel: user_info?.username,
 					channel_id: user_info?.id,
 				};
-				console.log(data);
-				console.log(videos);
+				// console.log(data);
+				// console.log(videos);
 				return {
 					data,
 					videos,

@@ -22,7 +22,10 @@ class DescriptionChannelService {
 			var is_owner;
 			if (user_id !== '') {
 				var user = await userRepository.findOne({ where: { id: user_id } });
-				var id = checkJwt(token).sub;
+				var id = '';
+				if (token !== '') {
+					id = checkJwt(token).sub;
+				}
 				id_user = user_id;
 				if (id === user_id) {
 					is_owner = true;
@@ -30,10 +33,14 @@ class DescriptionChannelService {
 					is_owner = false;
 				}
 			} else {
-				id_user = checkJwt(token).sub;
-				var user = await userRepository.findOne({ where: { id: id_user } });
+				if (token !== '') {
+					id_user = checkJwt(token).sub;
+					var user = await userRepository.findOne({ where: { id: id_user } });
 
-				is_owner = true;
+					is_owner = true;
+				} else {
+					is_owner = false;
+				}
 			}
 
 			if (user) {
