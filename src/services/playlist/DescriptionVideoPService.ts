@@ -22,12 +22,12 @@ class DescriptionVideoPService {
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
 			const userVideoRepository = getRepository(UserVideo);
-			console.log(video_id);
+			// console.log(video_id);
 			const video = await videoRepository.findOne({
 				select: ['title'],
 				where: { id: video_id },
 			});
-			console.log(video);
+			// console.log(video);
 
 			if (videoRepository) {
 				const user_owner = await userVideoRepository.findOne({

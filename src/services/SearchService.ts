@@ -65,7 +65,8 @@ class SearchService {
 						.orderBy('video_count', 'DESC')
 						.limit(2)
 						.getRawMany();
-					// console.log(playlists);
+					console.log('primeiro');
+					console.log(playlists);
 
 					var videos = await getManager()
 						.createQueryBuilder(Video, 'v')
@@ -179,11 +180,15 @@ class SearchService {
 								.innerJoin(PlaylistVideo, 'plv', 'p.id = plv.playlist_id')
 								.where('plv.position = 0 AND plv.video_id = v.id');
 						}, 'video_id')
+						.distinct(true)
 						.innerJoin(Playlist, 'p', 'p.id = pv.playlist_id')
 						.where('p.public = true AND pv.video_id IN (:...videos_id)', { videos_id })
 						.orderBy('video_count', 'DESC')
 						.limit(2)
 						.getRawMany();
+
+					console.log('ultimo');
+					console.log(playlists);
 
 					if (token !== '') {
 						const user_id = checkJwt(token).sub;
