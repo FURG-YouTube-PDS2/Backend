@@ -9,7 +9,7 @@ const imgRouter = Router();
 imgRouter.get('/getImage/:id', cors(), async (req, res) => {
 	try {
 		var id = req.params.id;
-		console.log(id);
+		// console.log(id);
 		const getImg = new getImageService();
 		const img = await getImg.execute({ id });
 		var base64Data = img.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
