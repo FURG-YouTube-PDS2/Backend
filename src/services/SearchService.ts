@@ -38,7 +38,7 @@ class SearchService {
 						where: { tag_id: tag!.id },
 					});
 					var videos_id = new Array();
-
+					videos_id.push('teste');
 					for (let i = 0; i < v_ids.length; i++) {
 						videos_id.push(v_ids[i].video_id);
 					}
@@ -60,6 +60,7 @@ class SearchService {
 								.innerJoin(PlaylistVideo, 'plv', 'p.id = plv.playlist_id')
 								.where('plv.position = 0 AND plv.video_id = v.id');
 						}, 'video_id')
+						.distinct(true)
 						.innerJoin(Playlist, 'p', 'p.id = pv.playlist_id')
 						.where('p.public = true AND pv.video_id IN (:...videos_id)', { videos_id })
 						.orderBy('video_count', 'DESC')
@@ -101,6 +102,7 @@ class SearchService {
 					return data;
 				} else {
 					var videos_id = new Array();
+					videos_id.push('teste');
 					const tag = await tagRepository
 						.createQueryBuilder('tags')
 						.select('tags.id', 'id')
@@ -128,7 +130,7 @@ class SearchService {
 						videos_id.push(resultVideo[i].video_id);
 					}
 
-					if (videos_id.length === 0) {
+					if (videos_id.length >= 1) {
 						var videos = new Array();
 					} else {
 						var videos = await getManager()

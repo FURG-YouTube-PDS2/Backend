@@ -41,7 +41,6 @@ videosRouter.get('/getVideoFile/:id', cors(), async (req, res) => {
 		var base64Data = vid.replace(/^data:video\/\w+;base64,/, '');
 		var actualVid = Buffer.from(base64Data, 'base64');
 		if (type !== null) {
-			console.log(type[0]);
 			res.writeHead(200, {
 				'Content-Type': type[0],
 				'Transfer-Encoding': 'chunked',

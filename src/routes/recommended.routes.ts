@@ -26,9 +26,9 @@ recommendedRouter.post('/get', async (req, res) => {
 recommendedRouter.post('/videos', async (req, res) => {
 	try {
 		var { video_id } = req.body;
-		// console.log(req.body);
+
 		if (typeof video_id !== 'string') {
-			throw new Error('id do usuario deve ser uma string.');
+			throw new Error('id do video deve ser uma string.');
 		}
 		if (video_id) {
 			const video = new RecVideosService();
