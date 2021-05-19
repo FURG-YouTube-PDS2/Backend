@@ -19,7 +19,11 @@ class GetPlaylistsService {
 			const playlistVideoRepo = getRepository(PlaylistVideo);
 			const VideoRepo = getRepository(Video);
 			if (playlistRepository) {
-				var id = checkJwt(token).sub;
+				if (token === '') {
+					var id = '';
+				} else {
+					var id = checkJwt(token).sub;
+				}
 				if (id === id_target) {
 					id_target = '';
 				}

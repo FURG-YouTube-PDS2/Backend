@@ -26,9 +26,11 @@ class GetSubsVideos {
 					select: ['user_target'],
 					where: { user_subscriber: user_id },
 				});
+
 				var videos = new Array();
 
 				var users_id = new Array();
+				users_id.push('teste');
 				for (let i = 0; i < subs.length; i++) {
 					users_id.push(subs[i].user_target);
 				}

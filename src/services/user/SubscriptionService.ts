@@ -17,7 +17,11 @@ class SubscriptionService {
 	public async execute({ token, target_id }: Request): Promise<object> {
 		try {
 			const subscriptionRepository = getRepository(subscription);
-			const user_id = checkJwt(token).sub;
+			if (token === '') {
+				var user_id = '';
+			} else {
+				var user_id = checkJwt(token).sub;
+			}
 
 			const created_at = new Date();
 			const verifySubscribed = await subscriptionRepository.findOne({

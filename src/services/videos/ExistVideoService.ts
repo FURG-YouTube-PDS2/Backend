@@ -12,7 +12,6 @@ class ExistVideoService {
 	public async exists({ video_id }: Request): Promise<any> {
 		try {
 			const VideoRepo = getRepository(Video);
-
 			if (VideoRepo) {
 				const video = await VideoRepo.findOne({ select: ['id'], where: { id: video_id } });
 				return video;

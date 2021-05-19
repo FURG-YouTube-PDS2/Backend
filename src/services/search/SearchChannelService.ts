@@ -41,11 +41,13 @@ class SearchChannelService {
 						},
 					)
 					.getRawMany();
+
 				// console.log(videos);
 				var data = {
 					videos,
 				};
-				return { status: 1 };
+				console.log(data);
+				return data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}

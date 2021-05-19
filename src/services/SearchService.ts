@@ -65,8 +65,6 @@ class SearchService {
 						.orderBy('video_count', 'DESC')
 						.limit(2)
 						.getRawMany();
-					console.log('primeiro');
-					console.log(playlists);
 
 					var videos = await getManager()
 						.createQueryBuilder(Video, 'v')
@@ -187,9 +185,6 @@ class SearchService {
 						.limit(2)
 						.getRawMany();
 
-					console.log('ultimo');
-					console.log(playlists);
-
 					if (token !== '') {
 						const user_id = checkJwt(token).sub;
 						var resultUser = await getManager()
@@ -207,7 +202,7 @@ class SearchService {
 									.select('COUNT(*)')
 									.from(Subscription, 'subs')
 									.where(
-										'subs.user_target = u.id AND user_subscriber = (:user_id)',
+										' subs.user_target = u.id AND user_subscriber = (:user_id)',
 										{
 											user_id,
 										},
@@ -220,8 +215,12 @@ class SearchService {
 									.where('uv.user_id = u.id AND is_owner = true');
 							}, 'video_count')
 							// .innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
-							.where('u.username ~*:searchTerm', { searchTerm: input })
-							// .take(2)
+							.where('u.id != (:user_id) AND u.username ~*:searchTerm', {
+								user_id,
+								searchTerm: input,
+							})
+							.orderBy('subscribers', 'DESC')
+							.limit(2)
 							.getRawMany();
 					} else {
 						var resultUser = await getManager()
@@ -242,7 +241,8 @@ class SearchService {
 							}, 'video_count')
 							// .innerJoin(UserVideo, 'uv', 'v.id = uv.video_id')
 							.where('u.username ~*:searchTerm', { searchTerm: input })
-							// .take(2)
+							.orderBy('subscribers', 'DESC')
+							.limit(2)
 							.getRawMany();
 					}
 

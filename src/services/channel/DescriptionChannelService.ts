@@ -18,7 +18,7 @@ class DescriptionChannelService {
 		try {
 			const userRepository = getRepository(User);
 			const subscriptionRepository = getRepository(Subscription);
-			var id_user;
+			var id_user = '';
 			var is_owner;
 			if (user_id !== '') {
 				var user = await userRepository.findOne({ where: { id: user_id } });
@@ -48,7 +48,7 @@ class DescriptionChannelService {
 					where: { user_target: id_user },
 				});
 				const subscription = new SubscribedService();
-				if (is_owner === true) {
+				if (is_owner === true || token === '') {
 					var is_subs = false;
 				} else {
 					var is_subs = await subscription.execute({ token, target_id: id_user });

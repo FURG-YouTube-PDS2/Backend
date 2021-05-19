@@ -35,7 +35,7 @@ emailRouter.post('/confirm_email', async (request, response) => {
 			verified: verification,
 		});
 		const playlist = new CreatePlaylistService();
-		var name = 'Assitir mais tarde';
+		var name = 'Assistir mais tarde';
 		var is_public = false;
 		var tokenService = new GetToken();
 		var token = await tokenService.execute({ user_id: id });

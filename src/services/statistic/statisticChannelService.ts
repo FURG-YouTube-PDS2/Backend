@@ -190,6 +190,7 @@ class statisticChannelService {
 						data: countUser,
 					},
 				};
+				console.log(data);
 				return data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
