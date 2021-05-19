@@ -26,13 +26,13 @@ searchRouter.post('/', async (req, res) => {
 
 searchRouter.post('/channel', async (req, res) => {
 	try {
-		const { input, channel_id } = req.body;
+		const { input, channel_id, token } = req.body;
 
 		const search = new SearchChannelService();
 
 		if (typeof input !== 'undefined') {
 			// results = [videos, users]
-			const results = await search.execute({ input, channel_id });
+			const results = await search.execute({ input, channel_id, token });
 
 			res.status(200).json(results);
 		} else {

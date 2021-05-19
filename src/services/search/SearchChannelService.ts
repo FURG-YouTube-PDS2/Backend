@@ -4,18 +4,24 @@ import Video from '../../models/Video';
 import User from '../../models/User';
 import UserVideo from '../../models/UserVideo';
 
+import checkJwt from '../../middlewares/checkJwt';
 interface Request {
 	input: string;
 	channel_id: string;
+	token: string;
 }
 
 class SearchChannelService {
-	public async execute({ input, channel_id }: Request): Promise<object> {
+	public async execute({ input, channel_id, token }: Request): Promise<object> {
 		try {
 			const videoRepository = getRepository(Video);
 			const userRepository = getRepository(User);
 
 			if (videoRepository) {
+				if (channel_id === null || channel_id === '' || channel_id === '0') {
+					channel_id = checkJwt(token).sub;
+				}
+
 				var videos_id = new Array();
 				var videos = await getManager()
 					.createQueryBuilder(Video, 'v')
@@ -41,11 +47,13 @@ class SearchChannelService {
 						},
 					)
 					.getRawMany();
+
 				// console.log(videos);
 				var data = {
 					videos,
 				};
-				return { status: 1 };
+
+				return data;
 			} else {
 				throw new Error('Erro ao resgatar repositório.');
 			}

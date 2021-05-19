@@ -34,16 +34,21 @@ const videosRouter = Router();
 videosRouter.get('/getVideoFile/:id', cors(), async (req, res) => {
 	try {
 		var id = req.params.id;
+
 		const getVid = new getVideoFileService();
 		const vid = await getVid.execute({ id });
-		var base64Data = vid.replace(/^data:video\/(mp4);base64,/, '');
+		var type = vid.match(/video\/\w+/);
+		var base64Data = vid.replace(/^data:video\/\w+;base64,/, '');
 		var actualVid = Buffer.from(base64Data, 'base64');
-
-		res.writeHead(200, {
-			'Content-Type': 'video/mp4',
-			'Content-Length': actualVid.length,
-		});
-		res.end(actualVid);
+		if (type !== null) {
+			res.writeHead(200, {
+				'Content-Type': type[0],
+				'Transfer-Encoding': 'chunked',
+				'Content-Length': actualVid.length,
+				'Accept-Ranges': 'bytes',
+			});
+			res.end(actualVid);
+		}
 	} catch (err) {
 		console.log(err);
 	}
@@ -156,6 +161,7 @@ videosRouter.post('/watch', async (req, res) => {
 	// watch?v=DQMWPDM1P2M&t=20s
 	try {
 		var { video_id, token } = req.body;
+
 		if (typeof video_id !== 'string') {
 			throw new Error('id do video deve ser uma string.');
 		}

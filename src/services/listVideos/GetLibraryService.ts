@@ -33,7 +33,7 @@ class GetLibraryService {
 				});
 				const id_videos_later = await playlistRepository.findOne({
 					select: ['id', 'name'],
-					where: { name: 'Assitir mais tarde', user_id: user_id },
+					where: { name: 'Assistir mais tarde', user_id: user_id },
 				});
 
 				const allVideosLik = await playlistVideoRepo.find({
@@ -98,7 +98,7 @@ class GetLibraryService {
 				}
 				var data = Array();
 				for (let i = 0; i < newData.length; i++) {
-					if (newData[i].name !== 'Assitir mais tarde') {
+					if (newData[i].name !== 'Assistir mais tarde') {
 						if (newData[i].name !== 'Vídeos curtidos') {
 							data.push(newData[i]);
 						}

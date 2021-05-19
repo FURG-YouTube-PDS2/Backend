@@ -24,7 +24,6 @@ class EditCommentService {
 				const comment = await commentRepository.save({
 					id: comment_id,
 					text,
-					created_at,
 					edited,
 				});
 

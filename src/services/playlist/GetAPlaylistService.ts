@@ -41,6 +41,7 @@ class GetAPlaylistService {
 					videos.push(await descVideo.execute({ video_id: allVideos[i].video_id }));
 				}
 				var data = {
+					status: true,
 					name: dataPlaylist?.name,
 					public: dataPlaylist?.public,
 					created_at: dataPlaylist?.created_at,

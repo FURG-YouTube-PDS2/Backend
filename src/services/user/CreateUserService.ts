@@ -1,4 +1,5 @@
 import User from '../../models/User';
+import Nintube from '../../models/Nintube';
 import { getRepository } from 'typeorm';
 
 //import s3Upload from '../../middlewares/awsS3Upload';
@@ -26,7 +27,16 @@ class CreateUserService {
 		// Recebe todos os metodos de repositorio
 		//const customRepository = getCustomRepository()
 		const userRepository = getRepository(User);
-
+		const ninRepository = getRepository(Nintube);
+		if (!avatar || avatar === '') {
+			const defAva = await ninRepository.findOne({
+				where: { nickname: 'default' },
+				select: ['file'],
+			});
+			if (defAva?.file) {
+				avatar = defAva?.file;
+			}
+		}
 		const created_at = new Date();
 		const updated_at = new Date();
 		const exist = await userRepository.findOne({
